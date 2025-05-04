@@ -1,18 +1,20 @@
-## Interface: 70000
+## Interface: 11507, 40402, 110105
 ## Title: Cyborg MMO7 Addon
+## IconTexture: Interface/Addons/CyborgMMO7/Graphics/Cyborg
 ## DefaultState: Enabled
-## Version: v6.1.0-1
+## Version: 11.1.5
 ## LoadOnDemand: 0
+## Category: Peripherals
+## Notes: Cyborg MMO7 Addon, originally by Mad Catz Inc., now maintained by Malaofu.
 ## SavedVariablesPerCharacter: CyborgMMO7SaveData
 ## SavedVariables: CyborgMMO_ProfileKeyBindings CyborgMMO_LocalMountMap
-## X-Curse-Packaged-Version: v6.1.0-1
+## X-Curse-Packaged-Version: 11.1.5
 ## X-Curse-Project-Name: Cyborg MMO7
 ## X-Curse-Project-ID: cyborg-mmo7
-## X-Curse-Repository-ID: wow/cyborg-mmo7/mainline
 
 MountMap.lua
 Localisation.lua
-OptionView.lua
+OptionPage.lua
 CallbackFactory.lua
 WowObjects.lua
 RatPageModel.lua
@@ -21,6 +23,6 @@ RatPageView.lua
 CyborgMMO7.lua
 RatPage.xml
 RatQuickPage.xml
+# MainPage.lua
 MainPage.xml
-OpenButtonPage.xml
-OptionPage.xml
+OpenButtonPage.lua

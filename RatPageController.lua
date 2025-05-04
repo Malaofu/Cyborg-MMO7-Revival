@@ -48,7 +48,7 @@ end
 function RatPageController_methods:GetCursorObject()
 	local type,a,b,c = GetCursorInfo()
 	ClearCursor()
-	
+
 	-- special case for unknown mounts (do it here since we're sure the cursor is free)
 	if type=='mount' then
 		local mountID = a
@@ -77,7 +77,7 @@ function RatPageController_methods:GetCursorObject()
 			--end
 		end
 	end
-	
+
 	if type=='item' then
 		local id,link = a,b
 		return CyborgMMO_CreateWowObject('item', id)

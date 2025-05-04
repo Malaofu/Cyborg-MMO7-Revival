@@ -3,6 +3,7 @@
 --~ Description: Plugin entry point, String tables and other generic crap that I could not think to put anywhere else.
 --~ Copyright (C) 2012 Mad Catz Inc.
 --~ Author: Christopher Hooks
+--~ Modifications: Malaofu
 
 --~ This program is free software; you can redistribute it and/or
 --~ modify it under the terms of the GNU General Public License
@@ -43,13 +44,14 @@ local EnteredWorld = false
 local BindingsLoaded = false
 local SettingsLoaded = false
 local SaveName = GetRealmName().."_"..UnitName("player")
+---@class GeneralSettings
 local Settings = nil
 local AutoClosed = false
 CyborgMMO_ModeDetected = false
 
 
 function CyborgMMO_MiniMapButtonReposition(angle)
-	local r = 80
+	local r = (Minimap:GetWidth() / 2) + 5
 	local dx = r * math.cos(angle)
 	local dy = r * math.sin(angle)
 	CyborgMMO_MiniMapButton:ClearAllPoints()
@@ -64,8 +66,8 @@ function CyborgMMO_MiniMapButtonOnUpdate()
 	local xpos,ypos = GetCursorPosition()
 	local xmap,ymap = Minimap:GetCenter()
 
-	xpos = xpos / UIParent:GetScale() - xmap
-	ypos = ypos / UIParent:GetScale() - ymap
+	xpos = xpos / Minimap:GetEffectiveScale() - xmap
+	ypos = ypos / Minimap:GetEffectiveScale() - ymap
 
 	local angle = math.atan2(ypos, xpos)
 	CyborgMMO_MiniMapButtonReposition(angle)
@@ -97,7 +99,9 @@ end
 function CyborgMMO_GetSaveData()
 	assert(VarsLoaded)
 	if not CyborgMMO7SaveData then
-		CyborgMMO7SaveData = {}
+		CyborgMMO7SaveData = {
+			Settings = DefaultSettings,
+		}
 	end
 	return CyborgMMO7SaveData
 end
@@ -106,7 +110,11 @@ function CyborgMMO_SetRatSaveData(objects)
 	assert(VarsLoaded)
 	local specIndex
 	if Settings.PerSpecBindings then
-		specIndex = GetActiveSpecGroup()
+		if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+			specIndex = GetSpecialization()
+		else
+			specIndex = GetActiveTalentGroup()
+		end
 	else
 		specIndex = 1
 	end
@@ -127,17 +135,21 @@ end
 function CyborgMMO_GetRatSaveData()
 	local specIndex
 	if Settings.PerSpecBindings then
-		specIndex = GetActiveSpecGroup()
+		if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+			specIndex = GetSpecialization()
+		else
+			specIndex = GetActiveTalentGroup()
+		end
 	else
 		specIndex = 1
 	end
-	CyborgMMO_DPrint("returning rat data for spec:", specIndex, GetActiveSpecGroup())
+	CyborgMMO_DPrint("returning rat data for spec:", specIndex)
 	local saveData = CyborgMMO_GetSaveData()
 	return saveData.Rat and saveData.Rat[specIndex]
 end
 
 local function GetSpellID(name)
-	local link = GetSpellLink(name)
+	local link = C_Spell.GetSpellLink(name)
 	if link then
 		local id = link:match('spell:(%d+)|')
 		if id then
@@ -329,7 +341,9 @@ function CyborgMMO_Event(event, ...)
 		VarsLoaded = true
 		-- create root table if necessary
 		if not CyborgMMO7SaveData then
-			CyborgMMO7SaveData = {}
+			CyborgMMO7SaveData = {
+				Settings = DefaultSettings,
+			}
 		end
 		-- cleanup the local mount cache
 		for mount in pairs(CyborgMMO_MountMap) do
@@ -373,26 +387,26 @@ function CyborgMMO_Event(event, ...)
 
 		Settings = data.Settings
 		if not Settings then
-			Settings = {}
+			Settings = DefaultSettings
 			data.Settings = Settings
 		end
 		if Settings.MiniMapButton == nil then
-			Settings.MiniMapButton = true
+			Settings.MiniMapButton = DefaultSettings.MiniMapButton
 		end
 		if Settings.CyborgButton == nil then
-			Settings.CyborgButton = true
+			Settings.CyborgButton = DefaultSettings.CyborgButton
 		end
 		if Settings.PerSpecBindings == nil then
-			Settings.PerSpecBindings = false
+			Settings.PerSpecBindings = DefaultSettings.PerSpecBindings
 		end
 		if not Settings.Cyborg then
-			Settings.Cyborg = 0.75
+			Settings.Cyborg = DefaultSettings.Cyborg
 		end
 		if not Settings.Plugin then
-			Settings.Plugin = 0.75
+			Settings.Plugin = DefaultSettings.Plugin
 		end
 		if not Settings.MiniMapButtonAngle then
-			Settings.MiniMapButtonAngle = math.rad(150)
+			Settings.MiniMapButtonAngle = DefaultSettings.MiniMapButtonAngle
 		end
 
 		-- Reload Slider values:
@@ -400,6 +414,7 @@ function CyborgMMO_Event(event, ...)
 		CyborgMMO_SetMainPageSize(Settings.Plugin)
 
 		CyborgMMO_SetMiniMapButton(Settings.MiniMapButton)
+		CyborgMMO_SetCompartmentButton(Settings.CompartmentButton)
 		CyborgMMO_MiniMapButtonReposition(Settings.MiniMapButtonAngle)
 		CyborgMMO_SetCyborgHeadButton(Settings.CyborgButton)
 		CyborgMMO_SetPerSpecBindings(Settings.PerSpecBindings)
@@ -508,7 +523,7 @@ end
 
 function CyborgMMO_SetMainPageSize(percent)
 	CyborgMMO_MainPage:SetScale(percent)
-	CyborgMMO_OptionPagePluginSizeSlider:SetValue(percent)
+	-- CyborgMMO_OptionPageOld.PluginSize:SetValue(percent)
 	if SettingsLoaded then
 		Settings.Plugin = percent
 	end
@@ -516,7 +531,7 @@ end
 
 function CyborgMMO_SetOpenButtonSize(percent)
 	CyborgMMO_OpenButtonPage:SetScale(percent)
-	CyborgMMO_OptionPageCyborgSizeSlider:SetValue(percent)
+	-- CyborgMMO_OptionPageOld.CyborgSize:SetValue(percent)
 	if SettingsLoaded then
 		Settings.Cyborg = percent
 	end
@@ -528,7 +543,7 @@ function CyborgMMO_SetCyborgHeadButton(visible)
 	else
 		CyborgMMO_OpenButtonPage:Hide()
 	end
-	CyborgMMO_OptionPageCyborgButton:SetChecked(visible)
+	-- CyborgMMO_OptionPageOld.CyborgButton:SetChecked(visible)
 	if SettingsLoaded then
 		Settings.CyborgButton = toboolean(visible)
 	end
@@ -540,14 +555,25 @@ function CyborgMMO_SetMiniMapButton(visible)
 	else
 		CyborgMMO_MiniMapButton:Hide()
 	end
-	CyborgMMO_OptionPageMiniMapButton:SetChecked(visible)
+	-- CyborgMMO_OptionPageOld.MiniMapButton:SetChecked(visible)
 	if SettingsLoaded then
 		Settings.MiniMapButton = toboolean(visible)
 	end
 end
 
+function CyborgMMO_SetCompartmentButton(visible)
+	if visible then
+		RegisterCompartmentButton()
+	else
+		UnregisterCompartmentButton()
+	end
+	if SettingsLoaded then
+		Settings.CompartmentButton = toboolean(visible)
+	end
+end
+
 function CyborgMMO_SetPerSpecBindings(perSpec)
-	CyborgMMO_OptionPagePerSpecBindings:SetChecked(perSpec)
+	-- CyborgMMO_OptionPageOld.PerSpecBindings:SetChecked(perSpec)
 	if SettingsLoaded then
 		Settings.PerSpecBindings = toboolean(perSpec)
 	end

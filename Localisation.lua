@@ -3,6 +3,7 @@
 --~ Description: Localisation for Warcraft
 --~ Copyright (C) 2012 Mad Catz Inc.
 --~ Author: Christopher Hooks
+--~ Modifications: Malaofu
 
 --~ This program is free software; you can redistribute it and/or
 --~ modify it under the terms of the GNU General Public License
@@ -352,9 +353,15 @@ local StringTables = {
 		CyborgMMO_BindingFrameHeaderText="Please press the appropriate button",
 		CyborgMMO_CurrentBinding="Current Binding",
 		CyborgMMO_OptionPageCyborgButtonTitle="Cyborg Button",
+		CyborgMMO_OptionPageCyborgButtonTooltip="Show Cyborg head on the screen",
 		CyborgMMO_OptionPageCyborgSizeSliderTitle="Cyborg Head Size",
+		CyborgMMO_OptionPageCyborgSizeSliderTooltip="Adjust the size of the Cyborg head",
 		CyborgMMO_OptionPageMiniMapButtonTitle="MiniMap Button",
+		CyborgMMO_OptionPageMiniMapButtonTooltip="Show Cyborg button on the minimap",
+		CyborgMMO_OptionPageCompartmentButtonTitle="Compartment Button",
+		CyborgMMO_OptionPageCompartmentButtonTooltip="Show Cyborg button in the addon compartment",
 		CyborgMMO_OptionPagePerSpecBindingsTitle="Per-spec bindings",
+		CyborgMMO_OptionPagePerSpecBindingsTooltip="Enable per-spec key bindings",
 		CyborgMMO_OptionPageRebindMouseRow10Name="Back Button",
 		CyborgMMO_OptionPageRebindMouseRow11Name="Button 3",
 		CyborgMMO_OptionPageRebindMouseRow12Name="Thumb Anticlockwise",
@@ -374,6 +381,7 @@ local StringTables = {
 		CyborgMMO_OptionPageRebindMouseRowDName="Thumb Clockwise",
 		CyborgMMO_OptionPageTitle="Cyborg MMO7",
 		CyborgMMO_OptionPagePluginSizeSliderTitle="Interface Window Size",
+		CyborgMMO_OptionPagePluginSizeSliderTooltip="Adjust the size of the interface window",
 		CyborgMMO_OptionPageRebindMode1="Mode 1",
 		CyborgMMO_OptionPageRebindMode2="Mode 2",
 		CyborgMMO_OptionPageRebindMode3="Mode 3",

@@ -3,6 +3,7 @@
 --~ Description: Creates lua callbacks that can be executed from a user keycombination
 --~ Copyright (C) 2012 Mad Catz Inc.
 --~ Author: Christopher Hooks
+--~ Modifications: Malaofu
 
 --~ This program is free software; you can redistribute it and/or
 --~ modify it under the terms of the GNU General Public License
@@ -63,7 +64,12 @@ function callbacks.CharacterPage()
 end
 
 function callbacks.Spellbook()
-	ToggleFrame(SpellBookFrame)
+	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+		PlayerSpellsUtil.ToggleSpellBookFrame()
+	else
+		ToggleFrame(SpellBookFrame)
+	end
+	
 end
 
 function callbacks.Macros()
