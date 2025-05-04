@@ -9,8 +9,8 @@
 ## SavedVariablesPerCharacter: CyborgMMO7SaveData
 ## SavedVariables: CyborgMMO_ProfileKeyBindings CyborgMMO_LocalMountMap
 ## X-Curse-Packaged-Version: 11.1.5
-## X-Curse-Project-Name: Cyborg MMO7
-## X-Curse-Project-ID: cyborg-mmo7
+## X-Curse-Project-Name: Cyborg MMO7 Revival
+## X-Curse-Project-ID: cyborg-mmo7-revival
 
 MountMap.lua
 Localisation.lua
