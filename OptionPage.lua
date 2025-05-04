@@ -36,106 +36,9 @@ DefaultSettings = {
 	MiniMapButtonAngle = math.rad(150),
 }
 
--- -- Create the settings page
--- ---@class CyborgMMO_OptionPage
--- ---@field Panel Frame The main settings panel
--- ---@field MiniMapButton CheckButton The minimap icon checkbox
--- ---@field CyborgButton CheckButton The Cyborg Head button checkbox
--- ---@field PerSpecBindings CheckButton The per-spec bindings checkbox
--- ---@field CyborgSize Slider The Cyborg Head button size slider
--- ---@field PluginSize Slider The plugin size slider
--- ---@field Category {ID: number} The settings category for the page
--- CyborgMMO_OptionPageOld = {
--- 	Initialize = function(self)
--- 		-- Create the main panel
--- 		local panel = CreateFrame("FRAME", "CyborgMMO_OptionPage", UIParent, "BackdropTemplate")
--- 		self.Panel = panel
--- 		panel:SetPoint("TOPLEFT", 15, -15)
--- 		panel.name = CyborgMMO_StringTable.CyborgMMO_OptionPageTitle
-		
--- 		-- Title
--- 		local title = panel:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
--- 		title:SetPoint("TOPLEFT", 0, 0)
--- 		title:SetText(CyborgMMO_StringTable.CyborgMMO_OptionPageTitle)
-
--- 		-- Minimap Icon Checkbox
--- 		local minimapButton = CreateFrame("CheckButton", "CyborgMMO_OptionPageShowMinimapIcon", panel, "InterfaceOptionsCheckButtonTemplate")
--- 		self.MiniMapButton = minimapButton
--- 		minimapButton:SetPoint("TOPLEFT", 0, -30)
--- 		minimapButton.Text:SetText(CyborgMMO_StringTable.CyborgMMO_OptionPageMiniMapButtonTitle)
--- 		minimapButton:SetScript("OnClick", function()
--- 			if minimapButton:GetChecked() then
--- 				CyborgMMO_SetMiniMapButton(true)
--- 			else
--- 				CyborgMMO_SetMiniMapButton(false)
--- 			end
--- 		end)
-
--- 		-- Cyborg Head Button Checkbox
---         local cyborgButton = CreateFrame("CheckButton", "CyborgMMO_OptionPageShowCyborgHeadButton", panel, "InterfaceOptionsCheckButtonTemplate")
---         self.CyborgButton = cyborgButton
---         cyborgButton:SetPoint("TOPLEFT", minimapButton, "BOTTOMLEFT", 0, -10)
---         cyborgButton.Text:SetText(CyborgMMO_StringTable.CyborgMMO_OptionPageCyborgButtonTitle)
---         cyborgButton:SetScript("OnClick", function()
---             if cyborgButton:GetChecked() then
---                 CyborgMMO_SetCyborgHeadButton(true)
---             else
---                 CyborgMMO_SetCyborgHeadButton(false)
---             end
---         end)
-
---         -- Per-Spec Bindings Checkbox
---         local perSpecBindings = CreateFrame("CheckButton", "CyborgMMO_OptionPagePerSpecBindings", panel, "InterfaceOptionsCheckButtonTemplate")
---         self.PerSpecBindings = perSpecBindings
---         perSpecBindings:SetPoint("TOPLEFT", cyborgButton, "BOTTOMLEFT", 0, -10)
---         perSpecBindings.Text:SetText(CyborgMMO_StringTable.CyborgMMO_OptionPagePerSpecBindingsTitle)
---         perSpecBindings:SetScript("OnClick", function()
---             if perSpecBindings:GetChecked() then
---                 CyborgMMO_SetPerSpecBindings(true)
---             else
---                 CyborgMMO_SetPerSpecBindings(false)
---             end
---         end)
-
---         -- Cyborg Head Button Size Slider
---         local cyborgSize = CreateFrame("Slider", "CyborgMMO_OptionPageCyborgSize", panel, "OptionsSliderTemplate")
---         self.CyborgSize = cyborgSize
---         cyborgSize:SetPoint("TOPLEFT", 200, -40)
---         cyborgSize:SetMinMaxValues(0.5, 1.0)
---         cyborgSize:SetValueStep(0.01)
---         cyborgSize:SetScript("OnValueChanged", function(self, value)
---             CyborgMMO_SetOpenButtonSize(value)
---         end)
---         _G[cyborgSize:GetName() .. "Text"]:SetText(CyborgMMO_StringTable.CyborgMMO_OptionPageCyborgSizeSliderTitle)
---         _G[cyborgSize:GetName() .. "Low"]:SetText("50%")
---         _G[cyborgSize:GetName() .. "High"]:SetText("100%")
-
---         -- Plugin Size Slider
---         local pluginSize = CreateFrame("Slider", "CyborgMMO_OptionPagePluginSize", panel, "OptionsSliderTemplate")
---         self.PluginSize = pluginSize
---         pluginSize:SetPoint("TOPLEFT", cyborgSize, "BOTTOMLEFT", 0, -30)
---         pluginSize:SetMinMaxValues(0.5, 1.0)
---         pluginSize:SetValueStep(0.01)
---         pluginSize:SetScript("OnValueChanged", function(self, value)
---             CyborgMMO_SetMainPageSize(value)
---         end)
---         _G[pluginSize:GetName() .. "Text"]:SetText(CyborgMMO_StringTable.CyborgMMO_OptionPagePluginSizeSliderTitle)
---         _G[pluginSize:GetName() .. "Low"]:SetText("50%")
---         _G[pluginSize:GetName() .. "High"]:SetText("100%")
-
--- 		-- Register the Option Page
--- 		local category = Settings.RegisterCanvasLayoutCategory(panel, panel.name)
--- 		self.Category = category
--- 		category.ID = panel.name
--- 		Settings.RegisterAddOnCategory(category)
--- 	end
--- }
-
--- CyborgMMO_OptionPageOld:Initialize()
-
-CyborgMMO_OptionPageNew = {
+CyborgMMO_OptionPage = {
 	Initialize = function(self)
-		local category, layout = Settings.RegisterVerticalLayoutCategory("Cyborg MMO7 Options")
+		local category, layout = Settings.RegisterVerticalLayoutCategory("Cyborg MMO7")
 		-- local subCategory = Settings.RegisterVerticalLayoutSubcategory(category, "Key Bindings")
 
 		-- Settings.SetKeybindingsCategory(subCategory)
@@ -273,7 +176,7 @@ CyborgMMO_OptionPageNew = {
 		self.Category = category
 	end
 }
-CyborgMMO_OptionPageNew:Initialize()
+CyborgMMO_OptionPage:Initialize()
 
 ---@class CyborgMMO_OptionSubPageRebind
 ---@field Panel Frame The main rebind subpage panel
@@ -343,7 +246,7 @@ CyborgMMO_OptionSubPageRebind = {
         end
 
         -- Register the subpage
-        local category = Settings.RegisterCanvasLayoutSubcategory(CyborgMMO_OptionPageNew.Category, panel, panel.name)
+        local category = Settings.RegisterCanvasLayoutSubcategory(CyborgMMO_OptionPage.Category, panel, panel.name)
         self.Category = category
         Settings.RegisterAddOnCategory(category)
     end

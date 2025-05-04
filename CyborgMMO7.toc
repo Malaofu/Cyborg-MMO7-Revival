@@ -23,6 +23,5 @@ RatPageView.lua
 CyborgMMO7.lua
 RatPage.xml
 RatQuickPage.xml
-# MainPage.lua
 MainPage.xml
 OpenButtonPage.lua

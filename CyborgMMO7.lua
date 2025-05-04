@@ -523,7 +523,6 @@ end
 
 function CyborgMMO_SetMainPageSize(percent)
 	CyborgMMO_MainPage:SetScale(percent)
-	-- CyborgMMO_OptionPageOld.PluginSize:SetValue(percent)
 	if SettingsLoaded then
 		Settings.Plugin = percent
 	end
@@ -531,7 +530,6 @@ end
 
 function CyborgMMO_SetOpenButtonSize(percent)
 	CyborgMMO_OpenButtonPage:SetScale(percent)
-	-- CyborgMMO_OptionPageOld.CyborgSize:SetValue(percent)
 	if SettingsLoaded then
 		Settings.Cyborg = percent
 	end
@@ -543,7 +541,6 @@ function CyborgMMO_SetCyborgHeadButton(visible)
 	else
 		CyborgMMO_OpenButtonPage:Hide()
 	end
-	-- CyborgMMO_OptionPageOld.CyborgButton:SetChecked(visible)
 	if SettingsLoaded then
 		Settings.CyborgButton = toboolean(visible)
 	end
@@ -555,7 +552,6 @@ function CyborgMMO_SetMiniMapButton(visible)
 	else
 		CyborgMMO_MiniMapButton:Hide()
 	end
-	-- CyborgMMO_OptionPageOld.MiniMapButton:SetChecked(visible)
 	if SettingsLoaded then
 		Settings.MiniMapButton = toboolean(visible)
 	end
@@ -573,7 +569,6 @@ function CyborgMMO_SetCompartmentButton(visible)
 end
 
 function CyborgMMO_SetPerSpecBindings(perSpec)
-	-- CyborgMMO_OptionPageOld.PerSpecBindings:SetChecked(perSpec)
 	if SettingsLoaded then
 		Settings.PerSpecBindings = toboolean(perSpec)
 	end

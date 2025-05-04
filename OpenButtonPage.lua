@@ -56,7 +56,7 @@ CyborgMMO_OpenButtonPageOpenMainForm:SetScript("OnLeave", CyborgMMO_HideProfileT
 -- Shared Button Functionality
 local buttonOnMouseUp = function(_, button)
     if button == "RightButton" then
-        Settings.OpenToCategory(CyborgMMO_OptionPageNew.Category.ID)
+        Settings.OpenToCategory(CyborgMMO_OptionPage.Category.ID)
     else
         CyborgMMO_Toggle()
         if not CyborgMMO_IsOpen() then
