@@ -109,7 +109,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         </Anchors>
         <Layers>
           <Layer level="ARTWORK">
-            <Texture name="$parentText" file="Interface\AddOns\CyborgMMO7\Graphics\Slot">
+            <Texture name="$parentText" file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Slot">
               <Size>
                 <AbsDimension x="33" y="33"/>
               </Size>
@@ -134,7 +134,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         </Anchors>
         <Layers>
           <Layer level="ARTWORK">
-            <Texture name="$parentText" file="Interface\AddOns\CyborgMMO7\Graphics\Slot">
+            <Texture name="$parentText" file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Slot">
               <Size>
                 <AbsDimension x="33" y="33"/>
               </Size>
@@ -159,7 +159,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         </Anchors>
         <Layers>
           <Layer level="ARTWORK">
-            <Texture name="$parentText" file="Interface\AddOns\CyborgMMO7\Graphics\Slot">
+            <Texture name="$parentText" file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Slot">
               <Size>
                 <AbsDimension x="33" y="33"/>
               </Size>
@@ -184,7 +184,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         </Anchors>
         <Layers>
           <Layer level="ARTWORK">
-            <Texture name="$parentText" file="Interface\AddOns\CyborgMMO7\Graphics\SlotUp">
+            <Texture name="$parentText" file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\SlotUp">
               <Size>
                 <AbsDimension x="33" y="33"/>
               </Size>
@@ -209,7 +209,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         </Anchors>
         <Layers>
           <Layer level="ARTWORK">
-            <Texture name="$parentText" file="Interface\AddOns\CyborgMMO7\Graphics\SlotMiddle">
+            <Texture name="$parentText" file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\SlotMiddle">
               <Size>
                 <AbsDimension x="33" y="33"/>
               </Size>
@@ -234,7 +234,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         </Anchors>
         <Layers>
           <Layer level="ARTWORK">
-            <Texture name="$parentText" file="Interface\AddOns\CyborgMMO7\Graphics\SlotDown">
+            <Texture name="$parentText" file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\SlotDown">
               <Size>
                 <AbsDimension x="33" y="33"/>
               </Size>
@@ -259,7 +259,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         </Anchors>
         <Layers>
           <Layer level="ARTWORK">
-            <Texture name="$parentText" file="Interface\AddOns\CyborgMMO7\Graphics\SlotLeft">
+            <Texture name="$parentText" file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\SlotLeft">
               <Size>
                 <AbsDimension x="33" y="33"/>
               </Size>
@@ -284,7 +284,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         </Anchors>
         <Layers>
           <Layer level="ARTWORK">
-            <Texture name="$parentText" file="Interface\AddOns\CyborgMMO7\Graphics\SlotRight">
+            <Texture name="$parentText" file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\SlotRight">
               <Size>
                 <AbsDimension x="33" y="33"/>
               </Size>
@@ -309,7 +309,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         </Anchors>
         <Layers>
           <Layer level="ARTWORK">
-            <Texture name="$parentText" file="Interface\AddOns\CyborgMMO7\Graphics\Slot">
+            <Texture name="$parentText" file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Slot">
               <Size>
                 <AbsDimension x="33" y="33"/>
               </Size>
@@ -334,7 +334,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         </Anchors>
         <Layers>
           <Layer level="ARTWORK">
-            <Texture name="$parentText" file="Interface\AddOns\CyborgMMO7\Graphics\Slot">
+            <Texture name="$parentText" file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Slot">
               <Size>
                 <AbsDimension x="33" y="33"/>
               </Size>
@@ -359,7 +359,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         </Anchors>
         <Layers>
           <Layer level="ARTWORK">
-            <Texture name="$parentText" file="Interface\AddOns\CyborgMMO7\Graphics\Slot">
+            <Texture name="$parentText" file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Slot">
               <Size>
                 <AbsDimension x="33" y="33"/>
               </Size>
@@ -384,7 +384,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         </Anchors>
         <Layers>
           <Layer level="ARTWORK">
-            <Texture name="$parentText" file="Interface\AddOns\CyborgMMO7\Graphics\SlotLeft">
+            <Texture name="$parentText" file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\SlotLeft">
               <Size>
                 <AbsDimension x="33" y="33"/>
               </Size>
@@ -409,7 +409,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         </Anchors>
         <Layers>
           <Layer level="ARTWORK">
-            <Texture name="$parentText" file="Interface\AddOns\CyborgMMO7\Graphics\SlotRight">
+            <Texture name="$parentText" file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\SlotRight">
               <Size>
                 <AbsDimension x="33" y="33"/>
               </Size>
@@ -432,9 +432,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
             </Offset>
           </Anchor>
         </Anchors>
-        <NormalTexture file="Interface\AddOns\CyborgMMO7\Graphics\Mode1Down"/>
-        <PushedTexture file="Interface\AddOns\CyborgMMO7\Graphics\Mode1Selected"/>
-        <HighlightTexture file="Interface\AddOns\CyborgMMO7\Graphics\Mode1Over"/>
+        <NormalTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Mode1Down"/>
+        <PushedTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Mode1Selected"/>
+        <HighlightTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Mode1Over"/>
       </Button>
       <Button name="Mode2" inherits="CyborgMMO_TemplateMode" id="2">
         <Anchors>
@@ -444,9 +444,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
             </Offset>
           </Anchor>
         </Anchors>
-        <NormalTexture file="Interface\AddOns\CyborgMMO7\Graphics\Mode2Down"/>
-        <PushedTexture file="Interface\AddOns\CyborgMMO7\Graphics\Mode2Selected"/>
-        <HighlightTexture file="Interface\AddOns\CyborgMMO7\Graphics\Mode2Over"/>
+        <NormalTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Mode2Down"/>
+        <PushedTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Mode2Selected"/>
+        <HighlightTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Mode2Over"/>
       </Button>
       <Button name="Mode3" inherits="CyborgMMO_TemplateMode" id="3">
         <Anchors>
@@ -456,9 +456,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
             </Offset>
           </Anchor>
         </Anchors>
-        <NormalTexture file="Interface\AddOns\CyborgMMO7\Graphics\Mode3Down"/>
-        <PushedTexture file="Interface\AddOns\CyborgMMO7\Graphics\Mode3Selected"/>
-        <HighlightTexture file="Interface\AddOns\CyborgMMO7\Graphics\Mode3Over"/>
+        <NormalTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Mode3Down"/>
+        <PushedTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Mode3Selected"/>
+        <HighlightTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Mode3Over"/>
       </Button>
     </Frames>
     <Scripts>

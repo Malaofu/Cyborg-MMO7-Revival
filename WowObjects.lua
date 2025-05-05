@@ -84,7 +84,7 @@ local function WowCallback(callbackName)
     local self = WowObject("callback", callbackName, "")
     
     self.callbackName = callbackName
-    self.texture = "Interface\\AddOns\\CyborgMMO7\\Graphics\\" .. callbackName .. "Unselected"
+    self.texture = "Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\" .. callbackName .. "Unselected"
     
     setmetatable(self, WowCallback_mt)
     
@@ -92,9 +92,9 @@ local function WowCallback(callbackName)
 end
 
 function WowCallback_methods:SetTextures(buttonFrame)
-    buttonFrame:SetNormalTexture("Interface\\AddOns\\CyborgMMO7\\Graphics\\" .. self.callbackName .. "Unselected")
-    buttonFrame:SetPushedTexture("Interface\\AddOns\\CyborgMMO7\\Graphics\\" .. self.callbackName .. "Down")
-    buttonFrame:SetHighlightTexture("Interface\\AddOns\\CyborgMMO7\\Graphics\\" .. self.callbackName .. "Over")
+    buttonFrame:SetNormalTexture("Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\" .. self.callbackName .. "Unselected")
+    buttonFrame:SetPushedTexture("Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\" .. self.callbackName .. "Down")
+    buttonFrame:SetHighlightTexture("Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\" .. self.callbackName .. "Over")
 end
 
 function WowCallback_methods:DoAction()

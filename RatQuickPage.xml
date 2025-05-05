@@ -63,7 +63,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture name="$parentBackgroundTexture" file="Interface\AddOns\CyborgMMO7\Graphics\ParchmentAndLeftSide">
+				<Texture name="$parentBackgroundTexture" file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\ParchmentAndLeftSide">
 					<Size><AbsDimension x="256" y="256"/></Size>
 					<Anchors>
 						<Anchor point="CENTER"><Offset><AbsDimension x="0" y="0"/></Offset></Anchor>
@@ -71,7 +71,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Texture>
 			</Layer>
 			<Layer level="ARTWORK">
-				<Texture name="$parentCalloutsTexture" file="Interface\AddOns\CyborgMMO7\Graphics\Lines">
+				<Texture name="$parentCalloutsTexture" file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Lines">
 					<Size><AbsDimension x="256" y="256"/></Size>
 					<Anchors>
 						<Anchor point="TOPLEFT"><Offset><AbsDimension x="0" y="0"/></Offset></Anchor>

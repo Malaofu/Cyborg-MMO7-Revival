@@ -32,8 +32,8 @@ CyborgMMO_OpenButtonPageOpenMainForm:SetPoint("TOPLEFT", 16, -14)
 CyborgMMO_OpenButtonPageOpenMainForm:RegisterForDrag("LeftButton", "RightButton")
 CyborgMMO_OpenButtonPageOpenMainForm:SetMovable(true)
 
-CyborgMMO_OpenButtonPageOpenMainForm:SetNormalTexture("Interface\\AddOns\\CyborgMMO7\\Graphics\\Cyborg")
-CyborgMMO_OpenButtonPageOpenMainForm:SetHighlightTexture("Interface\\AddOns\\CyborgMMO7\\Graphics\\CyborgGlow")
+CyborgMMO_OpenButtonPageOpenMainForm:SetNormalTexture("Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\Cyborg")
+CyborgMMO_OpenButtonPageOpenMainForm:SetHighlightTexture("Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\CyborgGlow")
 
 local function OnDragStart(self)
     self:StartMoving()
@@ -96,13 +96,13 @@ MiniMapBorder:SetPoint("TOPLEFT", CyborgMMO_MiniMapButton, "TOPLEFT")
 
 CyborgMMO_MiniMapButtonIcon = CyborgMMO_MiniMapButton:CreateTexture("CyborgMMO_MiniMapButtonIcon", "BACKGROUND")
 CyborgMMO_MiniMapButtonIcon:SetSize(20, 20)
-CyborgMMO_MiniMapButtonIcon:SetTexture("Interface\\AddOns\\CyborgMMO7\\Graphics\\Cyborg")
+CyborgMMO_MiniMapButtonIcon:SetTexture("Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\Cyborg")
 CyborgMMO_MiniMapButtonIcon:SetPoint("TOPLEFT", 6, -5)
 CyborgMMO_MiniMapButtonIcon:SetVertexColor(0.0, 0.0, 0.0, 1)
 
 CyborgMMO_MiniMapButtonIconGlow = CyborgMMO_MiniMapButton:CreateTexture("CyborgMMO_MiniMapButtonIconGlow", "ARTWORK")
 CyborgMMO_MiniMapButtonIconGlow:SetSize(20, 20)
-CyborgMMO_MiniMapButtonIconGlow:SetTexture("Interface\\AddOns\\CyborgMMO7\\Graphics\\CyborgGlow")
+CyborgMMO_MiniMapButtonIconGlow:SetTexture("Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\CyborgGlow")
 CyborgMMO_MiniMapButtonIconGlow:SetPoint("TOPLEFT", 6, -5)
 CyborgMMO_MiniMapButtonIconGlow:SetVertexColor(0.38, 0.85, 1.0, 0.90)
 
@@ -121,7 +121,7 @@ end)
 -- Addon Compartment Button
 local CyborgMmoCompartmentData = {
     text = "Cyborg MMO7",
-    icon = "Interface\\AddOns\\CyborgMMO7\\Graphics\\Cyborg",
+    icon = "Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\Cyborg",
     notCheckable = true,
     func = function(_, menuInputData, menu)
         buttonOnMouseUp(_, menuInputData.buttonName)

@@ -470,7 +470,15 @@ function CyborgMMO_SetupModeCallbacks(modeNum)
 	SetOverrideBindingClick(parentFrame, true, CyborgMMO_Mode[modeNum], name, "LeftButton")
 end
 
+local function dissableOldAddon()
+	if C_AddOns.DoesAddOnExist("CyborgMMO7") and C_AddOns.GetAddOnEnableState("CyborgMMO7") then
+		C_AddOns.DisableAddOn("CyborgMMO7")
+		CyborgMMO_DPrint("Old CyborgMMO7 addon was disabled")
+	end	
+end
+
 function CyborgMMO_Loaded()
+	dissableOldAddon()
 	CyborgMMO_MainPage:RegisterEvent("VARIABLES_LOADED")
 	CyborgMMO_MainPage:RegisterEvent("PLAYER_ENTERING_WORLD")
 	CyborgMMO_MainPage:RegisterEvent("PLAYER_REGEN_DISABLED")
@@ -508,7 +516,7 @@ function CyborgMMO_GetDebugFrame()
 	end
 end
 
-local log_prefix = "|cffff6666".."CyborgMMO".."|r:"
+local log_prefix = "|cffff6666".."CyborgMMO Revival".."|r:"
 
 function CyborgMMO_DPrint(...)
 	local debugframe = CyborgMMO_GetDebugFrame()

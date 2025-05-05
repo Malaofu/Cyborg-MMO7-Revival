@@ -62,7 +62,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Layer level="BACKGROUND">
 				<Texture
 					name="$parentBackgroundTexture"
-					file="Interface\AddOns\CyborgMMO7\Graphics\ParchmentAndAllIcons"
+					file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\ParchmentAndAllIcons"
 				>
 					<Size><AbsDimension x="512" y="512"/></Size>
 					<Anchors>
@@ -73,7 +73,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<Layer level="ARTWORK">
 				<Texture
 					name="$parentRatCalloutsTexture"
-					file="Interface\AddOns\CyborgMMO7\Graphics\Lines"
+					file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Lines"
 				>
 					<Size><AbsDimension x="512" y="512"/></Size>
 					<Anchors>
@@ -126,9 +126,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Scripts>
 					<OnClick>CyborgMMO_Close()</OnClick>
 				</Scripts>
-				<NormalTexture file="Interface\AddOns\CyborgMMO7\Graphics\CloseButton"/>
-				<PushedTexture file="Interface\AddOns\CyborgMMO7\Graphics\CloseButtonDown"/>
-				<HighlightTexture file="Interface\AddOns\CyborgMMO7\Graphics\CloseButtonOver" alpha=".5"/>
+				<NormalTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\CloseButton"/>
+				<PushedTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\CloseButtonDown"/>
+				<HighlightTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\CloseButtonOver" alpha=".5"/>
 			</Button>
 			<Frame name="$parentSlotList" inherits="CyborgMMO_TemplateRatPage">
 				<Anchors>
