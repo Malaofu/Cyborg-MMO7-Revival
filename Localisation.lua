@@ -379,6 +379,7 @@ local StringTables = {
 		CyborgMMO_OptionPageRebindMouseRowBName="Button 3",
 		CyborgMMO_OptionPageRebindMouseRowCName="Thumb Anticlockwise",
 		CyborgMMO_OptionPageRebindMouseRowDName="Thumb Clockwise",
+		CyborgMMO_OptionPageRebindMouseModeName="Mode Overwrite",
 		CyborgMMO_OptionPageTitle="Cyborg MMO7",
 		CyborgMMO_OptionPagePluginSizeSliderTitle="Interface Window Size",
 		CyborgMMO_OptionPagePluginSizeSliderTooltip="Adjust the size of the interface window",
@@ -386,6 +387,7 @@ local StringTables = {
 		CyborgMMO_OptionPageRebindMode2="Mode 2",
 		CyborgMMO_OptionPageRebindMode3="Mode 3",
 		CyborgMMO_OptionPageRebindTitle="Key bindings",
+		CyborgMMO_OptionPageRebindDescription="(Changing these may require a reload of the UI)",
 		CyborgMMO_ToolTipLine1="Warning! If your spell assignments are not working you may not have the correct profile assigned.",
 		CyborgMMO_ToolTipLine2="To assign the correct profile:",
 		CyborgMMO_ToolTipLine3="1) Click on the M.M.O.7 tray icon in the Windows system tray. ",
@@ -441,7 +443,12 @@ local locale = GetLocale()
 -- fall back to english for missing translations
 local default_locale = 'enUS'
 
-CyborgMMO_Mode = Modes[locale] or Modes[default_locale]
+CyborgMMO_DefaultModeKeyBindings = Modes[locale] or Modes[default_locale]
+CyborgMMO_ProfileModeKeyBindings = {}
+for k,v in pairs(CyborgMMO_DefaultModeKeyBindings) do
+	CyborgMMO_ProfileModeKeyBindings[k] = v
+end
+
 CyborgMMO_StringTable = StringTables[locale] or StringTables[default_locale]
 
 -- key bindings are saved and will be replaced by SavedVariables

@@ -7,7 +7,7 @@
 ## Category: Peripherals
 ## Notes: Cyborg MMO7 Addon, originally by Mad Catz Inc., now maintained by Malaofu.
 ## SavedVariablesPerCharacter: CyborgMMO7SaveData
-## SavedVariables: CyborgMMO_ProfileKeyBindings CyborgMMO_LocalMountMap
+## SavedVariables: CyborgMMO_ProfileKeyBindings CyborgMMO_ProfileModeKeyBindings CyborgMMO_LocalMountMap
 ## X-Curse-Packaged-Version: 11.2.0
 ## X-Curse-Project-Name: Cyborg MMO7 Revival
 ## X-Curse-Project-ID: cyborg-mmo7-revival
