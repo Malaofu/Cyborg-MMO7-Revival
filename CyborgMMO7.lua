@@ -222,7 +222,7 @@ local function ConvertOldRatData(oldData)
 			elseif not KnownOldObjectTypes[type] then
 				-- maybe it's an item type
 				local id = buttonData.Detail
-				local class = select(6, GetItemInfo(id)) -- :NOTE: this may fail if the item is not yet in the cache
+				local class = select(6, C_Item.GetItemInfo(id)) -- :NOTE: this may fail if the item is not yet in the cache
 				if class == type then
 					CyborgMMO_DPrint("converting item:", id, type, class)
 					newData[mode][button] = {
@@ -251,7 +251,7 @@ local function PreloadFrameUpdate(self, dt)
 		local items,pets = 0,0
 		-- check items
 		for itemID in pairs(self.itemIDs) do
-			if GetItemInfo(itemID) then
+			if C_Item.GetItemInfo(itemID) then
 				self.itemIDs[itemID] = nil
 			else
 				items = items + 1
@@ -292,7 +292,7 @@ local function PreLoad(data)
 					if buttonData then
 						if buttonData.type=='item' then
 							local itemID = buttonData.detail
-							if not GetItemInfo(itemID) then
+							if not C_Item.GetItemInfo(itemID) then
 								itemIDs[itemID] = true
 							end
 						elseif buttonData.type=='battlepet' then
@@ -315,7 +315,7 @@ local function PreLoad(data)
 					-- items actually had their class overwrite the Type field
 					if not KnownOldObjectTypes[data.Type] and type(data.Detail)=='number' then
 						local itemID = data.Detail
-						if not GetItemInfo(itemID) then
+						if not C_Item.GetItemInfo(itemID) then
 							itemIDs[itemID] = true
 						end
 					end

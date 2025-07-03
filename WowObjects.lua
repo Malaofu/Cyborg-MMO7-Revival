@@ -113,7 +113,6 @@ function WowCallback_methods:PickupCallback()
         end
     end
     CyborgMMO_DPrint("Slot type: " .. type(slot))
-    slot:SetNormalTexture(slot.UnCheckedTexture)
 end
 
 function WowCallback_methods:Pickup()
@@ -139,7 +138,7 @@ local WowItem_methods = setmetatable({}, {__index = WowObject_methods})
 local WowItem_mt = {__index = WowItem_methods}
 
 local function WowItem(itemID)
-    local texture = select(10, GetItemInfo(itemID))-- :FIXME: this may fail too early in the session (like when loading saved data)
+    local texture = select(10, C_Item.GetItemInfo(itemID))-- :FIXME: this may fail too early in the session (like when loading saved data)
     if not texture then
         return nil
     end
