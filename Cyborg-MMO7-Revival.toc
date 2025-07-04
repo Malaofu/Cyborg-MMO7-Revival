@@ -6,6 +6,7 @@
 ## LoadOnDemand: 0
 ## Category: Peripherals
 ## Notes: Cyborg MMO7 Addon, originally by Mad Catz Inc., now maintained by Malaofu.
+## Notes-ruRU: Cyborg MMO7 Addon, изначально разработанный Mad Catz Inc., в настоящее время поддерживаемый Malaofu.
 ## SavedVariablesPerCharacter: CyborgMMO7SaveData
 ## SavedVariables: CyborgMMO_ProfileKeyBindings CyborgMMO_LocalMountMap
 ## X-Curse-Packaged-Version: 11.2.0
