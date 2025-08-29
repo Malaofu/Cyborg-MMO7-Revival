@@ -194,11 +194,6 @@ CyborgMMO_OptionSubPageRebind = {
         title:SetPoint("TOPLEFT", 0, 0)
         title:SetText(CyborgMMO_StringTable.CyborgMMO_OptionPageRebindTitle)
 
-        -- Description
-        local description = panel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-        description:SetPoint("TOPLEFT", 135, -2)
-        description:SetText(CyborgMMO_StringTable.CyborgMMO_OptionPageRebindDescription)
-
         -- Mode Headers
         local mode1 = panel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
         mode1:SetPoint("TOPLEFT", 147, -28)
@@ -454,6 +449,10 @@ function CyborgMMO_SetNewKeybind(keyOrButton)
     end
 	CyborgMMO_BindingFrame:Hide()
 	CyborgMMO_RatPageModel:LoadData()
+
+    CyborgMMO_SetupModeCallbacks(1)
+    CyborgMMO_SetupModeCallbacks(2)
+    CyborgMMO_SetupModeCallbacks(3)
 end
 
 function CyborgMMO_BindingFrameOnKeyDown(self, keyOrButton)

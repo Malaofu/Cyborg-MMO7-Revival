@@ -387,7 +387,6 @@ local StringTables = {
 		CyborgMMO_OptionPageRebindMode2="Mode 2",
 		CyborgMMO_OptionPageRebindMode3="Mode 3",
 		CyborgMMO_OptionPageRebindTitle="Key bindings",
-		CyborgMMO_OptionPageRebindDescription="(Changing these may require a reload of the UI)",
 		CyborgMMO_ToolTipLine1="Warning! If your spell assignments are not working you may not have the correct profile assigned.",
 		CyborgMMO_ToolTipLine2="To assign the correct profile:",
 		CyborgMMO_ToolTipLine3="1) Click on the M.M.O.7 tray icon in the Windows system tray. ",
