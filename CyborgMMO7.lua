@@ -110,8 +110,8 @@ function CyborgMMO_SetRatSaveData(objects)
 	assert(VarsLoaded)
 	local specIndex
 	if Settings.PerSpecBindings then
-		if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
-			specIndex = GetSpecialization()
+		if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE or WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC then
+			specIndex = C_SpecializationInfo.GetSpecialization()
 		else
 			specIndex = GetActiveTalentGroup()
 		end
@@ -135,8 +135,8 @@ end
 function CyborgMMO_GetRatSaveData()
 	local specIndex
 	if Settings.PerSpecBindings then
-		if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
-			specIndex = GetSpecialization()
+		if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE or WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC then
+			specIndex = C_SpecializationInfo.GetSpecialization()
 		else
 			specIndex = GetActiveTalentGroup()
 		end
