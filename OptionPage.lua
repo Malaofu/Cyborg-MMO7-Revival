@@ -245,6 +245,28 @@ CyborgMMO_OptionSubPageRebind = {
             previousRow = row
         end
 
+        -- Add buttons for mode select overwrite
+        local modeOvewriteRow = CreateFrame("FRAME", "CyborgMMO_OptionSubPageRebindMouseMode", panel)
+        modeOvewriteRow:SetSize(160, 28)
+        modeOvewriteRow:SetPoint("TOPLEFT", previousRow, "BOTTOMLEFT", 0, -30)
+        local modeOverwriteName = modeOvewriteRow:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+        modeOverwriteName:SetPoint("TOPLEFT", 0, -10)
+        modeOverwriteName:SetText(CyborgMMO_StringTable["CyborgMMO_OptionPageRebindMouseModeName"])
+        for mode = 1, 3 do
+            local button = CreateFrame("Button", modeOvewriteRow:GetName() .. mode, modeOvewriteRow, "UIPanelButtonTemplate")
+            button:SetSize(145, 28)
+            button:SetPoint("TOPLEFT", 135 + (mode - 1) * 145, 0)
+            button:SetScript("OnClick", function()
+                CyborgMMO_BindModeButton(mode)
+            end)
+            button:SetScript("OnEvent", function(self, event)
+                if event == "VARIABLES_LOADED" then
+                    CyborgMMO_SetBindingModeButtonText(button:GetName(), mode)
+                end
+            end)
+            button:RegisterEvent("VARIABLES_LOADED")
+        end
+
         -- Register the subpage
         local category = Settings.RegisterCanvasLayoutSubcategory(CyborgMMO_OptionPage.Category, panel, panel.name)
         self.Category = category
@@ -344,6 +366,7 @@ CyborgMMO_BindingFrame = {
 -- Initialize the binding frame
 CyborgMMO_BindingFrame:Initialize()
 
+--- @type string
 local lastButton = nil
 
 function CyborgMMO_BindButton(name)
@@ -364,9 +387,25 @@ function CyborgMMO_BindButton(name)
 	CyborgMMO_BindingFrame:Show()
 end
 
+function CyborgMMO_BindModeButton(mode)
+    lastButton = "CyborgMMO_OptionSubPageRebindMouseMode" .. mode
+    local buttonStr = CyborgMMO_StringTable["CyborgMMO_OptionPageRebindMouseModeName"]
+
+    CyborgMMO_BindingFrame.ButtonName:SetText(buttonStr .. " Mode " .. mode)
+    CyborgMMO_BindingFrame.Key:SetText(
+        CyborgMMO_StringTable["CyborgMMO_CurrentBinding"] .. " " .. CyborgMMO_ProfileModeKeyBindings[mode]
+    )
+    CyborgMMO_BindingFrame:Show()
+end
+
 function CyborgMMO_SetBindingButtonText(name)
 	local binding = CyborgMMO_ProfileKeyBindings[CyborgMMO_GetButtonIndex(name)]
 	getglobal(name):SetText(binding)
+end
+
+function CyborgMMO_SetBindingModeButtonText(name, mode)
+    local binding = CyborgMMO_ProfileModeKeyBindings[mode]
+    getglobal(name):SetText(binding)
 end
 
 function CyborgMMO_GetButtonIndex(name)
@@ -399,10 +438,21 @@ function CyborgMMO_HideProfileTooltip(self)
 end
 
 function CyborgMMO_SetNewKeybind(keyOrButton)
-	CyborgMMO_ProfileKeyBindings[CyborgMMO_GetButtonIndex(lastButton)] = keyOrButton
-	CyborgMMO_SetBindingButtonText(lastButton)
+    local modeStr = lastButton:match("CyborgMMO_OptionSubPageRebindMouseMode(%d)")
+    if modeStr then
+        local mode = tonumber(modeStr) or 1
+        CyborgMMO_ProfileModeKeyBindings[mode] = keyOrButton
+        CyborgMMO_SetBindingModeButtonText(lastButton, mode)
+    else
+        CyborgMMO_ProfileKeyBindings[CyborgMMO_GetButtonIndex(lastButton)] = keyOrButton
+	    CyborgMMO_SetBindingButtonText(lastButton)
+    end
 	CyborgMMO_BindingFrame:Hide()
 	CyborgMMO_RatPageModel:LoadData()
+
+    CyborgMMO_SetupModeCallbacks(1)
+    CyborgMMO_SetupModeCallbacks(2)
+    CyborgMMO_SetupModeCallbacks(3)
 end
 
 function CyborgMMO_BindingFrameOnKeyDown(self, keyOrButton)

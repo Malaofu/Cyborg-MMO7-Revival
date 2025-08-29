@@ -456,6 +456,8 @@ function CyborgMMO_SetDefaultKeyBindings()
 			CyborgMMO_ProfileKeyBindings[k] = CyborgMMO_DefaultKeyBindings[k]
 			CyborgMMO_SetBindingButtonText(string.format("CyborgMMO_OptionPageRebindMouseRow%XMode%d", button, mode))
 		end
+		CyborgMMO_ProfileModeKeyBindings[mode] = CyborgMMO_DefaultModeKeyBindings[mode]
+		CyborgMMO_SetBindingModeButtonText(string.format("CyborgMMO_OptionPageRebindMouseMode%d", mode), mode)
 	end
 end
 
@@ -467,7 +469,7 @@ function CyborgMMO_SetupModeCallbacks(modeNum)
 	end
 
 	local buttonFrame,parentFrame,name = CyborgMMO_CallbackFactory:AddCallback(fn)
-	SetOverrideBindingClick(parentFrame, true, CyborgMMO_Mode[modeNum], name, "LeftButton")
+	SetOverrideBindingClick(parentFrame, true, CyborgMMO_ProfileModeKeyBindings[modeNum], name, "LeftButton")
 end
 
 local function dissableOldAddon()
