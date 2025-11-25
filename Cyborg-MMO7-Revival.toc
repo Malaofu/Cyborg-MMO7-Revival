@@ -1,15 +1,15 @@
-## Interface: 11507, 40402, 50500, 110107, 110200
+## Interface: 11507, 40402, 50500, 110207, 120000
 ## Title: Cyborg MMO7 Revival
 ## IconTexture: Interface/Addons/Cyborg-MMO7-Revival/Graphics/Cyborg
 ## DefaultState: Enabled
-## Version: 11.2.0
+## Version: 12.0.0
 ## LoadOnDemand: 0
 ## Category: Peripherals
 ## Notes: Cyborg MMO7 Addon, originally by Mad Catz Inc., now maintained by Malaofu.
 ## Notes-ruRU: Cyborg MMO7 Addon, изначально разработанный Mad Catz Inc., в настоящее время поддерживаемый Malaofu.
 ## SavedVariablesPerCharacter: CyborgMMO7SaveData
 ## SavedVariables: CyborgMMO_ProfileKeyBindings CyborgMMO_ProfileModeKeyBindings CyborgMMO_LocalMountMap
-## X-Curse-Packaged-Version: 11.2.0
+## X-Curse-Packaged-Version: 12.0.0
 ## X-Curse-Project-Name: Cyborg MMO7 Revival
 ## X-Curse-Project-ID: cyborg-mmo7-revival
 
