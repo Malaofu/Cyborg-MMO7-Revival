@@ -43,10 +43,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	</Button>
 
 	<Button name="CyborgMMO_TemplateSmallSlot" inherits="CyborgMMO_TemplateSmallIcon" virtual="true">
-		<Scripts>
-			<OnLoad function="CyborgMMO_SlotMiniTemplate_OnLoad"/>
-			<OnClick function="CyborgMMO_SlotMiniTemplate_OnClick"/>
-		</Scripts>
 	</Button>
 
 	<!-- The Rat Page Frame -->

@@ -51,20 +51,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
   </Button>
 
   <Button name="CyborgMMO_TemplateSlot" inherits="CyborgMMO_TemplateIcon" virtual="true">
-    <Scripts>
-      <OnLoad function="CyborgMMO_SlotTemplate_OnLoad"/>
-      <OnMouseDown function="CyborgMMO_SlotTemplate_OnMouseDown"/>
-    </Scripts>
   </Button>
 
   <Button name="CyborgMMO_TemplateMode" virtual="true">
     <Size>
       <AbsDimension x="127" y="63"/>
     </Size>
-    <Scripts>
-      <OnLoad function="CyborgMMO_ModeTemplate_OnLoad"/>
-      <OnClick function="CyborgMMO_ModeTemplate_OnClick"/>
-    </Scripts>
     <ButtonText name="$parentText">
       <FontHeight>
         <AbsValue val="10"/>

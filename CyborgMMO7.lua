@@ -47,19 +47,36 @@ function CyborgMMO_LoadStrings(self)
 	self:SetText(CyborgMMO_StringTable[self:GetName()])
 end
 
-local VarsLoaded = false
-local AsyncDataLoaded = false
-local EnteredWorld = false
-local BindingsLoaded = false
-local SettingsLoaded = false
-local SaveName = GetRealmName().."_"..UnitName("player")
----@class GeneralSettings
-local Settings = nil
-local AutoClosed = false
+local Runtime = {
+	varsLoaded = false,
+	asyncDataLoaded = false,
+	enteredWorld = false,
+	bindingsLoaded = false,
+	settingsLoaded = false,
+	saveName = GetRealmName().."_"..UnitName("player"),
+	---@class GeneralSettings
+	settings = nil,
+	autoClosed = false,
+}
 CyborgMMO_ModeDetected = false
 
+local MODE_COLOR_MAP = {
+	[1] = {
+		main = {1, 0, 0, 1},
+		glow = {1, 0.26, 0.26, 0.75},
+	},
+	[2] = {
+		main = {0.07, 0.22, 1, 1},
+		glow = {0.13, 0.56, 1, 0.75},
+	},
+	[3] = {
+		main = {0.52, 0.08, 0.89, 1},
+		glow = {0.67, 0.31, 0.85, 0.75},
+	},
+}
+
 local function GetCurrentSpecIndex()
-	if not Settings or not Settings.PerSpecBindings then
+	if not Runtime.settings or not Runtime.settings.PerSpecBindings then
 		return 1
 	end
 	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE or WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC then
@@ -69,35 +86,35 @@ local function GetCurrentSpecIndex()
 end
 
 local function IsLoadReady()
-	return VarsLoaded and AsyncDataLoaded and EnteredWorld
+	return Runtime.varsLoaded and Runtime.asyncDataLoaded and Runtime.enteredWorld
 end
 
 local function EnsureSettingsDefaults(data)
-	Settings = data.Settings
-	if not Settings then
-		Settings = DefaultSettings
-		data.Settings = Settings
+	Runtime.settings = data.Settings
+	if not Runtime.settings then
+		Runtime.settings = DefaultSettings
+		data.Settings = Runtime.settings
 	end
-	if Settings.MiniMapButton == nil then
-		Settings.MiniMapButton = DefaultSettings.MiniMapButton
+	if Runtime.settings.MiniMapButton == nil then
+		Runtime.settings.MiniMapButton = DefaultSettings.MiniMapButton
 	end
-	if Settings.CompartmentButton == nil then
-		Settings.CompartmentButton = DefaultSettings.CompartmentButton
+	if Runtime.settings.CompartmentButton == nil then
+		Runtime.settings.CompartmentButton = DefaultSettings.CompartmentButton
 	end
-	if Settings.CyborgButton == nil then
-		Settings.CyborgButton = DefaultSettings.CyborgButton
+	if Runtime.settings.CyborgButton == nil then
+		Runtime.settings.CyborgButton = DefaultSettings.CyborgButton
 	end
-	if Settings.PerSpecBindings == nil then
-		Settings.PerSpecBindings = DefaultSettings.PerSpecBindings
+	if Runtime.settings.PerSpecBindings == nil then
+		Runtime.settings.PerSpecBindings = DefaultSettings.PerSpecBindings
 	end
-	if not Settings.Cyborg then
-		Settings.Cyborg = DefaultSettings.Cyborg
+	if not Runtime.settings.Cyborg then
+		Runtime.settings.Cyborg = DefaultSettings.Cyborg
 	end
-	if not Settings.Plugin then
-		Settings.Plugin = DefaultSettings.Plugin
+	if not Runtime.settings.Plugin then
+		Runtime.settings.Plugin = DefaultSettings.Plugin
 	end
-	if not Settings.MiniMapButtonAngle then
-		Settings.MiniMapButtonAngle = DefaultSettings.MiniMapButtonAngle
+	if not Runtime.settings.MiniMapButtonAngle then
+		Runtime.settings.MiniMapButtonAngle = DefaultSettings.MiniMapButtonAngle
 	end
 end
 
@@ -108,8 +125,8 @@ function CyborgMMO_MiniMapButtonReposition(angle)
 	local dy = r * math.sin(angle)
 	CyborgMMO_MiniMapButton:ClearAllPoints()
 	CyborgMMO_MiniMapButton:SetPoint("CENTER", "Minimap", "CENTER", dx, dy)
-	if SettingsLoaded then
-		Settings.MiniMapButtonAngle = angle
+	if Runtime.settingsLoaded then
+		Runtime.settings.MiniMapButtonAngle = angle
 	end
 end
 
@@ -126,30 +143,23 @@ function CyborgMMO_MiniMapButtonOnUpdate()
 end
 
 function CyborgMMO_MouseModeChange(mode)
+	local colors = MODE_COLOR_MAP[mode]
+	if not colors then
+		return
+	end
+
 	local MiniMapTexture = CyborgMMO_MiniMapButtonIcon
 	local MiniMapGlowTexture = CyborgMMO_MiniMapButtonIconGlow
 	local OpenButtonTexture = CyborgMMO_OpenButtonPageOpenMainForm:GetNormalTexture()
 	local OpenButtonGlowTexture = CyborgMMO_OpenButtonPageOpenMainForm:GetHighlightTexture()
-	if mode == 1 then
-		MiniMapTexture:SetVertexColor(1,0,0,1)
-		MiniMapGlowTexture:SetVertexColor(1,0.26,0.26,.75)
-		OpenButtonTexture:SetVertexColor(1,0,0,0.75)
-		OpenButtonGlowTexture:SetVertexColor(1,0.26,0.26,0.50)
-	elseif mode == 2 then
-		MiniMapTexture:SetVertexColor(0.07,0.22,1,1)
-		MiniMapGlowTexture:SetVertexColor(0.13,0.56,1,.75)
-		OpenButtonTexture:SetVertexColor(0.07,0.22,1,0.75)
-		OpenButtonGlowTexture:SetVertexColor(0.13,0.56,1,0.5)
-	elseif mode == 3 then
-		MiniMapTexture:SetVertexColor(0.52,0.08,0.89,1)
-		MiniMapGlowTexture:SetVertexColor(0.67,0.31,0.85,.75)
-		OpenButtonTexture:SetVertexColor(0.52,0.08,0.89,0.75)
-		OpenButtonGlowTexture:SetVertexColor(0.67,0.31,0.85,0.5)
-	end
+	MiniMapTexture:SetVertexColor(unpack(colors.main))
+	MiniMapGlowTexture:SetVertexColor(unpack(colors.glow))
+	OpenButtonTexture:SetVertexColor(colors.main[1], colors.main[2], colors.main[3], 0.75)
+	OpenButtonGlowTexture:SetVertexColor(colors.glow[1], colors.glow[2], colors.glow[3], 0.5)
 end
 
 function CyborgMMO_GetSaveData()
-	assert(VarsLoaded)
+	assert(Runtime.varsLoaded)
 	if not CyborgMMO7SaveData then
 		CyborgMMO7SaveData = {
 			Settings = DefaultSettings,
@@ -159,7 +169,7 @@ function CyborgMMO_GetSaveData()
 end
 
 function CyborgMMO_SetRatSaveData(objects)
-	assert(VarsLoaded)
+	assert(Runtime.varsLoaded)
 	local specIndex = GetCurrentSpecIndex()
 	local ratData = {}
 	for mode=1,RAT7.MODES do
@@ -341,10 +351,10 @@ local function PreLoad(data)
 		end
 	end
 	-- gather IDs from old unconverted data (in case we need to convert it)
-	if data[SaveName] and data[SaveName].Rat then
+	if data[Runtime.saveName] and data[Runtime.saveName].Rat then
 		for mode=1,RAT7.MODES do
 			for button=1,RAT7.BUTTONS do
-				local buttonData = data[SaveName].Rat[mode][button]
+				local buttonData = data[Runtime.saveName].Rat[mode][button]
 				if buttonData then
 					-- items actually had their class overwrite the Type field
 					if not KnownOldObjectTypes[buttonData.Type] and type(buttonData.Detail)=='number' then
@@ -373,7 +383,7 @@ end
 local EventHandlers = {}
 
 function EventHandlers.VARIABLES_LOADED()
-	VarsLoaded = true
+	Runtime.varsLoaded = true
 	if not CyborgMMO7SaveData then
 		CyborgMMO7SaveData = {
 			Settings = DefaultSettings,
@@ -386,37 +396,37 @@ function EventHandlers.VARIABLES_LOADED()
 end
 
 function EventHandlers.CYBORGMMO_ASYNC_DATA_LOADED()
-	AsyncDataLoaded = true
-	if CyborgMMO7SaveData[SaveName] and not CyborgMMO7SaveData.Settings then
-		local oldData = CyborgMMO7SaveData[SaveName]
+	Runtime.asyncDataLoaded = true
+	if CyborgMMO7SaveData[Runtime.saveName] and not CyborgMMO7SaveData.Settings then
+		local oldData = CyborgMMO7SaveData[Runtime.saveName]
 		CyborgMMO7SaveData = {}
 		CyborgMMO7SaveData.Settings = oldData.Settings
 		CyborgMMO7SaveData.Rat = {}
 		CyborgMMO7SaveData.Rat[1] = ConvertOldRatData(oldData.Rat)
-		CyborgMMO7SaveData[SaveName] = oldData
+		CyborgMMO7SaveData[Runtime.saveName] = oldData
 	end
 end
 
 function EventHandlers.PLAYER_ENTERING_WORLD()
-	EnteredWorld = true
+	Runtime.enteredWorld = true
 end
 
 function EventHandlers.PLAYER_REGEN_DISABLED()
 	if CyborgMMO_IsOpen() then
-		AutoClosed = true
+		Runtime.autoClosed = true
 		CyborgMMO_Close()
 	end
 end
 
 function EventHandlers.PLAYER_REGEN_ENABLED()
-	if AutoClosed then
-		AutoClosed = false
+	if Runtime.autoClosed then
+		Runtime.autoClosed = false
 		CyborgMMO_Open()
 	end
 end
 
 function EventHandlers.ACTIVE_TALENT_GROUP_CHANGED()
-	BindingsLoaded = false
+	Runtime.bindingsLoaded = false
 end
 
 EventHandlers.PLAYER_SPECIALIZATION_CHANGED = EventHandlers.ACTIVE_TALENT_GROUP_CHANGED
@@ -430,32 +440,32 @@ function CyborgMMO_Event(event, ...)
 	end
 
 	-- Fire Loading if and only if the player is in the world and vars are loaded
-	if not SettingsLoaded and IsLoadReady() then
+	if not Runtime.settingsLoaded and IsLoadReady() then
 		local data = CyborgMMO_GetSaveData()
 		EnsureSettingsDefaults(data)
 
 		-- Reload Slider values:
-		CyborgMMO_SetOpenButtonSize(Settings.Cyborg)
-		CyborgMMO_SetMainPageSize(Settings.Plugin)
+		CyborgMMO_SetOpenButtonSize(Runtime.settings.Cyborg)
+		CyborgMMO_SetMainPageSize(Runtime.settings.Plugin)
 
-		CyborgMMO_SetMiniMapButton(Settings.MiniMapButton)
-		CyborgMMO_SetCompartmentButton(Settings.CompartmentButton)
-		CyborgMMO_MiniMapButtonReposition(Settings.MiniMapButtonAngle)
-		CyborgMMO_SetCyborgHeadButton(Settings.CyborgButton)
-		CyborgMMO_SetPerSpecBindings(Settings.PerSpecBindings)
+		CyborgMMO_SetMiniMapButton(Runtime.settings.MiniMapButton)
+		CyborgMMO_SetCompartmentButton(Runtime.settings.CompartmentButton)
+		CyborgMMO_MiniMapButtonReposition(Runtime.settings.MiniMapButtonAngle)
+		CyborgMMO_SetCyborgHeadButton(Runtime.settings.CyborgButton)
+		CyborgMMO_SetPerSpecBindings(Runtime.settings.PerSpecBindings)
 
 		-- assume we start with mode 1, it's the most likely
 		CyborgMMO_MouseModeChange(1)
 
-		SettingsLoaded = true
+		Runtime.settingsLoaded = true
 	end
 
 	-- load data AFTER the settings, because PerSpecBindings may affect what's loaded
-	if not BindingsLoaded and IsLoadReady() then
+	if not Runtime.bindingsLoaded and IsLoadReady() then
 		CyborgMMO_RatPageModel:LoadData()
 		CyborgMMO_SetupAllModeCallbacks()
 
-		BindingsLoaded = true
+		Runtime.bindingsLoaded = true
 	end
 end
 
@@ -586,15 +596,15 @@ end
 
 function CyborgMMO_SetMainPageSize(percent)
 	CyborgMMO_MainPage:SetScale(percent)
-	if SettingsLoaded then
-		Settings.Plugin = percent
+	if Runtime.settingsLoaded then
+		Runtime.settings.Plugin = percent
 	end
 end
 
 function CyborgMMO_SetOpenButtonSize(percent)
 	CyborgMMO_OpenButtonPage:SetScale(percent)
-	if SettingsLoaded then
-		Settings.Cyborg = percent
+	if Runtime.settingsLoaded then
+		Runtime.settings.Cyborg = percent
 	end
 end
 
@@ -604,8 +614,8 @@ function CyborgMMO_SetCyborgHeadButton(visible)
 	else
 		CyborgMMO_OpenButtonPage:Hide()
 	end
-	if SettingsLoaded then
-		Settings.CyborgButton = toboolean(visible)
+	if Runtime.settingsLoaded then
+		Runtime.settings.CyborgButton = toboolean(visible)
 	end
 end
 
@@ -615,8 +625,8 @@ function CyborgMMO_SetMiniMapButton(visible)
 	else
 		CyborgMMO_MiniMapButton:Hide()
 	end
-	if SettingsLoaded then
-		Settings.MiniMapButton = toboolean(visible)
+	if Runtime.settingsLoaded then
+		Runtime.settings.MiniMapButton = toboolean(visible)
 	end
 end
 
@@ -626,17 +636,17 @@ function CyborgMMO_SetCompartmentButton(visible)
 	else
 		UnregisterCompartmentButton()
 	end
-	if SettingsLoaded then
-		Settings.CompartmentButton = toboolean(visible)
+	if Runtime.settingsLoaded then
+		Runtime.settings.CompartmentButton = toboolean(visible)
 	end
 end
 
 function CyborgMMO_SetPerSpecBindings(perSpec)
-	if SettingsLoaded then
-		Settings.PerSpecBindings = toboolean(perSpec)
+	if Runtime.settingsLoaded then
+		Runtime.settings.PerSpecBindings = toboolean(perSpec)
 	end
 	-- reload bindings if necessary (AFTER altering the setting)
-	if BindingsLoaded then
+	if Runtime.bindingsLoaded then
 		CyborgMMO_RatPageModel:LoadData()
 	end
 end

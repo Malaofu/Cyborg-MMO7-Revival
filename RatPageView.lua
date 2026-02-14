@@ -1,28 +1,11 @@
 --~ Warcraft Plugin for Cyborg MMO7
 --~ Filename: RatPageView.lua
---~ Description: Interaction logic for the RatPage
+--~ Description: Interaction logic for Rat and RatQuick pages
 --~ Copyright (C) 2012 Mad Catz Inc.
 --~ Author: Christopher Hooks
 
---~ This program is free software; you can redistribute it and/or
---~ modify it under the terms of the GNU General Public License
---~ as published by the Free Software Foundation; either version 2
---~ of the License, or (at your option) any later version.
-
---~ This program is distributed in the hope that it will be useful,
---~ but WITHOUT ANY WARRANTY; without even the implied warranty of
---~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
---~ GNU General Public License for more details.
-
---~ You should have received a copy of the GNU General Public License
---~ along with this program; if not, write to the Free Software
---~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
-local function RegisterChildren(frame)
-	for _, child in ipairs(frame:GetChildren()) do
-		child.Register()
-	end
-end
+local RAT_BUTTONS = CyborgMMO_Constants.RAT_BUTTONS
+local RAT_MODES = CyborgMMO_Constants.RAT_MODES
 
 local function UpdateSlotIcon(frame, data, activeMode, alpha)
 	local icon = _G[frame:GetName() .. "Icon"]
@@ -39,157 +22,102 @@ local function UpdateSlotIcon(frame, data, activeMode, alpha)
 	end
 end
 
-CyborgMMO_RatPageView = {
-	new = function(self)
-		CyborgMMO_DPrint("new Rat Page View")
-		RegisterChildren(self)
-
-		self.SlotClicked = function(slot)
-			CyborgMMO_DPrint("View Received Click")
-			CyborgMMO_RatPageController:SlotClicked(slot)
-		end
-
-		self.ModeClicked = function(mode)
-			CyborgMMO_DPrint("View Received Click")
-			CyborgMMO_RatPageController:ModeClicked(mode)
-		end
-
-		self.RegisterMode = function()
-			CyborgMMO_DPrint("ModeRegistered")
-		end
-
-		self.RegisterSlot = function()
-			CyborgMMO_DPrint("SlotRegistered")
-		end
-
-		return self
-	end,
-}
-
-CyborgMMO_RatQuickPageView = {
-	new = function(self)
-		RegisterChildren(self)
-
-		self.SlotClicked = function(slot)
-			CyborgMMO_RatPageController:SlotClicked(slot)
-		end
-
-		return self
-	end,
-}
-
--- Slot Class --
-CyborgMMO_SlotView = {
-	new = function(self)
-		self._assignedWowObject = nil
-		self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-		self.Id = self:GetID()
-		CyborgMMO_RatPageModel:AddObserver(self)
-		self.UnCheckedTexture = self:GetNormalTexture()
-
-		-- Object Method --
-		self.Clicked = function()
-			self:GetParent().SlotClicked(self)
-
-			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		--	GameTooltip:SetText(self:GetID())
-		end
-
-		self.Update = function(data, activeMode)
-			UpdateSlotIcon(self, data, activeMode)
-		end
-
-		return self
-	end,
-}
-
-CyborgMMO_SlotMiniView = {
-	new = function(self)
-		self._assignedWowObject = nil
-		self.Id = self:GetID()
-		CyborgMMO_RatPageModel:AddObserver(self)
-		self.UnCheckedTexture = self:GetNormalTexture()
-
-		self.Update = function(data, activeMode)
-			UpdateSlotIcon(self, data, activeMode, 0.5)
-		end
-
-		return self
-	end,
-}
-
-
--- ModeButton --
-CyborgMMO_ModeView = {
-	new = function(self)
-		self.Id = self:GetID()
-		CyborgMMO_RatPageModel:AddObserver(self)
-		if self.Id ~= 1 then
-			self:Hide()
-		end
-
-		self.Clicked = function()
-			local parent = self:GetParent()
-			local nextMode
-			if self.Id == 1 then
-				nextMode = CyborgMMO_GetRatModeButton(parent, 2)
-			elseif self.Id == 2 then
-				nextMode = CyborgMMO_GetRatModeButton(parent, 3)
-			else
-				nextMode = CyborgMMO_GetRatModeButton(parent, 1)
-			end
-			if nextMode then
-				parent.ModeClicked(nextMode)
-			end
-		end
-
-		self.Update = function(data, activeMode)
-			if self.Id == activeMode then
-				self:Show()
-			else
-				self:Hide()
-			end
-		end
-
-		return self
-	end,
-}
-
--- XML script handlers for Rat and Quick page templates.
-function CyborgMMO_RatPage_OnLoad(self)
-	CyborgMMO_RatPageView.new(self)
-end
-
-function CyborgMMO_RatQuickPage_OnLoad(self)
-	CyborgMMO_RatQuickPageView.new(self)
-end
-
-function CyborgMMO_SlotTemplate_OnLoad(self)
-	CyborgMMO_SlotView.new(self)
-end
-
-function CyborgMMO_SlotTemplate_OnMouseDown(self, button)
+local function SlotOnMouseDown(self, button)
 	if button == "LeftButton" and self.Clicked then
-		self.Clicked()
+		self:Clicked()
 	end
 end
 
-function CyborgMMO_ModeTemplate_OnLoad(self)
-	CyborgMMO_ModeView.new(self)
-end
-
-function CyborgMMO_ModeTemplate_OnClick(self)
+local function ModeOnClick(self)
 	if self.Clicked then
-		self.Clicked()
+		self:Clicked()
 	end
 end
 
-function CyborgMMO_SlotMiniTemplate_OnLoad(self)
-	CyborgMMO_SlotMiniView.new(self)
+local function BindSlotView(slot, parentFrame, alpha, clickable)
+	if not slot then
+		return
+	end
+
+	slot.Id = slot:GetID()
+	CyborgMMO_RatPageModel:AddObserver(slot)
+
+	if clickable then
+		slot:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+		slot:SetScript("OnMouseDown", SlotOnMouseDown)
+		function slot:Clicked()
+			parentFrame.SlotClicked(self)
+		end
+	end
+
+	slot.Update = function(data, activeMode)
+		UpdateSlotIcon(slot, data, activeMode, alpha)
+	end
 end
 
-function CyborgMMO_SlotMiniTemplate_OnClick(self)
-	if self.Clicked then
-		self.Clicked()
+local function BindModeView(modeFrame, parentFrame)
+	if not modeFrame then
+		return
+	end
+
+	modeFrame.Id = modeFrame:GetID()
+	CyborgMMO_RatPageModel:AddObserver(modeFrame)
+	modeFrame:SetScript("OnClick", ModeOnClick)
+
+	function modeFrame:Clicked()
+		local nextModeId = (self.Id % RAT_MODES) + 1
+		local nextMode = parentFrame._modeFrames[nextModeId]
+		if nextMode then
+			parentFrame.ModeClicked(nextMode)
+		end
+	end
+
+	modeFrame.Update = function(_, activeMode)
+		if modeFrame.Id == activeMode then
+			modeFrame:Show()
+		else
+			modeFrame:Hide()
+		end
+	end
+
+	if modeFrame.Id ~= 1 then
+		modeFrame:Hide()
+	end
+end
+
+function CyborgMMO_RatPage_OnLoad(frame)
+	CyborgMMO_DPrint("new Rat Page View")
+
+	function frame.SlotClicked(slot)
+		CyborgMMO_DPrint("View Received Click")
+		CyborgMMO_RatPageController:SlotClicked(slot)
+	end
+
+	function frame.ModeClicked(modeFrame)
+		CyborgMMO_DPrint("View Received Click")
+		CyborgMMO_RatPageController:ModeClicked(modeFrame)
+	end
+
+	frame._modeFrames = {}
+	for mode = 1, RAT_MODES do
+		local modeFrame = CyborgMMO_GetRatModeButton(frame, mode)
+		frame._modeFrames[mode] = modeFrame
+		BindModeView(modeFrame, frame)
+	end
+
+	for slotId = 1, RAT_BUTTONS do
+		local slot = CyborgMMO_GetRatSlotButton(frame, slotId)
+		BindSlotView(slot, frame, nil, true)
+	end
+end
+
+function CyborgMMO_RatQuickPage_OnLoad(frame)
+	function frame.SlotClicked(slot)
+		CyborgMMO_RatPageController:SlotClicked(slot)
+	end
+	
+	for slotId = 1, RAT_BUTTONS do
+		local slot = CyborgMMO_GetRatSlotButton(frame, slotId)
+		BindSlotView(slot, frame, 0.5, false)
 	end
 end

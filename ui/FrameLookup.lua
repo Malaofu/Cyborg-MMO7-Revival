@@ -19,3 +19,10 @@ function CyborgMMO_GetRatModeButton(parentFrame, mode)
 	end
 	return CyborgMMO_GetNamedChild(parentFrame, "Mode" .. mode)
 end
+
+function CyborgMMO_GetRatSlotButton(parentFrame, slot)
+	if type(slot) ~= "number" then
+		return nil
+	end
+	return CyborgMMO_GetNamedChild(parentFrame, "Slot" .. slot)
+end
