@@ -21,6 +21,7 @@ ui/SettingsPage.lua
 ui/RebindPage.lua
 ui/BindingDialog.lua
 ui/Tooltip.lua
+ui/MainPage.lua
 CallbackFactory.lua
 objects/Core.lua
 objects/ObjectCallback.lua
@@ -31,6 +32,9 @@ objects/ObjectEquipmentSet.lua
 objects/ObjectBattlePet.lua
 objects/ObjectMount.lua
 objects/CallbackIcons.lua
+core/RuntimeSettings.lua
+core/SaveData.lua
+core/EventRouter.lua
 RatPageModel.lua
 RatPageController.lua
 RatPageView.lua

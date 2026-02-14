@@ -24,12 +24,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	 <!--UIButtonsTemplate-->
 	<Button name="CyborgMMO_TemplateCallbackButton" virtual="true" inherits="CyborgMMO_TemplateIcon">
-		<Scripts>
-			<OnLoad function="CyborgMMO_CallbackButton_OnLoad"/>
-			<OnClick function="CyborgMMO_CallbackButton_OnClick"/>
-			<OnDragStart function="CyborgMMO_CallbackButton_OnDragStart"/>
-			<OnDragStop function="CyborgMMO_CallbackButton_OnDragStop"/>
-		</Scripts>
 	</Button>
 
 	 <!--The Main Form--> 
@@ -115,9 +109,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Anchors>
 					<Anchor point="TOPLEFT"><Offset><AbsDimension x="474" y="-8"/></Offset></Anchor>
 				</Anchors>
-				<Scripts>
-					<OnClick function="CyborgMMO_MainPageCloseButton_OnClick"/>
-				</Scripts>
 				<NormalTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\CloseButton"/>
 				<PushedTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\CloseButtonDown"/>
 				<HighlightTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\CloseButtonOver" alpha=".5"/>
@@ -130,9 +121,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Frames>
 		<Scripts>
 			<OnLoad function="CyborgMMO_MainPage_OnLoad"/>
-			<OnDragStart function="CyborgMMO_MainPage_OnDragStart"/>
-			<OnDragStop function="CyborgMMO_MainPage_OnDragStop"/>
-			<OnEvent function="CyborgMMO_MainPage_OnEvent"/>
 		</Scripts>
 	</Frame>
 </Ui>
