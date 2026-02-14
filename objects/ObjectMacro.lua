@@ -3,6 +3,7 @@
 --~ Description: Macro-backed object model
 
 local O = CyborgMMO_ObjectInternals
+local Core = CyborgMMO.Core
 
 local WowMacro_methods = setmetatable({}, {__index = O.WowObject_methods})
 local WowMacro_mt = {__index = WowMacro_methods}
@@ -21,7 +22,7 @@ local function WowMacro(name)
 end
 
 function WowMacro_methods:DoAction()
-	CyborgMMO_DPrint("Use Item")
+	Core.Debug.Log("Use Item")
 end
 
 function WowMacro_methods:Pickup()
@@ -34,4 +35,3 @@ function WowMacro_methods:SetBinding(key)
 end
 
 CyborgMMO.Core.Objects.RegisterFactory("macro", WowMacro)
-

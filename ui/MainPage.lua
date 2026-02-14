@@ -76,8 +76,3 @@ function Core.UI.Main.Toggle()
 		Core.UI.Main.Open()
 	end
 end
-
--- XML OnLoad callback shim.
-function CyborgMMO_MainPage_OnLoad(self)
-	Core.UI.Main.OnLoad(self)
-end

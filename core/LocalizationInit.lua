@@ -44,8 +44,3 @@ end
 Core.Localization.LoadStrings = function(self)
 	self:SetText(CyborgMMO_StringTable[self:GetName()])
 end
-
--- Global shim used by XML/UI widgets.
-function CyborgMMO_LoadStrings(self)
-	Core.Localization.LoadStrings(self)
-end

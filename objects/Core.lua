@@ -51,11 +51,11 @@ function O.WowObject_methods:SaveData()
 end
 
 function O.WowObject_methods:DoAction()
-	CyborgMMO_DPrint("Nothing To Do")
+	Core.Debug.Log("Nothing To Do")
 end
 
 function O.WowObject_methods:Pickup()
-	CyborgMMO_DPrint("Pick up Item")
+	Core.Debug.Log("Pick up Item")
 end
 
 function O.WowObject_methods:SetBinding(_key)
@@ -78,13 +78,13 @@ end
 function Core.Objects.Create(objectType, ...)
 	local factory = O.FactoryByType[objectType]
 	if not factory then
-		CyborgMMO_DPrint("unsupported wow object:", objectType, ...)
+		Core.Debug.Log("unsupported wow object:", objectType, ...)
 		return nil
 	end
 
 	local object = factory(...)
 	if not object then
-		CyborgMMO_DPrint("creating " .. tostring(objectType) .. " object failed:", objectType, ...)
+		Core.Debug.Log("creating " .. tostring(objectType) .. " object failed:", objectType, ...)
 	end
 	return object
 end

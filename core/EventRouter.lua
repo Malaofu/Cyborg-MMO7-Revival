@@ -116,7 +116,7 @@ function Core.Events.Dispatch(event, ...)
 	if handler then
 		handler(...)
 	else
-		CyborgMMO_DPrint("Event is " .. tostring(event))
+		Core.Debug.Log("Event is " .. tostring(event))
 	end
 
 	TryAdvanceLoadState()
@@ -128,7 +128,7 @@ local function disableOldAddon()
 		local isEnabled = (enabledState == true) or (type(enabledState) == "number" and enabledState > 0)
 		if isEnabled then
 			C_AddOns.DisableAddOn("CyborgMMO7")
-			CyborgMMO_DPrint("Old CyborgMMO7 addon was disabled")
+			Core.Debug.Log("Old CyborgMMO7 addon was disabled")
 		end
 	end
 end

@@ -140,16 +140,16 @@ local function BindModeView(modeFrame, parentFrame)
 end
 
 function Core.UI.RatPageView.RatPageOnLoad(frame)
-	CyborgMMO_DPrint("new Rat Page View")
+	Core.Debug.Log("new Rat Page View")
 	EnsureRatSlots(frame, "CyborgMMO_TemplateSlot", MAIN_SLOT_LAYOUT, true)
 
 	function frame.SlotClicked(slot)
-		CyborgMMO_DPrint("View Received Click")
+		Core.Debug.Log("View Received Click")
 		Core.Rat.Controller:SlotClicked(slot)
 	end
 
 	function frame.ModeClicked(modeFrame)
-		CyborgMMO_DPrint("View Received Click")
+		Core.Debug.Log("View Received Click")
 		Core.Rat.Controller:ModeClicked(modeFrame)
 	end
 
@@ -179,11 +179,3 @@ function Core.UI.RatPageView.RatQuickPageOnLoad(frame)
 	end
 end
 
--- XML OnLoad callback shims.
-function CyborgMMO_RatPage_OnLoad(frame)
-	Core.UI.RatPageView.RatPageOnLoad(frame)
-end
-
-function CyborgMMO_RatQuickPage_OnLoad(frame)
-	Core.UI.RatPageView.RatQuickPageOnLoad(frame)
-end

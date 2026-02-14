@@ -3,6 +3,7 @@
 --~ Description: Spell-backed object model
 
 local O = CyborgMMO_ObjectInternals
+local Core = CyborgMMO.Core
 
 local WowSpell_methods = setmetatable({}, {__index = O.WowObject_methods})
 local WowSpell_mt = {__index = WowSpell_methods}
@@ -21,7 +22,7 @@ local function WowSpell(spellID)
 end
 
 function WowSpell_methods:DoAction()
-	CyborgMMO_DPrint("Cast Spell")
+	Core.Debug.Log("Cast Spell")
 end
 
 function WowSpell_methods:Pickup()
@@ -35,9 +36,8 @@ function WowSpell_methods:SetBinding(key)
 		return
 	end
 	local name = spellInfo.name
-	CyborgMMO_DPrint("binding spell:", self.spellID, name)
+	Core.Debug.Log("binding spell:", self.spellID, name)
 	SetOverrideBindingSpell(CyborgMMO_CallbackFactory.Frame, true, key, name)
 end
 
 CyborgMMO.Core.Objects.RegisterFactory("spell", WowSpell)
-

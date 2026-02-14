@@ -43,7 +43,7 @@ function Core.SaveData.ConvertOldRatData(oldData)
 	for mode, modeData in ipairs(oldData) do
 		newData[mode] = {}
 		for button, buttonData in ipairs(modeData) do
-			CyborgMMO_DPrint("converting mode:", mode, "button:", button)
+			Core.Debug.Log("converting mode:", mode, "button:", button)
 			local objectType = buttonData.Type
 			if objectType == "item" then
 				-- not possible, the old object "Type" field was overwritten by item class
@@ -54,7 +54,7 @@ function Core.SaveData.ConvertOldRatData(oldData)
 				}
 			elseif objectType == "spell" then
 				local id = getSpellID(buttonData.Name)
-				CyborgMMO_DPrint("converting spell:", buttonData.Name, id)
+				Core.Debug.Log("converting spell:", buttonData.Name, id)
 				if id then
 					newData[mode][button] = {
 						type = objectType,
@@ -67,7 +67,7 @@ function Core.SaveData.ConvertOldRatData(oldData)
 				-- no longer supported
 			elseif objectType == "companion" then
 				local id = getSpellID(buttonData.Name)
-				CyborgMMO_DPrint("converting companion:", buttonData.Name, id)
+				Core.Debug.Log("converting companion:", buttonData.Name, id)
 				if id then
 					newData[mode][button] = {
 						type = objectType,
@@ -76,13 +76,13 @@ function Core.SaveData.ConvertOldRatData(oldData)
 					}
 				end
 			elseif objectType == "equipmentset" then
-				CyborgMMO_DPrint("converting equipment set:", buttonData.Detail)
+				Core.Debug.Log("converting equipment set:", buttonData.Detail)
 				newData[mode][button] = {
 					type = objectType,
 					detail = buttonData.Detail,
 				}
 			elseif objectType == "callback" then
-				CyborgMMO_DPrint("converting callback:", buttonData.Detail)
+				Core.Debug.Log("converting callback:", buttonData.Detail)
 				newData[mode][button] = {
 					type = objectType,
 					detail = buttonData.Detail,
@@ -91,14 +91,14 @@ function Core.SaveData.ConvertOldRatData(oldData)
 				local id = buttonData.Detail
 				local class = select(6, C_Item.GetItemInfo(id))
 				if class == objectType then
-					CyborgMMO_DPrint("converting item:", id, objectType, class)
+					Core.Debug.Log("converting item:", id, objectType, class)
 					newData[mode][button] = {
 						type = "item",
 						detail = id,
 					}
 				end
 			else
-				CyborgMMO_DPrint("cannot convert:", objectType)
+				Core.Debug.Log("cannot convert:", objectType)
 			end
 		end
 	end
@@ -128,7 +128,7 @@ local function preloadFrameOnUpdate(self, dt)
 		end
 	end
 
-	CyborgMMO_DPrint("PreloadFrameUpdate step", self.total_timeout, "items:", items, "pets:", pets)
+	Core.Debug.Log("PreloadFrameUpdate step", self.total_timeout, "items:", items, "pets:", pets)
 	if self.total_timeout < 0 or (next(self.itemIDs) == nil and next(self.petIDs) == nil) then
 		self:Hide()
 		self:SetParent(nil)

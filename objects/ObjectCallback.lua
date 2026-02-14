@@ -3,6 +3,7 @@
 --~ Description: Callback-backed object model
 
 local O = CyborgMMO_ObjectInternals
+local Core = CyborgMMO.Core
 
 local WowCallback_methods = setmetatable({}, {__index = O.WowObject_methods})
 local WowCallback_mt = {__index = WowCallback_methods}
@@ -28,7 +29,7 @@ end
 
 function WowCallback_methods:PickupCallback()
 	local slot = CyborgMMO.Core.Rat.Controller:FindHoveredSlot()
-	CyborgMMO_DPrint("Slot type: " .. type(slot))
+	Core.Debug.Log("Slot type: " .. type(slot))
 end
 
 function WowCallback_methods:Pickup()
@@ -45,4 +46,3 @@ end
 
 O.CreateCallbackObject = WowCallback
 CyborgMMO.Core.Objects.RegisterFactory("callback", WowCallback)
-

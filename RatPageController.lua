@@ -97,7 +97,7 @@ function RatPageController_methods:SlotClicked(slot)
 end
 
 function RatPageController_methods:ModeClicked(mode)
-	CyborgMMO_DPrint("Setting mode "..tostring(mode.Id))
+	Core.Debug.Log("Setting mode "..tostring(mode.Id))
 	Core.Rat.Model:SetMode(mode.Id)
 end
 
@@ -128,7 +128,7 @@ function RatPageController_methods:GetCursorObject()
 		return factory(a, b, c)
 	end
 
-	CyborgMMO_DPrint("unexpected cursor info:", cursorType, a, b, c)
+	Core.Debug.Log("unexpected cursor info:", cursorType, a, b, c)
 	return nil
 end
 
@@ -143,4 +143,3 @@ end
 ------------------------------------------------------------------------------
 
 Core.Rat.Controller = RatPageController()
-

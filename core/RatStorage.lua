@@ -38,7 +38,7 @@ end
 
 function Core.Storage.GetRatSaveData()
 	local specIndex = Core.GetCurrentSpecIndex()
-	CyborgMMO_DPrint("returning rat data for spec:", specIndex)
+	Core.Debug.Log("returning rat data for spec:", specIndex)
 	local saveData = Core.Storage.GetSaveData()
 	return saveData.Rat and saveData.Rat[specIndex]
 end

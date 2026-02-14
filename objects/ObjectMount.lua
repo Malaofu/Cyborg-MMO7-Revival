@@ -4,6 +4,7 @@
 
 local O = CyborgMMO_ObjectInternals
 local Constants = CyborgMMO.Constants
+local Core = CyborgMMO.Core
 
 local function GetMountInfoEx(mountID)
 	if mountID == Constants.RANDOM_MOUNT_ID then
@@ -47,7 +48,7 @@ local function WowMount(mountID)
 	end
 
 	local self = O.WowObject("mount", mountID)
-	CyborgMMO_DPrint("creating mount binding:", mountID, texture)
+	Core.Debug.Log("creating mount binding:", mountID, texture)
 	self.mountID = mountID
 	self.texture = texture
 	setmetatable(self, WowMount_mt)
@@ -84,4 +85,3 @@ CyborgMMO.Core.Objects.RegisterFactory("companion", function(spellID)
 	end
 	return nil
 end)
-

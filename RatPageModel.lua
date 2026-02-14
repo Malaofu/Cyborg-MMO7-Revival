@@ -55,7 +55,7 @@ local function RatPageModel()
 end
 
 function RatPageModel_methods:LoadData()
-	CyborgMMO_DPrint("Loading...")
+	Core.Debug.Log("Loading...")
 	local data = Core.Storage.GetRatSaveData()
 	for mode=1,RAT7.MODES do
 		for button=1,RAT7.BUTTONS do
@@ -72,7 +72,7 @@ function RatPageModel_methods:LoadData()
 end
 
 function RatPageModel_methods:PersistBindings()
-	CyborgMMO_DPrint("Saving...")
+	Core.Debug.Log("Saving...")
 	Core.Storage.SetRatSaveData(self.objects)
 end
 
@@ -101,7 +101,7 @@ end
 
 function RatPageModel_methods:SetObjectOnButton(button, mode, object)
 	if not object then
-		CyborgMMO_DPrint("clearing "..button)
+		Core.Debug.Log("clearing "..button)
 	end
 	self:SetObjectOnButtonNoUpdate(button, mode, object)
 	self:RefreshObservers()
@@ -125,4 +125,3 @@ end
 ------------------------------------------------------------------------------
 
 Core.Rat.Model = RatPageModel()
-

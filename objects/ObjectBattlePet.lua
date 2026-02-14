@@ -3,6 +3,7 @@
 --~ Description: Battle-pet-backed object model
 
 local O = CyborgMMO_ObjectInternals
+local Core = CyborgMMO.Core
 
 local WowBattlePet_methods = setmetatable({}, {__index = O.WowObject_methods})
 local WowBattlePet_mt = {__index = WowBattlePet_methods}
@@ -14,7 +15,7 @@ local function WowBattlePet(petID)
 	end
 
 	local self = O.WowObject("battlepet", petID)
-	CyborgMMO_DPrint("creating battle pet binding:", petID)
+	Core.Debug.Log("creating battle pet binding:", petID)
 	self.petID = petID
 	self.texture = texture
 	setmetatable(self, WowBattlePet_mt)
@@ -36,4 +37,3 @@ function WowBattlePet_methods:SetBinding(key)
 end
 
 CyborgMMO.Core.Objects.RegisterFactory("battlepet", WowBattlePet)
-

@@ -2,7 +2,11 @@
 --~ Filename: core/Debug.lua
 --~ Description: Debug chat frame lookup and logging helper
 
-function CyborgMMO_GetDebugFrame()
+CyborgMMO.Core = CyborgMMO.Core or {}
+local Core = CyborgMMO.Core
+Core.Debug = Core.Debug or {}
+
+function Core.Debug.GetFrame()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local windowName = GetChatWindowInfo(i)
 		if windowName == "Debug" then
@@ -13,8 +17,8 @@ end
 
 local log_prefix = "|cffff6666" .. "CyborgMMO Revival" .. "|r:"
 
-function CyborgMMO_DPrint(...)
-	local debugframe = CyborgMMO_GetDebugFrame()
+function Core.Debug.Log(...)
+	local debugframe = Core.Debug.GetFrame()
 	if debugframe then
 		local t = { log_prefix, ... }
 		for i = 1, select("#", ...) + 1 do
