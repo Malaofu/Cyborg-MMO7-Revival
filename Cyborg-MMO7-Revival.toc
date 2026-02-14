@@ -13,35 +13,16 @@
 ## X-Curse-Project-Name: Cyborg MMO7 Revival
 ## X-Curse-Project-ID: cyborg-mmo7-revival
 
-MountMap.lua
 Localisation.lua
 Constants.lua
-ui/FrameLookup.lua
-ui/SettingsPage.lua
-ui/RebindPage.lua
-ui/BindingDialog.lua
-ui/Tooltip.lua
-ui/MainPage.lua
+data/Data.xml
+ui/UI.xml
 CallbackFactory.lua
-objects/Core.lua
-objects/ObjectCallback.lua
-objects/ObjectItem.lua
-objects/ObjectSpell.lua
-objects/ObjectMacro.lua
-objects/ObjectEquipmentSet.lua
-objects/ObjectBattlePet.lua
-objects/ObjectMount.lua
-objects/CallbackIcons.lua
-core/Debug.lua
-core/Bindings.lua
-core/RuntimeSettings.lua
-core/RatStorage.lua
-core/SaveData.lua
-core/EventRouter.lua
+objects/Objects.xml
+core/Core.xml
 RatPageModel.lua
 RatPageController.lua
 RatPageView.lua
-CyborgMMO7.lua
 RatPage.xml
 RatQuickPage.xml
 MainPage.xml

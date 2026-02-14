@@ -13,6 +13,13 @@ local REGISTERED_EVENTS = {
 
 local eventHandlers = {}
 
+local function getMountMaps()
+	local data = CyborgMMO.Data or {}
+	local mountMap = data.MountMap or CyborgMMO_MountMap or {}
+	local localMountMap = data.LocalMountMap or CyborgMMO_LocalMountMap or {}
+	return mountMap, localMountMap
+end
+
 function eventHandlers.VARIABLES_LOADED()
 	CyborgMMO_Runtime.varsLoaded = true
 	if not CyborgMMO7SaveData then
@@ -20,8 +27,9 @@ function eventHandlers.VARIABLES_LOADED()
 			Settings = DefaultSettings,
 		}
 	end
-	for mount in pairs(CyborgMMO_MountMap) do
-		CyborgMMO_LocalMountMap[mount] = nil
+	local mountMap, localMountMap = getMountMaps()
+	for mount in pairs(mountMap) do
+		localMountMap[mount] = nil
 	end
 	CyborgMMO_PreLoadSaveData(CyborgMMO7SaveData, CyborgMMO_Runtime.saveName)
 end

@@ -9,3 +9,10 @@ CyborgMMO_Constants = {
 	RANDOM_MOUNT_ID = 0xFFFFFFF,
 	MEDIA_PATH = "Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\",
 }
+
+CyborgMMO = CyborgMMO or {}
+CyborgMMO.Constants = CyborgMMO_Constants
+CyborgMMO.Data = CyborgMMO.Data or {}
+
+-- Canonical API: CyborgMMO.Constants / CyborgMMO.Data
+-- Legacy globals are still maintained while modules migrate.

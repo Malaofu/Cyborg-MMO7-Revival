@@ -4,6 +4,13 @@
 
 local O = CyborgMMO_ObjectInternals
 
+local function getMountMaps()
+	local data = CyborgMMO.Data or {}
+	local mountMap = data.MountMap or CyborgMMO_MountMap or {}
+	local localMountMap = data.LocalMountMap or CyborgMMO_LocalMountMap or {}
+	return mountMap, localMountMap
+end
+
 local function GetMountInfoEx(mountID)
 	if mountID == CyborgMMO_Constants.RANDOM_MOUNT_ID then
 		return 0, "Interface/ICONS/ACHIEVEMENT_GUILDPERK_MOUNTUP"
@@ -13,12 +20,13 @@ local function GetMountInfoEx(mountID)
 end
 
 local function FindMountFromSpellID(spellID)
-	for mount, spell in pairs(CyborgMMO_LocalMountMap) do
+	local mountMap, localMountMap = getMountMaps()
+	for mount, spell in pairs(localMountMap) do
 		if spell == spellID then
 			return mount
 		end
 	end
-	for mount, spell in pairs(CyborgMMO_MountMap) do
+	for mount, spell in pairs(mountMap) do
 		if spell == spellID then
 			return mount
 		end

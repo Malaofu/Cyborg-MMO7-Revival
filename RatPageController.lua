@@ -36,16 +36,24 @@ local UnsupportedCursorTypes = {
 	merchant = true,
 }
 
+local function getMountMaps()
+	local data = CyborgMMO.Data or {}
+	local mountMap = data.MountMap or CyborgMMO_MountMap or {}
+	local localMountMap = data.LocalMountMap or CyborgMMO_LocalMountMap or {}
+	return mountMap, localMountMap
+end
+
 local function ResolveUnknownMountCursor(mountID)
-	if mountID == CyborgMMO_Constants.RANDOM_MOUNT_ID or CyborgMMO_MountMap[mountID] or CyborgMMO_LocalMountMap[mountID] then
+	local mountMap, localMountMap = getMountMaps()
+	if mountID == CyborgMMO_Constants.RANDOM_MOUNT_ID or mountMap[mountID] or localMountMap[mountID] then
 		return
 	end
 
 	local reverse = {}
-	for mount, spell in pairs(CyborgMMO_MountMap) do
+	for mount, spell in pairs(mountMap) do
 		reverse[spell] = mount
 	end
-	for mount, spell in pairs(CyborgMMO_LocalMountMap) do
+	for mount, spell in pairs(localMountMap) do
 		reverse[spell] = mount
 	end
 
@@ -55,7 +63,7 @@ local function ResolveUnknownMountCursor(mountID)
 		local _, resolvedMountID = GetCursorInfo()
 		ClearCursor()
 		if resolvedMountID then
-			CyborgMMO_LocalMountMap[resolvedMountID] = spell
+			localMountMap[resolvedMountID] = spell
 		end
 	end
 end

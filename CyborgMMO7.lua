@@ -1,1 +1,0 @@
--- Compatibility shim: legacy entrypoint retained for packaging and references.

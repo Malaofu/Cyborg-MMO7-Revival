@@ -6,6 +6,54 @@
 
 local RAT_BUTTONS = CyborgMMO_Constants.RAT_BUTTONS
 local RAT_MODES = CyborgMMO_Constants.RAT_MODES
+local MEDIA_PATH = CyborgMMO_Constants.MEDIA_PATH
+
+local RAT_LAYOUTS = CyborgMMO.Data and CyborgMMO.Data.RatLayouts or {}
+local MAIN_SLOT_LAYOUT = RAT_LAYOUTS.mainSlots or {}
+local QUICK_SLOT_LAYOUT = RAT_LAYOUTS.quickSlots or {}
+
+local function EnsureSlotBackdrop(slot, textureName)
+	if not textureName then
+		return
+	end
+
+	local backdrop = slot._slotBackdrop
+	if not backdrop then
+		backdrop = slot:CreateTexture(nil, "ARTWORK")
+		backdrop:SetSize(33, 33)
+		backdrop:SetPoint("CENTER", 0, 0)
+		slot._slotBackdrop = backdrop
+	end
+	backdrop:SetTexture(MEDIA_PATH .. textureName)
+end
+
+local function EnsureSlotButton(parentFrame, templateName, slotId, layout, includeBackdrop)
+	if not layout then
+		return nil
+	end
+
+	local slotName = parentFrame:GetName() .. "Slot" .. slotId
+	local slot = _G[slotName]
+	if not slot then
+		slot = CreateFrame("CheckButton", slotName, parentFrame, templateName)
+	end
+
+	slot:SetID(slotId)
+	slot:ClearAllPoints()
+	slot:SetPoint("TOPLEFT", layout.x, layout.y)
+
+	if includeBackdrop then
+		EnsureSlotBackdrop(slot, layout.texture)
+	end
+
+	return slot
+end
+
+local function EnsureRatSlots(parentFrame, templateName, layouts, includeBackdrop)
+	for slotId = 1, RAT_BUTTONS do
+		EnsureSlotButton(parentFrame, templateName, slotId, layouts[slotId], includeBackdrop)
+	end
+end
 
 local function UpdateSlotIcon(frame, data, activeMode, alpha)
 	local icon = _G[frame:GetName() .. "Icon"]
@@ -87,6 +135,7 @@ end
 
 function CyborgMMO_RatPage_OnLoad(frame)
 	CyborgMMO_DPrint("new Rat Page View")
+	EnsureRatSlots(frame, "CyborgMMO_TemplateSlot", MAIN_SLOT_LAYOUT, true)
 
 	function frame.SlotClicked(slot)
 		CyborgMMO_DPrint("View Received Click")
@@ -112,6 +161,8 @@ function CyborgMMO_RatPage_OnLoad(frame)
 end
 
 function CyborgMMO_RatQuickPage_OnLoad(frame)
+	EnsureRatSlots(frame, "CyborgMMO_TemplateSmallSlot", QUICK_SLOT_LAYOUT, false)
+
 	function frame.SlotClicked(slot)
 		CyborgMMO_RatPageController:SlotClicked(slot)
 	end

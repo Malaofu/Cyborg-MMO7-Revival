@@ -1,5 +1,5 @@
 -- this is a generated file, do not edit, see support/gen-mount-db.lua
-CyborgMMO_MountMap = {
+local generatedMountMap = {
 	[6] = 458,
 	[7] = 459,
 	[8] = 468,
@@ -498,4 +498,11 @@ CyborgMMO_MountMap = {
 	[657] = 171851,
 	[664] = 175700,
 }
-CyborgMMO_LocalMountMap = {}
+
+-- Canonical namespace storage.
+CyborgMMO.Data.MountMap = generatedMountMap
+CyborgMMO.Data.LocalMountMap = CyborgMMO.Data.LocalMountMap or CyborgMMO_LocalMountMap or {}
+
+-- Legacy global aliases kept for backward compatibility.
+CyborgMMO_MountMap = CyborgMMO.Data.MountMap
+CyborgMMO_LocalMountMap = CyborgMMO.Data.LocalMountMap

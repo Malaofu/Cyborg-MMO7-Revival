@@ -1,0 +1,14 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Script file="Core.lua"/>
+	<Script file="ObjectCallback.lua"/>
+	<Script file="ObjectItem.lua"/>
+	<Script file="ObjectSpell.lua"/>
+	<Script file="ObjectMacro.lua"/>
+	<Script file="ObjectEquipmentSet.lua"/>
+	<Script file="ObjectBattlePet.lua"/>
+	<Script file="ObjectMount.lua"/>
+	<Script file="CallbackIcons.lua"/>
+</Ui>
