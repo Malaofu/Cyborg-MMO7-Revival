@@ -44,9 +44,11 @@ local function RatPageModel()
 	self.mode = 1
 	self.observers = {}
 	self.objects = {}
+	self.bindingKeys = {}
 
 	for mode=1,RAT7.MODES do
 		self.objects[mode] = {}
+		self.bindingKeys[mode] = {}
 	end
 
 	setmetatable(self, RatPageModel_mt)
@@ -91,11 +93,23 @@ end
 
 function RatPageModel_methods:SetObjectOnButtonNoUpdate(button, mode, object)
 	self.objects[mode][button] = object
+
 	local binding = Globals.GetProfileKeyBindings()[GetBindingIndex(mode, button)]
+	local previousBinding = self.bindingKeys[mode][button]
+	if previousBinding and previousBinding ~= binding then
+		Core.Objects.ClearBinding(previousBinding)
+	end
+
 	if object then
-		object:SetBinding(binding)
+		if binding then
+			object:SetBinding(binding)
+		end
+		self.bindingKeys[mode][button] = binding
 	else
-		Core.Objects.ClearBinding(binding)
+		if binding then
+			Core.Objects.ClearBinding(binding)
+		end
+		self.bindingKeys[mode][button] = nil
 	end
 end
 

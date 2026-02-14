@@ -11,6 +11,7 @@ Core.Objects = Core.Objects or {}
 
 O.MEDIA_PATH = Constants.MEDIA_PATH
 O.FactoryByType = O.FactoryByType or {}
+O.CallbackByBindingKey = O.CallbackByBindingKey or {}
 
 --- @alias objectType string
 --- | "item"
@@ -62,8 +63,29 @@ function O.WowObject_methods:SetBinding(_key)
 end
 
 function O.SetClickBindingWithCallback(key, fn)
-	local _, parentFrame, name = CyborgMMO_CallbackFactory:AddCallback(fn)
+	local callbackData = O.CallbackByBindingKey[key]
+	if callbackData then
+		callbackData.button:SetScript("OnClick", fn)
+		SetOverrideBindingClick(callbackData.parentFrame, true, key, callbackData.name, "LeftButton")
+		return
+	end
+
+	local button, parentFrame, name = CyborgMMO_CallbackFactory:AddCallback(fn)
+	O.CallbackByBindingKey[key] = {
+		button = button,
+		parentFrame = parentFrame,
+		name = name,
+	}
 	SetOverrideBindingClick(parentFrame, true, key, name, "LeftButton")
+end
+
+function Core.Objects.ReleaseClickBindingCallback(key)
+	local callbackData = O.CallbackByBindingKey[key]
+	if not callbackData then
+		return
+	end
+	CyborgMMO_CallbackFactory:RemoveCallback(callbackData.name)
+	O.CallbackByBindingKey[key] = nil
 end
 
 ---@param objectType objectType
@@ -91,4 +113,5 @@ end
 
 function Core.Objects.ClearBinding(key)
 	SetOverrideBinding(CyborgMMO_CallbackFactory.Frame, true, key, nil)
+	Core.Objects.ReleaseClickBindingCallback(key)
 end

@@ -20,10 +20,23 @@ local defaultLocale = "enUS"
 Core.Localization.DefaultModeKeyBindings =
 	modes[locale] or modes[defaultLocale] or {}
 
-CyborgMMO_ProfileModeKeyBindings = {}
-for k, v in pairs(Core.Localization.DefaultModeKeyBindings) do
-	CyborgMMO_ProfileModeKeyBindings[k] = v
+local function EnsureTable(tableValue)
+	if type(tableValue) == "table" then
+		return tableValue
+	end
+	return {}
 end
+
+local function FillMissingDefaults(target, defaults)
+	for k, v in pairs(defaults) do
+		if target[k] == nil then
+			target[k] = v
+		end
+	end
+end
+
+CyborgMMO_ProfileModeKeyBindings = EnsureTable(CyborgMMO_ProfileModeKeyBindings)
+FillMissingDefaults(CyborgMMO_ProfileModeKeyBindings, Core.Localization.DefaultModeKeyBindings)
 
 Core.Localization.StringTable =
 	stringTablesByLocale[locale] or stringTablesByLocale[defaultLocale] or {}
@@ -32,10 +45,8 @@ CyborgMMO_StringTable = Core.Localization.StringTable
 Core.Localization.DefaultKeyBindings =
 	defaultKeyBindingsByLocale[locale] or defaultKeyBindingsByLocale[defaultLocale] or {}
 
-CyborgMMO_ProfileKeyBindings = {}
-for k, v in pairs(Core.Localization.DefaultKeyBindings) do
-	CyborgMMO_ProfileKeyBindings[k] = v
-end
+CyborgMMO_ProfileKeyBindings = EnsureTable(CyborgMMO_ProfileKeyBindings)
+FillMissingDefaults(CyborgMMO_ProfileKeyBindings, Core.Localization.DefaultKeyBindings)
 
 if locale ~= defaultLocale and stringTablesByLocale[defaultLocale] then
 	setmetatable(CyborgMMO_StringTable, {__index = stringTablesByLocale[defaultLocale]})

@@ -13,20 +13,46 @@ Core.UI.Rebind = Core.UI.Rebind or {}
 
 local RAT_BUTTONS = Constants.RAT_BUTTONS
 local RAT_MODES = Constants.RAT_MODES
+local ROW_PREFIX = "CyborgMMO_OptionSubPageRebindMouseRow"
+local MODE_PREFIX = "CyborgMMO_OptionSubPageRebindMouseMode"
 
-local function BuildButtonName(rowName, mode)
-	return rowName .. "Mode" .. mode
+local function BuildButtonName(rowIndex, mode)
+	return string.format("%s%XMode%d", ROW_PREFIX, rowIndex, mode)
 end
 
 local function BuildRowLabelKey(index)
 	return "CyborgMMO_OptionPageRebindMouseRow" .. string.format("%X", index) .. "Name"
 end
 
+local function BuildModeButtonName(mode)
+	return MODE_PREFIX .. mode
+end
+
+local function ParseButtonName(name)
+	if type(name) ~= "string" then
+		return nil, nil
+	end
+	local rowHex, modeStr = name:match("MouseRow([0-9A-F])Mode(%d+)")
+	if not rowHex or not modeStr then
+		return nil, nil
+	end
+	return tonumber(rowHex, 16), tonumber(modeStr)
+end
+
 local function GetButtonIndexFromName(name)
-	local s_row, s_mode = name:match("Row(.)Mode(.)")
-	local row = tonumber(s_row, 16)
-	local mode = tonumber(s_mode)
+	local row, mode = ParseButtonName(name)
+	if not row or not mode then
+		return nil
+	end
 	return (mode - 1) * RAT_BUTTONS + row
+end
+
+local function ParseModeButtonName(name)
+	if type(name) ~= "string" then
+		return nil
+	end
+	local modeStr = name:match("CyborgMMO_OptionSubPageRebindMouseMode(%d+)")
+	return modeStr and tonumber(modeStr) or nil
 end
 
 local BindSession = {
@@ -42,28 +68,33 @@ function BindSession:GetTarget()
 end
 
 function BindSession:IsModeBinding()
-	return self.buttonName and self.buttonName:match("CyborgMMO_OptionSubPageRebindMouseMode(%d)") ~= nil
+	return ParseModeButtonName(self.buttonName) ~= nil
 end
 
 function BindSession:GetMode()
-	if not self.buttonName then
-		return nil
-	end
-	local modeStr = self.buttonName:match("CyborgMMO_OptionSubPageRebindMouseMode(%d)")
-	if not modeStr then
-		return nil
-	end
-	return tonumber(modeStr)
+	return ParseModeButtonName(self.buttonName)
 end
 
 local function SetBindingButtonText(name)
-	local binding = Globals.GetProfileKeyBindings()[GetButtonIndexFromName(name)]
-	_G[name]:SetText(binding)
+	local buttonIndex = GetButtonIndexFromName(name)
+	if not buttonIndex then
+		return
+	end
+	local button = _G[name]
+	if not button then
+		return
+	end
+	local binding = Globals.GetProfileKeyBindings()[buttonIndex]
+	button:SetText(binding)
 end
 
 local function SetBindingModeButtonText(name, mode)
+	local button = _G[name]
+	if not button then
+		return
+	end
 	local binding = Globals.GetProfileModeKeyBindings()[mode]
-	_G[name]:SetText(binding)
+	button:SetText(binding)
 end
 
 local function ShowBindingDialog(titleText, currentBinding)
@@ -85,7 +116,7 @@ local function OnBindingModeButtonEvent(buttonName, mode, event)
 end
 
 local function CreateBindingButton(row, mode, owner)
-	local buttonName = BuildButtonName(row:GetName(), mode)
+	local buttonName = BuildButtonName(row.index, mode)
 	local button = CreateFrame("Button", buttonName, row, "UIPanelButtonTemplate")
 	button:SetSize(145, 28)
 	button:SetPoint("TOPLEFT", 135 + (mode - 1) * 145, 0)
@@ -102,7 +133,7 @@ local function CreateBindingButton(row, mode, owner)
 end
 
 local function CreateMouseRow(panel, index, previousRow, owner)
-	local row = CreateFrame("FRAME", "CyborgMMO_OptionSubPageRebindMouseRow" .. string.format("%X", index), panel)
+	local row = CreateFrame("Frame", string.format("%s%X", ROW_PREFIX, index), panel)
 	row.index = index
 	row:SetSize(160, 28)
 	if previousRow then
@@ -123,7 +154,7 @@ local function CreateMouseRow(panel, index, previousRow, owner)
 end
 
 local function CreateModeOverwriteRow(panel, previousRow)
-	local modeOverwriteRow = CreateFrame("FRAME", "CyborgMMO_OptionSubPageRebindMouseMode", panel)
+	local modeOverwriteRow = CreateFrame("Frame", MODE_PREFIX, panel)
 	modeOverwriteRow:SetSize(160, 28)
 	modeOverwriteRow:SetPoint("TOPLEFT", previousRow, "BOTTOMLEFT", 0, -30)
 
@@ -132,7 +163,7 @@ local function CreateModeOverwriteRow(panel, previousRow)
 	modeOverwriteName:SetText(CyborgMMO_StringTable.CyborgMMO_OptionPageRebindMouseModeName)
 
 	for mode = 1, RAT_MODES do
-		local buttonName = modeOverwriteRow:GetName() .. mode
+		local buttonName = BuildModeButtonName(mode)
 		local button = CreateFrame("Button", buttonName, modeOverwriteRow, "UIPanelButtonTemplate")
 		button:SetSize(145, 28)
 		button:SetPoint("TOPLEFT", 135 + (mode - 1) * 145, 0)
@@ -146,9 +177,17 @@ local function CreateModeOverwriteRow(panel, previousRow)
 	end
 end
 
+local function CreateModeHeaders(panel)
+	for mode = 1, RAT_MODES do
+		local modeText = panel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+		modeText:SetPoint("TOPLEFT", 147 + (mode - 1) * 135, -28)
+		modeText:SetText(CyborgMMO_StringTable["CyborgMMO_OptionPageRebindMode" .. mode])
+	end
+end
+
 CyborgMMO_OptionSubPageRebind = {
 	Initialize = function(self)
-		local panel = CreateFrame("FRAME", "CyborgMMO_OptionSubPageRebind", UIParent, "BackdropTemplate")
+		local panel = CreateFrame("Frame", "CyborgMMO_OptionSubPageRebind", UIParent, "BackdropTemplate")
 		self.Panel = panel
 		panel:SetPoint("TOPLEFT", 15, -15)
 		panel.name = CyborgMMO_StringTable.CyborgMMO_OptionPageRebindTitle
@@ -157,17 +196,7 @@ CyborgMMO_OptionSubPageRebind = {
 		title:SetPoint("TOPLEFT", 0, 0)
 		title:SetText(CyborgMMO_StringTable.CyborgMMO_OptionPageRebindTitle)
 
-		local mode1 = panel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-		mode1:SetPoint("TOPLEFT", 147, -28)
-		mode1:SetText(CyborgMMO_StringTable.CyborgMMO_OptionPageRebindMode1)
-
-		local mode2 = panel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-		mode2:SetPoint("TOPLEFT", 282, -28)
-		mode2:SetText(CyborgMMO_StringTable.CyborgMMO_OptionPageRebindMode2)
-
-		local mode3 = panel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-		mode3:SetPoint("TOPLEFT", 427, -28)
-		mode3:SetText(CyborgMMO_StringTable.CyborgMMO_OptionPageRebindMode3)
+		CreateModeHeaders(panel)
 
 		self.MouseRows = {}
 		local previousRow
@@ -187,22 +216,26 @@ CyborgMMO_OptionSubPageRebind:Initialize()
 
 function Core.UI.Rebind.BindButton(name)
 	BindSession:SetTarget(name)
-	local index = Core.UI.Rebind.GetButtonIndex(name)
-	local mode = 1
-	while index > RAT_BUTTONS do
-		mode = mode + 1
-		index = index - RAT_BUTTONS
+
+	local row, mode = ParseButtonName(name)
+	if not row or not mode then
+		return
 	end
-	local buttonStr = CyborgMMO_StringTable["CyborgMMO_OptionPageRebindMouseRow" .. index .. "Name"]
+
+	local buttonStr = CyborgMMO_StringTable["CyborgMMO_OptionPageRebindMouseRow" .. row .. "Name"]
+	local bindingIndex = Core.UI.Rebind.GetButtonIndex(name)
+	if not bindingIndex then
+		return
+	end
 
 	ShowBindingDialog(
 		buttonStr .. " Mode " .. mode,
-		Globals.GetProfileKeyBindings()[Core.UI.Rebind.GetButtonIndex(BindSession:GetTarget())]
+		Globals.GetProfileKeyBindings()[bindingIndex]
 	)
 end
 
 function Core.UI.Rebind.BindModeButton(mode)
-	BindSession:SetTarget("CyborgMMO_OptionSubPageRebindMouseMode" .. mode)
+	BindSession:SetTarget(BuildModeButtonName(mode))
 	local buttonStr = CyborgMMO_StringTable.CyborgMMO_OptionPageRebindMouseModeName
 
 	ShowBindingDialog(buttonStr .. " Mode " .. mode, Globals.GetProfileModeKeyBindings()[mode])
@@ -220,6 +253,14 @@ function Core.UI.Rebind.GetButtonIndex(name)
 	return GetButtonIndexFromName(name)
 end
 
+function Core.UI.Rebind.GetButtonName(row, mode)
+	return BuildButtonName(row, mode)
+end
+
+function Core.UI.Rebind.GetModeButtonName(mode)
+	return BuildModeButtonName(mode)
+end
+
 function Core.UI.Rebind.SetNewKeybind(keyOrButton)
 	local target = BindSession:GetTarget()
 	if not target then
@@ -231,7 +272,11 @@ function Core.UI.Rebind.SetNewKeybind(keyOrButton)
 		Globals.GetProfileModeKeyBindings()[mode] = keyOrButton
 		Core.UI.Rebind.SetBindingModeButtonText(target, mode)
 	else
-		Globals.GetProfileKeyBindings()[Core.UI.Rebind.GetButtonIndex(target)] = keyOrButton
+		local buttonIndex = Core.UI.Rebind.GetButtonIndex(target)
+		if not buttonIndex then
+			return
+		end
+		Globals.GetProfileKeyBindings()[buttonIndex] = keyOrButton
 		Core.UI.Rebind.SetBindingButtonText(target)
 	end
 
@@ -239,3 +284,4 @@ function Core.UI.Rebind.SetNewKeybind(keyOrButton)
 	Core.Rat.Model:LoadData()
 	Core.UI.SetupAllModeCallbacks()
 end
+

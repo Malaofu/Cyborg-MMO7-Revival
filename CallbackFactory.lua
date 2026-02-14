@@ -28,6 +28,7 @@ local function CallbackFactory()
 	local self = {}
 	self.Frame = CreateFrame("Frame", "CallbackFactoryFrame", UIParent)
 	self.Callbacks = {}
+	self.FreeNames = {}
 	self.Id = 1
 
 	setmetatable(self, CallbackFactory_mt)
@@ -35,22 +36,41 @@ local function CallbackFactory()
 	return self
 end
 
-function CallbackFactory_methods:AddCallback(fn)
-	local name = "Button"..self.Id
-	self.Callbacks[name] = CreateFrame("Button", name, self.Frame)
-	self.Callbacks[name]:SetScript("OnClick", fn)
+local function AcquireName(self)
+	if #self.FreeNames > 0 then
+		return table.remove(self.FreeNames)
+	end
+	local name = "CyborgMMO_CallbackButton" .. self.Id
 	self.Id = self.Id + 1
-	return self.Callbacks[name],self.Frame,name
+	return name
+end
+
+function CallbackFactory_methods:AddCallback(fn)
+	local name = AcquireName(self)
+	local button = self.Callbacks[name]
+	if not button then
+		button = CreateFrame("Button", name, self.Frame)
+		self.Callbacks[name] = button
+	end
+	button:SetScript("OnClick", fn)
+	button:Show()
+	return button, self.Frame, name
 end
 
 function CallbackFactory_methods:RemoveCallback(name)
-	self.Callbacks[name] = nil
+	local button = self.Callbacks[name]
+	if not button then
+		return
+	end
+	button:SetScript("OnClick", nil)
+	button:Hide()
+	table.insert(self.FreeNames, name)
 end
 
 local callbacks = {}
 
 function CallbackFactory_methods:GetCallback(name)
-	return callbacks[name]
+	return callbacks[name] or (self.Callbacks[name] and self.Callbacks[name]:GetScript("OnClick"))
 end
 
 ------------------------------------------------------------------------------
