@@ -1,3 +1,7 @@
+--~ Warcraft Plugin for Cyborg MMO7
+--~ Filename: core/SaveData.lua
+--~ Description: Legacy data conversion and async preload of uncached IDs
+
 local RAT7 = {
 	BUTTONS = CyborgMMO_Constants.RAT_BUTTONS,
 	MODES = CyborgMMO_Constants.RAT_MODES,
@@ -16,9 +20,9 @@ local KNOWN_OLD_OBJECT_TYPES = {
 
 local STEP_TIMEOUT_SECONDS = 1
 local TOTAL_TIMEOUT_SECONDS = 15
-local PreloadFrame
+local preloadFrame
 
-local function GetSpellID(name)
+local function getSpellID(name)
 	local link = C_Spell.GetSpellLink(name)
 	if not link then
 		return nil
@@ -45,7 +49,7 @@ function CyborgMMO_ConvertOldRatData(oldData)
 					detail = buttonData.Name,
 				}
 			elseif objectType == "spell" then
-				local id = GetSpellID(buttonData.Name)
+				local id = getSpellID(buttonData.Name)
 				CyborgMMO_DPrint("converting spell:", buttonData.Name, id)
 				if id then
 					newData[mode][button] = {
@@ -58,7 +62,7 @@ function CyborgMMO_ConvertOldRatData(oldData)
 			elseif objectType == "merchant" then
 				-- no longer supported
 			elseif objectType == "companion" then
-				local id = GetSpellID(buttonData.Name)
+				local id = getSpellID(buttonData.Name)
 				CyborgMMO_DPrint("converting companion:", buttonData.Name, id)
 				if id then
 					newData[mode][button] = {
@@ -97,7 +101,7 @@ function CyborgMMO_ConvertOldRatData(oldData)
 	return newData
 end
 
-local function PreloadFrameOnUpdate(self, dt)
+local function preloadFrameOnUpdate(self, dt)
 	self.step_timeout = self.step_timeout - dt
 	self.total_timeout = self.total_timeout - dt
 	if self.step_timeout >= 0 then
@@ -124,7 +128,7 @@ local function PreloadFrameOnUpdate(self, dt)
 	if self.total_timeout < 0 or (next(self.itemIDs) == nil and next(self.petIDs) == nil) then
 		self:Hide()
 		self:SetParent(nil)
-		PreloadFrame = nil
+		preloadFrame = nil
 		CyborgMMO_Event("CYBORGMMO_ASYNC_DATA_LOADED")
 	else
 		self.step_timeout = STEP_TIMEOUT_SECONDS
@@ -172,11 +176,11 @@ function CyborgMMO_PreLoadSaveData(data, saveName)
 		end
 	end
 
-	PreloadFrame = CreateFrame("Frame")
-	PreloadFrame.itemIDs = itemIDs
-	PreloadFrame.petIDs = petIDs
-	PreloadFrame.total_timeout = TOTAL_TIMEOUT_SECONDS
-	PreloadFrame.step_timeout = STEP_TIMEOUT_SECONDS
-	PreloadFrame:SetScript("OnUpdate", PreloadFrameOnUpdate)
-	PreloadFrame:Show()
+	preloadFrame = CreateFrame("Frame")
+	preloadFrame.itemIDs = itemIDs
+	preloadFrame.petIDs = petIDs
+	preloadFrame.total_timeout = TOTAL_TIMEOUT_SECONDS
+	preloadFrame.step_timeout = STEP_TIMEOUT_SECONDS
+	preloadFrame:SetScript("OnUpdate", preloadFrameOnUpdate)
+	preloadFrame:Show()
 end

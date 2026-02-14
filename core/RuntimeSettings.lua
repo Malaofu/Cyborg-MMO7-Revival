@@ -1,3 +1,7 @@
+--~ Warcraft Plugin for Cyborg MMO7
+--~ Filename: core/RuntimeSettings.lua
+--~ Description: Runtime state, settings defaults, and UI setting mutators
+
 local RAT7 = {
 	MODES = CyborgMMO_Constants.RAT_MODES,
 }
@@ -17,7 +21,7 @@ local MODE_COLOR_MAP = {
 	},
 }
 
-local function ToBoolean(value)
+local function toBoolean(value)
 	return value and true or false
 end
 
@@ -134,7 +138,7 @@ function CyborgMMO_SetCyborgHeadButton(visible)
 		CyborgMMO_OpenButtonPage:Hide()
 	end
 	if CyborgMMO_Runtime.settingsLoaded then
-		CyborgMMO_Runtime.settings.CyborgButton = ToBoolean(visible)
+		CyborgMMO_Runtime.settings.CyborgButton = toBoolean(visible)
 	end
 end
 
@@ -145,7 +149,7 @@ function CyborgMMO_SetMiniMapButton(visible)
 		CyborgMMO_MiniMapButton:Hide()
 	end
 	if CyborgMMO_Runtime.settingsLoaded then
-		CyborgMMO_Runtime.settings.MiniMapButton = ToBoolean(visible)
+		CyborgMMO_Runtime.settings.MiniMapButton = toBoolean(visible)
 	end
 end
 
@@ -156,13 +160,13 @@ function CyborgMMO_SetCompartmentButton(visible)
 		UnregisterCompartmentButton()
 	end
 	if CyborgMMO_Runtime.settingsLoaded then
-		CyborgMMO_Runtime.settings.CompartmentButton = ToBoolean(visible)
+		CyborgMMO_Runtime.settings.CompartmentButton = toBoolean(visible)
 	end
 end
 
 function CyborgMMO_SetPerSpecBindings(perSpec)
 	if CyborgMMO_Runtime.settingsLoaded then
-		CyborgMMO_Runtime.settings.PerSpecBindings = ToBoolean(perSpec)
+		CyborgMMO_Runtime.settings.PerSpecBindings = toBoolean(perSpec)
 	end
 	if CyborgMMO_Runtime.bindingsLoaded then
 		CyborgMMO_RatPageModel:LoadData()

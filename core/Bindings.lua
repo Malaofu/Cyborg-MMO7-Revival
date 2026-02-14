@@ -1,3 +1,7 @@
+--~ Warcraft Plugin for Cyborg MMO7
+--~ Filename: core/Bindings.lua
+--~ Description: Keybind defaults and hardware mode callback setup
+
 local RAT7 = {
 	BUTTONS = CyborgMMO_Constants.RAT_BUTTONS,
 	MODES = CyborgMMO_Constants.RAT_MODES,

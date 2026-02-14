@@ -1,3 +1,7 @@
+--~ Warcraft Plugin for Cyborg MMO7
+--~ Filename: ui/MainPage.lua
+--~ Description: Main frame wiring and page visibility controls
+
 local MAIN_PAGE_CALLBACK_SUFFIXES = {
 	"CharacterPage",
 	"Inventory",

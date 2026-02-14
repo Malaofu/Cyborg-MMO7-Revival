@@ -1,3 +1,7 @@
+--~ Warcraft Plugin for Cyborg MMO7
+--~ Filename: core/RatStorage.lua
+--~ Description: SavedVariables access and per-spec rat data persistence
+
 local RAT7 = {
 	BUTTONS = CyborgMMO_Constants.RAT_BUTTONS,
 	MODES = CyborgMMO_Constants.RAT_MODES,

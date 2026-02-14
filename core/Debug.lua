@@ -1,3 +1,7 @@
+--~ Warcraft Plugin for Cyborg MMO7
+--~ Filename: core/Debug.lua
+--~ Description: Debug chat frame lookup and logging helper
+
 function CyborgMMO_GetDebugFrame()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local windowName = GetChatWindowInfo(i)

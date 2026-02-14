@@ -1,3 +1,7 @@
+--~ Warcraft Plugin for Cyborg MMO7
+--~ Filename: core/EventRouter.lua
+--~ Description: Event registration and startup/load-state orchestration
+
 local REGISTERED_EVENTS = {
 	"VARIABLES_LOADED",
 	"PLAYER_ENTERING_WORLD",
@@ -7,9 +11,9 @@ local REGISTERED_EVENTS = {
 	"PLAYER_SPECIALIZATION_CHANGED",
 }
 
-local EventHandlers = {}
+local eventHandlers = {}
 
-function EventHandlers.VARIABLES_LOADED()
+function eventHandlers.VARIABLES_LOADED()
 	CyborgMMO_Runtime.varsLoaded = true
 	if not CyborgMMO7SaveData then
 		CyborgMMO7SaveData = {
@@ -22,7 +26,7 @@ function EventHandlers.VARIABLES_LOADED()
 	CyborgMMO_PreLoadSaveData(CyborgMMO7SaveData, CyborgMMO_Runtime.saveName)
 end
 
-function EventHandlers.CYBORGMMO_ASYNC_DATA_LOADED()
+function eventHandlers.CYBORGMMO_ASYNC_DATA_LOADED()
 	CyborgMMO_Runtime.asyncDataLoaded = true
 	if CyborgMMO7SaveData[CyborgMMO_Runtime.saveName] and not CyborgMMO7SaveData.Settings then
 		local oldData = CyborgMMO7SaveData[CyborgMMO_Runtime.saveName]
@@ -34,32 +38,32 @@ function EventHandlers.CYBORGMMO_ASYNC_DATA_LOADED()
 	end
 end
 
-function EventHandlers.PLAYER_ENTERING_WORLD()
+function eventHandlers.PLAYER_ENTERING_WORLD()
 	CyborgMMO_Runtime.enteredWorld = true
 end
 
-function EventHandlers.PLAYER_REGEN_DISABLED()
+function eventHandlers.PLAYER_REGEN_DISABLED()
 	if CyborgMMO_IsOpen() then
 		CyborgMMO_Runtime.autoClosed = true
 		CyborgMMO_Close()
 	end
 end
 
-function EventHandlers.PLAYER_REGEN_ENABLED()
+function eventHandlers.PLAYER_REGEN_ENABLED()
 	if CyborgMMO_Runtime.autoClosed then
 		CyborgMMO_Runtime.autoClosed = false
 		CyborgMMO_Open()
 	end
 end
 
-function EventHandlers.ACTIVE_TALENT_GROUP_CHANGED()
+function eventHandlers.ACTIVE_TALENT_GROUP_CHANGED()
 	CyborgMMO_Runtime.bindingsLoaded = false
 end
 
-EventHandlers.PLAYER_SPECIALIZATION_CHANGED = EventHandlers.ACTIVE_TALENT_GROUP_CHANGED
+eventHandlers.PLAYER_SPECIALIZATION_CHANGED = eventHandlers.ACTIVE_TALENT_GROUP_CHANGED
 
 function CyborgMMO_Event(event, ...)
-	local handler = EventHandlers[event]
+	local handler = eventHandlers[event]
 	if handler then
 		handler(...)
 	else
@@ -89,7 +93,7 @@ function CyborgMMO_Event(event, ...)
 	end
 end
 
-local function DisableOldAddon()
+local function disableOldAddon()
 	if C_AddOns.DoesAddOnExist("CyborgMMO7") then
 		local enabledState = C_AddOns.GetAddOnEnableState(UnitName("player"), "CyborgMMO7")
 		local isEnabled = (enabledState == true) or (type(enabledState) == "number" and enabledState > 0)
@@ -101,7 +105,7 @@ local function DisableOldAddon()
 end
 
 function CyborgMMO_Loaded()
-	DisableOldAddon()
+	disableOldAddon()
 	for _, eventName in ipairs(REGISTERED_EVENTS) do
 		CyborgMMO_MainPage:RegisterEvent(eventName)
 	end
