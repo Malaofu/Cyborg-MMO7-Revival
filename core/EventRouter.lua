@@ -134,8 +134,13 @@ local function disableOldAddon()
 end
 
 function Core.Events.Loaded()
+	local frames = Core.UI and Core.UI.Frames
+	local mainPage = frames and frames.GetMainPage and frames.GetMainPage() or _G.CyborgMMO_MainPage
+	if not mainPage then
+		return
+	end
 	disableOldAddon()
 	for _, eventName in ipairs(REGISTERED_EVENTS) do
-		CyborgMMO_MainPage:RegisterEvent(eventName)
+		mainPage:RegisterEvent(eventName)
 	end
 end

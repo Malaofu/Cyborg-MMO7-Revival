@@ -5,6 +5,7 @@
 local Constants = CyborgMMO.Constants
 local MEDIA_PATH = Constants.MEDIA_PATH
 local Core = CyborgMMO.Core
+local Frames = Core.UI.Frames
 
 CyborgMMO_OpenButtonPage = CreateFrame("Frame", "CyborgMMO_OpenButtonPage", UIParent, "BackdropTemplate")
 CyborgMMO_OpenButtonPage:SetSize(50, 50)
@@ -20,6 +21,9 @@ CyborgMMO_OpenButtonPageOpenMainForm:RegisterForDrag("LeftButton", "RightButton"
 CyborgMMO_OpenButtonPageOpenMainForm:SetMovable(true)
 CyborgMMO_OpenButtonPageOpenMainForm:SetNormalTexture(MEDIA_PATH .. "Cyborg")
 CyborgMMO_OpenButtonPageOpenMainForm:SetHighlightTexture(MEDIA_PATH .. "CyborgGlow")
+
+Frames.SetOpenButtonPage(CyborgMMO_OpenButtonPage)
+Frames.SetOpenButtonControl(CyborgMMO_OpenButtonPageOpenMainForm)
 
 local function OnDragStart(self)
 	self:StartMoving()

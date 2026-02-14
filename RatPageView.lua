@@ -10,6 +10,7 @@ Core.UI = Core.UI or {}
 Core.UI.RatPageView = Core.UI.RatPageView or {}
 Core.Rat = Core.Rat or {}
 local FrameLookup = Core.UI.FrameLookup
+local Frames = Core.UI.Frames
 local RAT_BUTTONS = Constants.RAT_BUTTONS
 local RAT_MODES = Constants.RAT_MODES
 local MEDIA_PATH = Constants.MEDIA_PATH
@@ -167,6 +168,7 @@ function Core.UI.RatPageView.RatPageOnLoad(frame)
 end
 
 function Core.UI.RatPageView.RatQuickPageOnLoad(frame)
+	Frames.SetRatQuickPage(frame)
 	EnsureRatSlots(frame, "CyborgMMO_TemplateSmallSlot", QUICK_SLOT_LAYOUT, false)
 
 	function frame.SlotClicked(slot)

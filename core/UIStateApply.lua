@@ -27,16 +27,25 @@ CyborgMMO.Core = CyborgMMO.Core or {}
 local Core = CyborgMMO.Core
 Core.UI = Core.UI or {}
 
+local function getFrames()
+	return Core.UI and Core.UI.Frames
+end
+
 local function toBoolean(value)
 	return value and true or false
 end
 
 function Core.UI.MiniMapButtonReposition(angle)
+	local frames = getFrames()
+	local miniMapButton = frames and frames.GetMiniMapButton and frames.GetMiniMapButton() or _G.CyborgMMO_MiniMapButton
+	if not miniMapButton then
+		return
+	end
 	local radius = (Minimap:GetWidth() / 2) + 5
 	local dx = radius * math.cos(angle)
 	local dy = radius * math.sin(angle)
-	CyborgMMO_MiniMapButton:ClearAllPoints()
-	CyborgMMO_MiniMapButton:SetPoint("CENTER", "Minimap", "CENTER", dx, dy)
+	miniMapButton:ClearAllPoints()
+	miniMapButton:SetPoint("CENTER", "Minimap", "CENTER", dx, dy)
 	if Core.Runtime.settingsLoaded then
 		Core.Runtime.settings.MiniMapButtonAngle = angle
 	end
@@ -59,10 +68,15 @@ function Core.UI.MouseModeChange(mode)
 		return
 	end
 
-	local miniMapTexture = CyborgMMO_MiniMapButtonIcon
-	local miniMapGlowTexture = CyborgMMO_MiniMapButtonIconGlow
-	local openButtonTexture = CyborgMMO_OpenButtonPageOpenMainForm:GetNormalTexture()
-	local openButtonGlowTexture = CyborgMMO_OpenButtonPageOpenMainForm:GetHighlightTexture()
+	local frames = getFrames()
+	local miniMapTexture = frames and frames.GetMiniMapIcon and frames.GetMiniMapIcon() or _G.CyborgMMO_MiniMapButtonIcon
+	local miniMapGlowTexture = frames and frames.GetMiniMapGlow and frames.GetMiniMapGlow() or _G.CyborgMMO_MiniMapButtonIconGlow
+	local openButtonControl = frames and frames.GetOpenButtonControl and frames.GetOpenButtonControl() or _G.CyborgMMO_OpenButtonPageOpenMainForm
+	if not miniMapTexture or not miniMapGlowTexture or not openButtonControl then
+		return
+	end
+	local openButtonTexture = openButtonControl:GetNormalTexture()
+	local openButtonGlowTexture = openButtonControl:GetHighlightTexture()
 	miniMapTexture:SetVertexColor(unpack(colors.main))
 	miniMapGlowTexture:SetVertexColor(unpack(colors.glow))
 	openButtonTexture:SetVertexColor(colors.main[1], colors.main[2], colors.main[3], 0.75)
@@ -70,24 +84,37 @@ function Core.UI.MouseModeChange(mode)
 end
 
 function Core.UI.SetMainPageSize(percent)
-	CyborgMMO_MainPage:SetScale(percent)
+	local frames = getFrames()
+	local mainPage = frames and frames.GetMainPage and frames.GetMainPage() or _G.CyborgMMO_MainPage
+	if mainPage then
+		mainPage:SetScale(percent)
+	end
 	if Core.Runtime.settingsLoaded then
 		Core.Runtime.settings.Plugin = percent
 	end
 end
 
 function Core.UI.SetOpenButtonSize(percent)
-	CyborgMMO_OpenButtonPage:SetScale(percent)
+	local frames = getFrames()
+	local openButtonPage = frames and frames.GetOpenButtonPage and frames.GetOpenButtonPage() or _G.CyborgMMO_OpenButtonPage
+	if openButtonPage then
+		openButtonPage:SetScale(percent)
+	end
 	if Core.Runtime.settingsLoaded then
 		Core.Runtime.settings.Cyborg = percent
 	end
 end
 
 function Core.UI.SetCyborgHeadButton(visible)
+	local frames = getFrames()
+	local openButtonPage = frames and frames.GetOpenButtonPage and frames.GetOpenButtonPage() or _G.CyborgMMO_OpenButtonPage
+	if not openButtonPage then
+		return
+	end
 	if visible then
-		CyborgMMO_OpenButtonPage:Show()
+		openButtonPage:Show()
 	else
-		CyborgMMO_OpenButtonPage:Hide()
+		openButtonPage:Hide()
 	end
 	if Core.Runtime.settingsLoaded then
 		Core.Runtime.settings.CyborgButton = toBoolean(visible)
@@ -95,10 +122,15 @@ function Core.UI.SetCyborgHeadButton(visible)
 end
 
 function Core.UI.SetMiniMapButton(visible)
+	local frames = getFrames()
+	local miniMapButton = frames and frames.GetMiniMapButton and frames.GetMiniMapButton() or _G.CyborgMMO_MiniMapButton
+	if not miniMapButton then
+		return
+	end
 	if visible then
-		CyborgMMO_MiniMapButton:Show()
+		miniMapButton:Show()
 	else
-		CyborgMMO_MiniMapButton:Hide()
+		miniMapButton:Hide()
 	end
 	if Core.Runtime.settingsLoaded then
 		Core.Runtime.settings.MiniMapButton = toBoolean(visible)
@@ -127,11 +159,18 @@ end
 
 function Core.UI.SetDefaultSettings()
 	local defaults = Core.Globals.GetDefaultSettings()
+	local frames = getFrames()
+	local openButtonControl = frames and frames.GetOpenButtonControl and frames.GetOpenButtonControl() or _G.CyborgMMO_OpenButtonPageOpenMainForm
+	local mainPage = frames and frames.GetMainPage and frames.GetMainPage() or _G.CyborgMMO_MainPage
 
-	CyborgMMO_OpenButtonPageOpenMainForm:ClearAllPoints()
-	CyborgMMO_MainPage:ClearAllPoints()
-	CyborgMMO_OpenButtonPageOpenMainForm:SetPoint("LEFT", UIParent, "LEFT", 0, 0)
-	CyborgMMO_MainPage:SetPoint("LEFT", UIParent, "LEFT", 0, 0)
+	if openButtonControl then
+		openButtonControl:ClearAllPoints()
+		openButtonControl:SetPoint("LEFT", UIParent, "LEFT", 0, 0)
+	end
+	if mainPage then
+		mainPage:ClearAllPoints()
+		mainPage:SetPoint("LEFT", UIParent, "LEFT", 0, 0)
+	end
 
 	Core.UI.SetOpenButtonSize(defaults.Cyborg)
 	Core.UI.SetMainPageSize(defaults.Plugin)

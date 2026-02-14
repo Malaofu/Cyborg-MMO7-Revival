@@ -15,6 +15,7 @@ local Core = CyborgMMO.Core
 Core.UI = Core.UI or {}
 Core.UI.Main = Core.UI.Main or {}
 local FrameLookup = Core.UI.FrameLookup
+local Frames = Core.UI.Frames
 
 local function BindMainPageButtons(mainPage)
 	for _, suffix in ipairs(MAIN_PAGE_CALLBACK_SUFFIXES) do
@@ -48,6 +49,7 @@ local function MainPageOnEvent(self, event, ...)
 end
 
 function Core.UI.Main.OnLoad(self)
+	Frames.SetMainPage(self)
 	BindMainPageButtons(self)
 	Core.Events.Loaded()
 	self:RegisterForDrag("LeftButton", "RightButton")
@@ -57,16 +59,26 @@ function Core.UI.Main.OnLoad(self)
 end
 
 function Core.UI.Main.Close()
-	CyborgMMO_MainPage:Hide()
+	local mainPage = Frames.GetMainPage()
+	if mainPage then
+		mainPage:Hide()
+	end
 end
 
 function Core.UI.Main.Open()
-	CyborgMMO_MainPage:Show()
-	CyborgMMO_RatQuickPage:Hide()
+	local mainPage = Frames.GetMainPage()
+	local quickPage = Frames.GetRatQuickPage()
+	if mainPage then
+		mainPage:Show()
+	end
+	if quickPage then
+		quickPage:Hide()
+	end
 end
 
 function Core.UI.Main.IsOpen()
-	return CyborgMMO_MainPage:IsVisible()
+	local mainPage = Frames.GetMainPage()
+	return mainPage and mainPage:IsVisible() or false
 end
 
 function Core.UI.Main.Toggle()

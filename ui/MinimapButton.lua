@@ -6,6 +6,7 @@ local Constants = CyborgMMO.Constants
 local MEDIA_PATH = Constants.MEDIA_PATH
 local Core = CyborgMMO.Core
 local Actions = Core.UI.OpenButtonActions or {}
+local Frames = Core.UI.Frames
 
 CyborgMMO_MiniMapButton = CreateFrame("Button", "CyborgMMO_MiniMapButton", Minimap)
 CyborgMMO_MiniMapButton:SetFrameStrata("MEDIUM")
@@ -32,6 +33,10 @@ CyborgMMO_MiniMapButtonIconGlow:SetSize(20, 20)
 CyborgMMO_MiniMapButtonIconGlow:SetTexture(MEDIA_PATH .. "CyborgGlow")
 CyborgMMO_MiniMapButtonIconGlow:SetPoint("TOPLEFT", 6, -5)
 CyborgMMO_MiniMapButtonIconGlow:SetVertexColor(0.38, 0.85, 1.0, 0.90)
+
+Frames.SetMiniMapButton(CyborgMMO_MiniMapButton)
+Frames.SetMiniMapIcon(CyborgMMO_MiniMapButtonIcon)
+Frames.SetMiniMapGlow(CyborgMMO_MiniMapButtonIconGlow)
 
 CyborgMMO_MiniMapButton:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight", "ADD")
 CyborgMMO_MiniMapButton:SetScript("OnMouseUp", Actions.OnMouseUp)

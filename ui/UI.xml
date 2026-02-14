@@ -4,6 +4,7 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Script file="XmlCallbacks.lua"/>
 	<Script file="FrameLookup.lua"/>
+	<Script file="Frames.lua"/>
 	<Script file="SettingsPage.lua"/>
 	<Script file="RebindPage.lua"/>
 	<Script file="BindingDialog.lua"/>

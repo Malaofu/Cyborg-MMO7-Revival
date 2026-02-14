@@ -6,27 +6,31 @@ local Core = CyborgMMO.Core
 Core.UI = Core.UI or {}
 Core.UI.OpenButtonActions = Core.UI.OpenButtonActions or {}
 local Actions = Core.UI.OpenButtonActions
+local Frames = Core.UI.Frames
 
 function Actions.OnMouseUp(_, button)
 	if button == "RightButton" then
 		Settings.OpenToCategory(CyborgMMO_OptionPage.Category.ID)
 	else
 		Core.UI.Main.Toggle()
-		if not Core.UI.Main.IsOpen() and CyborgMMO_RatQuickPage then
-			CyborgMMO_RatQuickPage:Show()
+		local quickPage = Frames.GetRatQuickPage()
+		if not Core.UI.Main.IsOpen() and quickPage then
+			quickPage:Show()
 		end
 	end
 end
 
 function Actions.OnEnter(_)
-	if not Core.UI.Main.IsOpen() and CyborgMMO_RatQuickPage then
-		CyborgMMO_RatQuickPage:Show()
+	local quickPage = Frames.GetRatQuickPage()
+	if not Core.UI.Main.IsOpen() and quickPage then
+		quickPage:Show()
 	end
 end
 
 function Actions.OnLeave(_)
-	if CyborgMMO_RatQuickPage then
-		CyborgMMO_RatQuickPage:Hide()
+	local quickPage = Frames.GetRatQuickPage()
+	if quickPage then
+		quickPage:Hide()
 	end
 	Core.UI.Tooltip.HideProfileTooltip()
 end
