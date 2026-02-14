@@ -39,4 +39,5 @@ function WowSpell_methods:SetBinding(key)
 	SetOverrideBindingSpell(CyborgMMO_CallbackFactory.Frame, true, key, name)
 end
 
-CyborgMMO_RegisterObjectFactory("spell", WowSpell)
+CyborgMMO.Core.Objects.RegisterFactory("spell", WowSpell)
+

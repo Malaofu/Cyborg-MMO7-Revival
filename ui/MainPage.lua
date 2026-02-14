@@ -11,21 +11,25 @@ local MAIN_PAGE_CALLBACK_SUFFIXES = {
 	"QuestLog",
 	"Map",
 }
+local Core = CyborgMMO.Core
+Core.UI = Core.UI or {}
+Core.UI.Main = Core.UI.Main or {}
+local FrameLookup = Core.UI.FrameLookup
 
 local function BindMainPageButtons(mainPage)
 	for _, suffix in ipairs(MAIN_PAGE_CALLBACK_SUFFIXES) do
-		local button = CyborgMMO_GetNamedChild(mainPage, suffix)
+		local button = FrameLookup.GetNamedChild(mainPage, suffix)
 		if button then
-			CyborgMMO_CallbackIcons.new(button)
-			button:SetScript("OnClick", CyborgMMO_CallbackButton_OnClick)
-			button:SetScript("OnDragStart", CyborgMMO_CallbackButton_OnDragStart)
-			button:SetScript("OnDragStop", CyborgMMO_CallbackButton_OnDragStop)
+			Core.CallbackIcons.new(button)
+			button:SetScript("OnClick", Core.CallbackIcons.OnClick)
+			button:SetScript("OnDragStart", Core.CallbackIcons.OnDragStart)
+			button:SetScript("OnDragStop", Core.CallbackIcons.OnDragStop)
 		end
 	end
 
-	local closeButton = CyborgMMO_GetNamedChild(mainPage, "CloseButton")
+	local closeButton = FrameLookup.GetNamedChild(mainPage, "CloseButton")
 	if closeButton then
-		closeButton:SetScript("OnClick", CyborgMMO_MainPageCloseButton_OnClick)
+		closeButton:SetScript("OnClick", Core.UI.Main.Close)
 	end
 end
 
@@ -40,39 +44,40 @@ local function MainPageOnDragStop(self)
 end
 
 local function MainPageOnEvent(self, event, ...)
-	CyborgMMO_Event(event, ...)
+	Core.Events.Dispatch(event, ...)
 end
 
-function CyborgMMO_MainPage_OnLoad(self)
+function Core.UI.Main.OnLoad(self)
 	BindMainPageButtons(self)
-	CyborgMMO_Loaded()
+	Core.Events.Loaded()
 	self:RegisterForDrag("LeftButton", "RightButton")
 	self:SetScript("OnDragStart", MainPageOnDragStart)
 	self:SetScript("OnDragStop", MainPageOnDragStop)
 	self:SetScript("OnEvent", MainPageOnEvent)
 end
 
-function CyborgMMO_MainPageCloseButton_OnClick()
-	CyborgMMO_Close()
-end
-
-function CyborgMMO_Close()
+function Core.UI.Main.Close()
 	CyborgMMO_MainPage:Hide()
 end
 
-function CyborgMMO_Open()
+function Core.UI.Main.Open()
 	CyborgMMO_MainPage:Show()
 	CyborgMMO_RatQuickPage:Hide()
 end
 
-function CyborgMMO_IsOpen()
+function Core.UI.Main.IsOpen()
 	return CyborgMMO_MainPage:IsVisible()
 end
 
-function CyborgMMO_Toggle()
-	if CyborgMMO_IsOpen() then
-		CyborgMMO_Close()
+function Core.UI.Main.Toggle()
+	if Core.UI.Main.IsOpen() then
+		Core.UI.Main.Close()
 	else
-		CyborgMMO_Open()
+		Core.UI.Main.Open()
 	end
+end
+
+-- XML OnLoad callback shim.
+function CyborgMMO_MainPage_OnLoad(self)
+	Core.UI.Main.OnLoad(self)
 end

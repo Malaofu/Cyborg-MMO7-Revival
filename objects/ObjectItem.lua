@@ -30,4 +30,5 @@ function WowItem_methods:SetBinding(key)
 	SetOverrideBindingItem(CyborgMMO_CallbackFactory.Frame, true, key, name)
 end
 
-CyborgMMO_RegisterObjectFactory("item", WowItem)
+CyborgMMO.Core.Objects.RegisterFactory("item", WowItem)
+

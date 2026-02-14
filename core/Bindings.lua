@@ -8,25 +8,27 @@ local RAT7 = {
 	BUTTONS = Constants.RAT_BUTTONS,
 	MODES = Constants.RAT_MODES,
 }
+local Core = CyborgMMO.Core
+Core.Bindings = Core.Bindings or {}
 
-CyborgMMO_ModeDetected = false
+Core.Bindings.ModeDetected = false
 
-function CyborgMMO_SetDefaultKeyBindings()
+function Core.Bindings.SetDefaultKeyBindings()
 	for mode = 1, RAT7.MODES do
 		for button = 1, RAT7.BUTTONS do
 			local k = (mode - 1) * RAT7.BUTTONS + button
 			CyborgMMO_ProfileKeyBindings[k] = CyborgMMO_DefaultKeyBindings[k]
-			CyborgMMO_SetBindingButtonText(string.format("CyborgMMO_OptionPageRebindMouseRow%XMode%d", button, mode))
+			Core.UI.Rebind.SetBindingButtonText(string.format("CyborgMMO_OptionPageRebindMouseRow%XMode%d", button, mode))
 		end
 		CyborgMMO_ProfileModeKeyBindings[mode] = CyborgMMO_DefaultModeKeyBindings[mode]
-		CyborgMMO_SetBindingModeButtonText(string.format("CyborgMMO_OptionPageRebindMouseMode%d", mode), mode)
+		Core.UI.Rebind.SetBindingModeButtonText(string.format("CyborgMMO_OptionPageRebindMouseMode%d", mode), mode)
 	end
 end
 
-function CyborgMMO_SetupModeCallbacks(modeNum)
+function Core.Bindings.SetupModeCallbacks(modeNum)
 	local fn = function()
-		CyborgMMO_ModeDetected = true
-		CyborgMMO_MouseModeChange(modeNum)
+		Core.Bindings.ModeDetected = true
+		Core.UI.MouseModeChange(modeNum)
 		CyborgMMO_RatPageModel:SetMode(modeNum)
 	end
 

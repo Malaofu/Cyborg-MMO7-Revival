@@ -13,6 +13,7 @@ CyborgMMO.Constants = {
 }
 
 CyborgMMO.Data = CyborgMMO.Data or {}
+CyborgMMO.Core = CyborgMMO.Core or {}
 
 -- Canonical API: CyborgMMO.Constants / CyborgMMO.Data
 

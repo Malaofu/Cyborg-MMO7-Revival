@@ -2,7 +2,12 @@
 --~ Filename: ui/FrameLookup.lua
 --~ Description: Centralized UI frame lookup helpers
 
-function CyborgMMO_GetNamedChild(parentFrame, childSuffix)
+CyborgMMO.Core = CyborgMMO.Core or {}
+local Core = CyborgMMO.Core
+Core.UI = Core.UI or {}
+Core.UI.FrameLookup = Core.UI.FrameLookup or {}
+
+function Core.UI.FrameLookup.GetNamedChild(parentFrame, childSuffix)
 	if not parentFrame then
 		return nil
 	end
@@ -13,16 +18,16 @@ function CyborgMMO_GetNamedChild(parentFrame, childSuffix)
 	return _G[parentName .. childSuffix]
 end
 
-function CyborgMMO_GetRatModeButton(parentFrame, mode)
+function Core.UI.FrameLookup.GetRatModeButton(parentFrame, mode)
 	if type(mode) ~= "number" then
 		return nil
 	end
-	return CyborgMMO_GetNamedChild(parentFrame, "Mode" .. mode)
+	return Core.UI.FrameLookup.GetNamedChild(parentFrame, "Mode" .. mode)
 end
 
-function CyborgMMO_GetRatSlotButton(parentFrame, slot)
+function Core.UI.FrameLookup.GetRatSlotButton(parentFrame, slot)
 	if type(slot) ~= "number" then
 		return nil
 	end
-	return CyborgMMO_GetNamedChild(parentFrame, "Slot" .. slot)
+	return Core.UI.FrameLookup.GetNamedChild(parentFrame, "Slot" .. slot)
 end

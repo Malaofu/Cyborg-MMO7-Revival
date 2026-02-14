@@ -4,7 +4,8 @@
 
 local Constants = CyborgMMO.Constants
 local MEDIA_PATH = Constants.MEDIA_PATH
-local Actions = CyborgMMO_OpenButtonActions or {}
+local Core = CyborgMMO.Core
+local Actions = Core.UI.OpenButtonActions or {}
 
 CyborgMMO_MiniMapButton = CreateFrame("Button", "CyborgMMO_MiniMapButton", Minimap)
 CyborgMMO_MiniMapButton:SetFrameStrata("MEDIUM")
@@ -39,7 +40,7 @@ CyborgMMO_MiniMapButton:SetScript("OnLeave", Actions.OnLeave)
 
 local function MiniMapButtonOnUpdate(self)
 	if self:IsDragging() then
-		CyborgMMO_MiniMapButtonOnUpdate()
+		Core.UI.MiniMapButtonOnUpdate()
 	end
 end
 

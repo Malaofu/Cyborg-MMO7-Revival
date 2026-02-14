@@ -6,6 +6,9 @@
 ---@field Panel Frame
 ---@field MouseRows table
 local Constants = CyborgMMO.Constants
+local Core = CyborgMMO.Core
+Core.UI = Core.UI or {}
+Core.UI.Rebind = Core.UI.Rebind or {}
 
 local RAT_BUTTONS = Constants.RAT_BUTTONS
 local RAT_MODES = Constants.RAT_MODES
@@ -86,7 +89,7 @@ local function CreateBindingButton(row, mode, owner)
 	button:SetSize(145, 28)
 	button:SetPoint("TOPLEFT", 135 + (mode - 1) * 145, 0)
 	button:SetScript("OnClick", function()
-		CyborgMMO_BindButton(buttonName)
+		Core.UI.Rebind.BindButton(buttonName)
 	end)
 	button:SetScript("OnEvent", function(_, event)
 		OnBindingButtonEvent(buttonName, event)
@@ -133,7 +136,7 @@ local function CreateModeOverwriteRow(panel, previousRow)
 		button:SetSize(145, 28)
 		button:SetPoint("TOPLEFT", 135 + (mode - 1) * 145, 0)
 		button:SetScript("OnClick", function()
-			CyborgMMO_BindModeButton(mode)
+			Core.UI.Rebind.BindModeButton(mode)
 		end)
 		button:SetScript("OnEvent", function(_, event)
 			OnBindingModeButtonEvent(buttonName, mode, event)
@@ -181,9 +184,9 @@ CyborgMMO_OptionSubPageRebind = {
 
 CyborgMMO_OptionSubPageRebind:Initialize()
 
-function CyborgMMO_BindButton(name)
+function Core.UI.Rebind.BindButton(name)
 	BindSession:SetTarget(name)
-	local index = CyborgMMO_GetButtonIndex(name)
+	local index = Core.UI.Rebind.GetButtonIndex(name)
 	local mode = 1
 	while index > RAT_BUTTONS do
 		mode = mode + 1
@@ -193,30 +196,30 @@ function CyborgMMO_BindButton(name)
 
 	ShowBindingDialog(
 		buttonStr .. " Mode " .. mode,
-		CyborgMMO_ProfileKeyBindings[CyborgMMO_GetButtonIndex(BindSession:GetTarget())]
+		CyborgMMO_ProfileKeyBindings[Core.UI.Rebind.GetButtonIndex(BindSession:GetTarget())]
 	)
 end
 
-function CyborgMMO_BindModeButton(mode)
+function Core.UI.Rebind.BindModeButton(mode)
 	BindSession:SetTarget("CyborgMMO_OptionSubPageRebindMouseMode" .. mode)
 	local buttonStr = CyborgMMO_StringTable.CyborgMMO_OptionPageRebindMouseModeName
 
 	ShowBindingDialog(buttonStr .. " Mode " .. mode, CyborgMMO_ProfileModeKeyBindings[mode])
 end
 
-function CyborgMMO_SetBindingButtonText(name)
+function Core.UI.Rebind.SetBindingButtonText(name)
 	SetBindingButtonText(name)
 end
 
-function CyborgMMO_SetBindingModeButtonText(name, mode)
+function Core.UI.Rebind.SetBindingModeButtonText(name, mode)
 	SetBindingModeButtonText(name, mode)
 end
 
-function CyborgMMO_GetButtonIndex(name)
+function Core.UI.Rebind.GetButtonIndex(name)
 	return GetButtonIndexFromName(name)
 end
 
-function CyborgMMO_SetNewKeybind(keyOrButton)
+function Core.UI.Rebind.SetNewKeybind(keyOrButton)
 	local target = BindSession:GetTarget()
 	if not target then
 		return
@@ -225,13 +228,13 @@ function CyborgMMO_SetNewKeybind(keyOrButton)
 	if BindSession:IsModeBinding() then
 		local mode = BindSession:GetMode() or 1
 		CyborgMMO_ProfileModeKeyBindings[mode] = keyOrButton
-		CyborgMMO_SetBindingModeButtonText(target, mode)
+		Core.UI.Rebind.SetBindingModeButtonText(target, mode)
 	else
-		CyborgMMO_ProfileKeyBindings[CyborgMMO_GetButtonIndex(target)] = keyOrButton
-		CyborgMMO_SetBindingButtonText(target)
+		CyborgMMO_ProfileKeyBindings[Core.UI.Rebind.GetButtonIndex(target)] = keyOrButton
+		Core.UI.Rebind.SetBindingButtonText(target)
 	end
 
 	CyborgMMO_BindingFrame:Hide()
 	CyborgMMO_RatPageModel:LoadData()
-	CyborgMMO_SetupAllModeCallbacks()
+	Core.UI.SetupAllModeCallbacks()
 end

@@ -35,4 +35,5 @@ function WowBattlePet_methods:SetBinding(key)
 	end)
 end
 
-CyborgMMO_RegisterObjectFactory("battlepet", WowBattlePet)
+CyborgMMO.Core.Objects.RegisterFactory("battlepet", WowBattlePet)
+

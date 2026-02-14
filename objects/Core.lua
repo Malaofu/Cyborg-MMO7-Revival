@@ -5,6 +5,9 @@
 CyborgMMO_ObjectInternals = CyborgMMO_ObjectInternals or {}
 local O = CyborgMMO_ObjectInternals
 local Constants = CyborgMMO.Constants
+CyborgMMO.Core = CyborgMMO.Core or {}
+local Core = CyborgMMO.Core
+Core.Objects = Core.Objects or {}
 
 O.MEDIA_PATH = Constants.MEDIA_PATH
 O.FactoryByType = O.FactoryByType or {}
@@ -65,14 +68,14 @@ end
 
 ---@param objectType objectType
 ---@param factoryFn function
-function CyborgMMO_RegisterObjectFactory(objectType, factoryFn)
+function Core.Objects.RegisterFactory(objectType, factoryFn)
 	O.FactoryByType[objectType] = factoryFn
 end
 
 ---@param objectType objectType
 ---@param ... unknown
 ---@return table|nil
-function CyborgMMO_CreateWowObject(objectType, ...)
+function Core.Objects.Create(objectType, ...)
 	local factory = O.FactoryByType[objectType]
 	if not factory then
 		CyborgMMO_DPrint("unsupported wow object:", objectType, ...)
@@ -86,6 +89,6 @@ function CyborgMMO_CreateWowObject(objectType, ...)
 	return object
 end
 
-function CyborgMMO_ClearBinding(key)
+function Core.Objects.ClearBinding(key)
 	SetOverrideBinding(CyborgMMO_CallbackFactory.Frame, true, key, nil)
 end

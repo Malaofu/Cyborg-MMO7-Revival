@@ -2,8 +2,14 @@
 --~ Filename: ui/Tooltip.lua
 --~ Description: Tooltip presentation helpers
 
-function CyborgMMO_ShowProfileTooltip(self)
-	if not CyborgMMO_ModeDetected then
+CyborgMMO.Core = CyborgMMO.Core or {}
+local Core = CyborgMMO.Core
+Core.UI = Core.UI or {}
+Core.UI.Tooltip = Core.UI.Tooltip or {}
+
+function Core.UI.Tooltip.ShowProfileTooltip(self)
+	local modeDetected = CyborgMMO.Core and CyborgMMO.Core.Bindings and CyborgMMO.Core.Bindings.ModeDetected
+	if not modeDetected then
 		GameTooltip:SetOwner(self:GetParent(), "ANCHOR_RIGHT")
 		GameTooltip:SetText(CyborgMMO_StringTable.CyborgMMO_ToolTipLine1, nil, nil, nil, nil, 1)
 		GameTooltip:AddLine(nil, 0.8, 1.0, 0.8)
@@ -18,6 +24,6 @@ function CyborgMMO_ShowProfileTooltip(self)
 	end
 end
 
-function CyborgMMO_HideProfileTooltip()
+function Core.UI.Tooltip.HideProfileTooltip()
 	GameTooltip:Hide()
 end

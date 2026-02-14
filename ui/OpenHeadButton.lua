@@ -4,6 +4,7 @@
 
 local Constants = CyborgMMO.Constants
 local MEDIA_PATH = Constants.MEDIA_PATH
+local Core = CyborgMMO.Core
 
 CyborgMMO_OpenButtonPage = CreateFrame("Frame", "CyborgMMO_OpenButtonPage", UIParent, "BackdropTemplate")
 CyborgMMO_OpenButtonPage:SetSize(50, 50)
@@ -31,11 +32,11 @@ local function OnDragStop(self)
 end
 
 local function OpenButtonOnEnter(self)
-	CyborgMMO_ShowProfileTooltip(self:GetNormalTexture())
+	Core.UI.Tooltip.ShowProfileTooltip(self:GetNormalTexture())
 end
 
 CyborgMMO_OpenButtonPageOpenMainForm:SetScript("OnDragStart", OnDragStart)
 CyborgMMO_OpenButtonPageOpenMainForm:SetScript("OnDragStop", OnDragStop)
-CyborgMMO_OpenButtonPageOpenMainForm:SetScript("OnClick", CyborgMMO_Toggle)
-CyborgMMO_OpenButtonPageOpenMainForm:SetScript("OnLeave", CyborgMMO_HideProfileTooltip)
+CyborgMMO_OpenButtonPageOpenMainForm:SetScript("OnClick", Core.UI.Main.Toggle)
+CyborgMMO_OpenButtonPageOpenMainForm:SetScript("OnLeave", Core.UI.Tooltip.HideProfileTooltip)
 CyborgMMO_OpenButtonPageOpenMainForm:SetScript("OnEnter", OpenButtonOnEnter)

@@ -44,4 +44,5 @@ function WowCallback_methods:SetBinding(key)
 end
 
 O.CreateCallbackObject = WowCallback
-CyborgMMO_RegisterObjectFactory("callback", WowCallback)
+CyborgMMO.Core.Objects.RegisterFactory("callback", WowCallback)
+

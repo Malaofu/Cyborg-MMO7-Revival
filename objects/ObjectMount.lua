@@ -76,11 +76,12 @@ function WowMount_methods:SetBinding(key)
 	end)
 end
 
-CyborgMMO_RegisterObjectFactory("mount", WowMount)
-CyborgMMO_RegisterObjectFactory("companion", function(spellID)
+CyborgMMO.Core.Objects.RegisterFactory("mount", WowMount)
+CyborgMMO.Core.Objects.RegisterFactory("companion", function(spellID)
 	local mountID = FindMountFromSpellID(spellID)
 	if mountID then
 		return WowMount(mountID)
 	end
 	return nil
 end)
+

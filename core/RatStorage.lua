@@ -8,9 +8,11 @@ local RAT7 = {
 	BUTTONS = Constants.RAT_BUTTONS,
 	MODES = Constants.RAT_MODES,
 }
+local Core = CyborgMMO.Core
+Core.Storage = Core.Storage or {}
 
-function CyborgMMO_GetSaveData()
-	assert(CyborgMMO_Runtime.varsLoaded)
+function Core.Storage.GetSaveData()
+	assert(Core.Runtime.varsLoaded)
 	if not CyborgMMO7SaveData then
 		CyborgMMO7SaveData = {
 			Settings = DefaultSettings,
@@ -19,9 +21,9 @@ function CyborgMMO_GetSaveData()
 	return CyborgMMO7SaveData
 end
 
-function CyborgMMO_SetRatSaveData(objects)
-	assert(CyborgMMO_Runtime.varsLoaded)
-	local specIndex = CyborgMMO_GetCurrentSpecIndex()
+function Core.Storage.SetRatSaveData(objects)
+	assert(Core.Runtime.varsLoaded)
+	local specIndex = Core.GetCurrentSpecIndex()
 	local ratData = {}
 	for mode = 1, RAT7.MODES do
 		ratData[mode] = {}
@@ -31,16 +33,16 @@ function CyborgMMO_SetRatSaveData(objects)
 			end
 		end
 	end
-	local saveData = CyborgMMO_GetSaveData()
+	local saveData = Core.Storage.GetSaveData()
 	if not saveData.Rat then
 		saveData.Rat = {}
 	end
 	saveData.Rat[specIndex] = ratData
 end
 
-function CyborgMMO_GetRatSaveData()
-	local specIndex = CyborgMMO_GetCurrentSpecIndex()
+function Core.Storage.GetRatSaveData()
+	local specIndex = Core.GetCurrentSpecIndex()
 	CyborgMMO_DPrint("returning rat data for spec:", specIndex)
-	local saveData = CyborgMMO_GetSaveData()
+	local saveData = Core.Storage.GetSaveData()
 	return saveData.Rat and saveData.Rat[specIndex]
 end

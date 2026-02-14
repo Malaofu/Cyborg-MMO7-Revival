@@ -33,4 +33,5 @@ function WowMacro_methods:SetBinding(key)
 	SetOverrideBindingMacro(CyborgMMO_CallbackFactory.Frame, true, key, self.name)
 end
 
-CyborgMMO_RegisterObjectFactory("macro", WowMacro)
+CyborgMMO.Core.Objects.RegisterFactory("macro", WowMacro)
+

@@ -37,6 +37,7 @@ local UnsupportedCursorTypes = {
 }
 
 local Constants = CyborgMMO.Constants
+local Core = CyborgMMO.Core
 
 local function ResolveUnknownMountCursor(mountID)
 	local mountMap, localMountMap = CyborgMMO.GetMountMaps()
@@ -65,23 +66,23 @@ end
 
 local CursorObjectFactories = {
 	item = function(a)
-		return CyborgMMO_CreateWowObject("item", a)
+		return Core.Objects.Create("item", a)
 	end,
 	spell = function(_, _, c)
-		return CyborgMMO_CreateWowObject("spell", c)
+		return Core.Objects.Create("spell", c)
 	end,
 	macro = function(a)
 		local name = GetMacroInfo(a)
-		return CyborgMMO_CreateWowObject("macro", name)
+		return Core.Objects.Create("macro", name)
 	end,
 	battlepet = function(a)
-		return CyborgMMO_CreateWowObject("battlepet", a)
+		return Core.Objects.Create("battlepet", a)
 	end,
 	mount = function(a)
-		return CyborgMMO_CreateWowObject("mount", a)
+		return Core.Objects.Create("mount", a)
 	end,
 	equipmentset = function(a)
-		return CyborgMMO_CreateWowObject("equipmentset", a)
+		return Core.Objects.Create("equipmentset", a)
 	end,
 }
 

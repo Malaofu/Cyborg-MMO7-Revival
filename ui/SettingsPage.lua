@@ -19,6 +19,8 @@ DefaultSettings = {
 	MiniMapButtonAngle = math.rad(150),
 }
 
+local Core = CyborgMMO.Core
+
 CyborgMMO_OptionPage = {
 	Initialize = function(self)
 		local category = Settings.RegisterVerticalLayoutCategory("Cyborg MMO7")
@@ -43,7 +45,7 @@ CyborgMMO_OptionPage = {
 				name,
 				defaultValue,
 				function() return CyborgMMO7SaveData.Settings.MiniMapButton end,
-				function(value) CyborgMMO_SetMiniMapButton(value) end
+				function(value) Core.UI.SetMiniMapButton(value) end
 			)
 			Settings.CreateCheckbox(category, setting, tooltip)
 		end
@@ -61,7 +63,7 @@ CyborgMMO_OptionPage = {
 					name,
 					defaultValue,
 					function() return CyborgMMO7SaveData.Settings.CompartmentButton end,
-					function(value) CyborgMMO_SetCompartmentButton(value) end
+					function(value) Core.UI.SetCompartmentButton(value) end
 				)
 				Settings.CreateCheckbox(category, setting, tooltip)
 			end
@@ -79,7 +81,7 @@ CyborgMMO_OptionPage = {
 				name,
 				defaultValue,
 				function() return CyborgMMO7SaveData.Settings.CyborgButton end,
-				function(value) CyborgMMO_SetCyborgHeadButton(value) end
+				function(value) Core.UI.SetCyborgHeadButton(value) end
 			)
 			Settings.CreateCheckbox(category, setting, tooltip)
 		end
@@ -96,7 +98,7 @@ CyborgMMO_OptionPage = {
 				name,
 				defaultValue,
 				function() return CyborgMMO7SaveData.Settings.PerSpecBindings end,
-				function(value) CyborgMMO_SetPerSpecBindings(value) end
+				function(value) Core.UI.SetPerSpecBindings(value) end
 			)
 			Settings.CreateCheckbox(category, setting, tooltip)
 		end
@@ -113,7 +115,7 @@ CyborgMMO_OptionPage = {
 				name,
 				defaultValue,
 				function() return CyborgMMO7SaveData.Settings.Cyborg * 100 end,
-				function(value) CyborgMMO_SetOpenButtonSize(value / 100) end
+				function(value) Core.UI.SetOpenButtonSize(value / 100) end
 			)
 			Settings.CreateSlider(category, setting, SliderOptions(50, 100, 1), tooltip)
 		end
@@ -130,7 +132,7 @@ CyborgMMO_OptionPage = {
 				name,
 				defaultValue,
 				function() return CyborgMMO7SaveData.Settings.Plugin * 100 end,
-				function(value) CyborgMMO_SetMainPageSize(value / 100) end
+				function(value) Core.UI.SetMainPageSize(value / 100) end
 			)
 			Settings.CreateSlider(category, setting, SliderOptions(50, 100, 1), tooltip)
 		end

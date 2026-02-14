@@ -38,4 +38,5 @@ function WowEquipmentSet_methods:SetBinding(key)
 	end)
 end
 
-CyborgMMO_RegisterObjectFactory("equipmentset", WowEquipmentSet)
+CyborgMMO.Core.Objects.RegisterFactory("equipmentset", WowEquipmentSet)
+

@@ -12,6 +12,8 @@ local REGISTERED_EVENTS = {
 }
 
 local eventHandlers = {}
+local Core = CyborgMMO.Core
+Core.Events = Core.Events or {}
 
 local function EnsureSaveDataInitialized()
 	if not CyborgMMO7SaveData then
@@ -29,88 +31,88 @@ local function RemoveStaleMountMapEntries()
 end
 
 local function MigrateLegacySaveFormatIfNeeded()
-	if CyborgMMO7SaveData[CyborgMMO_Runtime.saveName] and not CyborgMMO7SaveData.Settings then
-		local oldData = CyborgMMO7SaveData[CyborgMMO_Runtime.saveName]
+	if CyborgMMO7SaveData[Core.Runtime.saveName] and not CyborgMMO7SaveData.Settings then
+		local oldData = CyborgMMO7SaveData[Core.Runtime.saveName]
 		CyborgMMO7SaveData = {}
 		CyborgMMO7SaveData.Settings = oldData.Settings
 		CyborgMMO7SaveData.Rat = {}
-		CyborgMMO7SaveData.Rat[1] = CyborgMMO_ConvertOldRatData(oldData.Rat)
-		CyborgMMO7SaveData[CyborgMMO_Runtime.saveName] = oldData
+		CyborgMMO7SaveData.Rat[1] = Core.SaveData.ConvertOldRatData(oldData.Rat)
+		CyborgMMO7SaveData[Core.Runtime.saveName] = oldData
 	end
 end
 
 local function ApplyRuntimeSettings()
-	local data = CyborgMMO_GetSaveData()
-	CyborgMMO_EnsureSettingsDefaults(data)
+	local data = Core.Storage.GetSaveData()
+	Core.Settings.EnsureDefaults(data)
 
-	CyborgMMO_SetOpenButtonSize(CyborgMMO_Runtime.settings.Cyborg)
-	CyborgMMO_SetMainPageSize(CyborgMMO_Runtime.settings.Plugin)
-	CyborgMMO_SetMiniMapButton(CyborgMMO_Runtime.settings.MiniMapButton)
-	CyborgMMO_SetCompartmentButton(CyborgMMO_Runtime.settings.CompartmentButton)
-	CyborgMMO_MiniMapButtonReposition(CyborgMMO_Runtime.settings.MiniMapButtonAngle)
-	CyborgMMO_SetCyborgHeadButton(CyborgMMO_Runtime.settings.CyborgButton)
-	CyborgMMO_SetPerSpecBindings(CyborgMMO_Runtime.settings.PerSpecBindings)
-	CyborgMMO_MouseModeChange(1)
+	Core.UI.SetOpenButtonSize(Core.Runtime.settings.Cyborg)
+	Core.UI.SetMainPageSize(Core.Runtime.settings.Plugin)
+	Core.UI.SetMiniMapButton(Core.Runtime.settings.MiniMapButton)
+	Core.UI.SetCompartmentButton(Core.Runtime.settings.CompartmentButton)
+	Core.UI.MiniMapButtonReposition(Core.Runtime.settings.MiniMapButtonAngle)
+	Core.UI.SetCyborgHeadButton(Core.Runtime.settings.CyborgButton)
+	Core.UI.SetPerSpecBindings(Core.Runtime.settings.PerSpecBindings)
+	Core.UI.MouseModeChange(1)
 end
 
 local function LoadBindings()
 	CyborgMMO_RatPageModel:LoadData()
-	CyborgMMO_SetupAllModeCallbacks()
+	Core.UI.SetupAllModeCallbacks()
 end
 
 local function TryAdvanceLoadState()
-	if not CyborgMMO_IsLoadReady() then
+	if not Core.IsLoadReady() then
 		return
 	end
 
-	if not CyborgMMO_Runtime.settingsLoaded then
+	if not Core.Runtime.settingsLoaded then
 		ApplyRuntimeSettings()
-		CyborgMMO_Runtime.settingsLoaded = true
+		Core.Runtime.settingsLoaded = true
 	end
 
-	if not CyborgMMO_Runtime.bindingsLoaded then
+	if not Core.Runtime.bindingsLoaded then
 		LoadBindings()
-		CyborgMMO_Runtime.bindingsLoaded = true
+		Core.Runtime.bindingsLoaded = true
 	end
 end
 
 function eventHandlers.VARIABLES_LOADED()
-	CyborgMMO_Runtime.varsLoaded = true
+	Core.Runtime.varsLoaded = true
 	EnsureSaveDataInitialized()
 	RemoveStaleMountMapEntries()
-	CyborgMMO_PreLoadSaveData(CyborgMMO7SaveData, CyborgMMO_Runtime.saveName)
+	Core.SaveData.PreLoadSaveData(CyborgMMO7SaveData, Core.Runtime.saveName)
 end
 
 function eventHandlers.CYBORGMMO_ASYNC_DATA_LOADED()
-	CyborgMMO_Runtime.asyncDataLoaded = true
+	Core.Runtime.asyncDataLoaded = true
 	MigrateLegacySaveFormatIfNeeded()
 end
 
 function eventHandlers.PLAYER_ENTERING_WORLD()
-	CyborgMMO_Runtime.enteredWorld = true
+	Core.Runtime.enteredWorld = true
 end
 
 function eventHandlers.PLAYER_REGEN_DISABLED()
-	if CyborgMMO_IsOpen() then
-		CyborgMMO_Runtime.autoClosed = true
-		CyborgMMO_Close()
+	if Core.UI.Main.IsOpen() then
+		Core.Runtime.autoClosed = true
+		Core.UI.Main.Close()
 	end
 end
 
 function eventHandlers.PLAYER_REGEN_ENABLED()
-	if CyborgMMO_Runtime.autoClosed then
-		CyborgMMO_Runtime.autoClosed = false
-		CyborgMMO_Open()
+	if Core.Runtime.autoClosed then
+		Core.Runtime.autoClosed = false
+		Core.UI.Main.Open()
 	end
 end
 
 function eventHandlers.ACTIVE_TALENT_GROUP_CHANGED()
-	CyborgMMO_Runtime.bindingsLoaded = false
+	Core.Runtime.bindingsLoaded = false
 end
 
 eventHandlers.PLAYER_SPECIALIZATION_CHANGED = eventHandlers.ACTIVE_TALENT_GROUP_CHANGED
 
-function CyborgMMO_Event(event, ...)
+function Core.Events.Dispatch(event, ...)
 	local handler = eventHandlers[event]
 	if handler then
 		handler(...)
@@ -132,7 +134,7 @@ local function disableOldAddon()
 	end
 end
 
-function CyborgMMO_Loaded()
+function Core.Events.Loaded()
 	disableOldAddon()
 	for _, eventName in ipairs(REGISTERED_EVENTS) do
 		CyborgMMO_MainPage:RegisterEvent(eventName)

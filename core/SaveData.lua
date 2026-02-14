@@ -23,6 +23,8 @@ local KNOWN_OLD_OBJECT_TYPES = {
 local STEP_TIMEOUT_SECONDS = 1
 local TOTAL_TIMEOUT_SECONDS = 15
 local preloadFrame
+local Core = CyborgMMO.Core
+Core.SaveData = Core.SaveData or {}
 
 local function getSpellID(name)
 	local link = C_Spell.GetSpellLink(name)
@@ -36,7 +38,7 @@ local function getSpellID(name)
 	return nil
 end
 
-function CyborgMMO_ConvertOldRatData(oldData)
+function Core.SaveData.ConvertOldRatData(oldData)
 	local newData = {}
 	for mode, modeData in ipairs(oldData) do
 		newData[mode] = {}
@@ -131,13 +133,13 @@ local function preloadFrameOnUpdate(self, dt)
 		self:Hide()
 		self:SetParent(nil)
 		preloadFrame = nil
-		CyborgMMO_Event("CYBORGMMO_ASYNC_DATA_LOADED")
+		Core.Events.Dispatch("CYBORGMMO_ASYNC_DATA_LOADED")
 	else
 		self.step_timeout = STEP_TIMEOUT_SECONDS
 	end
 end
 
-function CyborgMMO_PreLoadSaveData(data, saveName)
+function Core.SaveData.PreLoadSaveData(data, saveName)
 	local itemIDs = {}
 	local petIDs = {}
 

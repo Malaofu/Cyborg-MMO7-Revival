@@ -4,7 +4,7 @@
 
 local Constants = CyborgMMO.Constants
 local MEDIA_PATH = Constants.MEDIA_PATH
-local Actions = CyborgMMO_OpenButtonActions or {}
+local Actions = CyborgMMO.Core.UI.OpenButtonActions or {}
 
 local CompartmentAdapter = {}
 CompartmentAdapter.Data = {

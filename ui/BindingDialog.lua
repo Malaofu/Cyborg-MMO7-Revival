@@ -58,17 +58,17 @@ CyborgMMO_BindingFrame = {
 		exitButton:SetScript("OnClick", function() frame:Hide() end)
 
 		frame:SetScript("OnKeyDown", function(_, key)
-			CyborgMMO_BindingFrameOnKeyDown(key)
+			CyborgMMO.Core.UI.BindingDialog.OnKeyDown(key)
 		end)
 		frame:SetScript("OnMouseWheel", function(_, delta)
 			if delta > 0 then
-				CyborgMMO_BindingFrameOnKeyDown("MOUSEWHEELUP")
+				CyborgMMO.Core.UI.BindingDialog.OnKeyDown("MOUSEWHEELUP")
 			else
-				CyborgMMO_BindingFrameOnKeyDown("MOUSEWHEELDOWN")
+				CyborgMMO.Core.UI.BindingDialog.OnKeyDown("MOUSEWHEELDOWN")
 			end
 		end)
 		frame:SetScript("OnClick", function(_, button)
-			CyborgMMO_BindingFrameOnKeyDown(button)
+			CyborgMMO.Core.UI.BindingDialog.OnKeyDown(button)
 		end)
 		frame:SetScript("OnShow", function()
 			CyborgMMO_LoadStrings(headerText)
@@ -79,7 +79,11 @@ CyborgMMO_BindingFrame = {
 
 CyborgMMO_BindingFrame:Initialize()
 
-function CyborgMMO_BindingFrameOnKeyDown(keyOrButton)
+CyborgMMO.Core = CyborgMMO.Core or {}
+CyborgMMO.Core.UI = CyborgMMO.Core.UI or {}
+CyborgMMO.Core.UI.BindingDialog = CyborgMMO.Core.UI.BindingDialog or {}
+
+function CyborgMMO.Core.UI.BindingDialog.OnKeyDown(keyOrButton)
 	if keyOrButton == "ESCAPE" then
 		CyborgMMO_BindingFrame:Hide()
 		return
@@ -150,5 +154,5 @@ function CyborgMMO_BindingFrameOnKeyDown(keyOrButton)
 		return
 	end
 
-	CyborgMMO_SetNewKeybind(keyPressed)
+	CyborgMMO.Core.UI.Rebind.SetNewKeybind(keyPressed)
 end

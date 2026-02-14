@@ -2,22 +2,24 @@
 --~ Filename: ui/OpenButtonShared.lua
 --~ Description: Shared open/minimap/compartment button behaviors
 
-CyborgMMO_OpenButtonActions = CyborgMMO_OpenButtonActions or {}
-local Actions = CyborgMMO_OpenButtonActions
+local Core = CyborgMMO.Core
+Core.UI = Core.UI or {}
+Core.UI.OpenButtonActions = Core.UI.OpenButtonActions or {}
+local Actions = Core.UI.OpenButtonActions
 
 function Actions.OnMouseUp(_, button)
 	if button == "RightButton" then
 		Settings.OpenToCategory(CyborgMMO_OptionPage.Category.ID)
 	else
-		CyborgMMO_Toggle()
-		if not CyborgMMO_IsOpen() and CyborgMMO_RatQuickPage then
+		Core.UI.Main.Toggle()
+		if not Core.UI.Main.IsOpen() and CyborgMMO_RatQuickPage then
 			CyborgMMO_RatQuickPage:Show()
 		end
 	end
 end
 
 function Actions.OnEnter(_)
-	if not CyborgMMO_IsOpen() and CyborgMMO_RatQuickPage then
+	if not Core.UI.Main.IsOpen() and CyborgMMO_RatQuickPage then
 		CyborgMMO_RatQuickPage:Show()
 	end
 end
@@ -26,5 +28,5 @@ function Actions.OnLeave(_)
 	if CyborgMMO_RatQuickPage then
 		CyborgMMO_RatQuickPage:Hide()
 	end
-	CyborgMMO_HideProfileTooltip()
+	Core.UI.Tooltip.HideProfileTooltip()
 end

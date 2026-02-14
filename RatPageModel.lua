@@ -26,6 +26,7 @@ local RAT7 = {
 	MODES = Constants.RAT_MODES,
 	SHIFT = Constants.RAT_SHIFT,
 }
+local Core = CyborgMMO.Core
 
 local function GetBindingIndex(mode, button)
 	return ((mode - 1) * RAT7.BUTTONS) + button
@@ -53,12 +54,12 @@ end
 
 function RatPageModel_methods:LoadData()
 	CyborgMMO_DPrint("Loading...")
-	local data = CyborgMMO_GetRatSaveData()
+	local data = Core.Storage.GetRatSaveData()
 	for mode=1,RAT7.MODES do
 		for button=1,RAT7.BUTTONS do
 			local buttonData = data and data[mode] and data[mode][button]
 			if buttonData and buttonData.type then
-				local object = CyborgMMO_CreateWowObject(buttonData.type, buttonData.detail, buttonData.subdetail)
+				local object = Core.Objects.Create(buttonData.type, buttonData.detail, buttonData.subdetail)
 				self:SetObjectOnButtonNoUpdate(button, mode, object)
 			else
 				self:SetObjectOnButtonNoUpdate(button, mode, nil)
@@ -70,7 +71,7 @@ end
 
 function RatPageModel_methods:PersistBindings()
 	CyborgMMO_DPrint("Saving...")
-	CyborgMMO_SetRatSaveData(self.objects)
+	Core.Storage.SetRatSaveData(self.objects)
 end
 
 function RatPageModel_methods:SetMode(mode)
@@ -92,7 +93,7 @@ function RatPageModel_methods:SetObjectOnButtonNoUpdate(button, mode, object)
 	if object then
 		object:SetBinding(binding)
 	else
-		CyborgMMO_ClearBinding(binding)
+		Core.Objects.ClearBinding(binding)
 	end
 end
 

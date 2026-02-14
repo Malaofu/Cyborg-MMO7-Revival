@@ -5,6 +5,10 @@
 --~ Author: Christopher Hooks
 
 local Constants = CyborgMMO.Constants
+local Core = CyborgMMO.Core
+Core.UI = Core.UI or {}
+Core.UI.RatPageView = Core.UI.RatPageView or {}
+local FrameLookup = Core.UI.FrameLookup
 local RAT_BUTTONS = Constants.RAT_BUTTONS
 local RAT_MODES = Constants.RAT_MODES
 local MEDIA_PATH = Constants.MEDIA_PATH
@@ -134,7 +138,7 @@ local function BindModeView(modeFrame, parentFrame)
 	end
 end
 
-function CyborgMMO_RatPage_OnLoad(frame)
+function Core.UI.RatPageView.RatPageOnLoad(frame)
 	CyborgMMO_DPrint("new Rat Page View")
 	EnsureRatSlots(frame, "CyborgMMO_TemplateSlot", MAIN_SLOT_LAYOUT, true)
 
@@ -150,18 +154,18 @@ function CyborgMMO_RatPage_OnLoad(frame)
 
 	frame._modeFrames = {}
 	for mode = 1, RAT_MODES do
-		local modeFrame = CyborgMMO_GetRatModeButton(frame, mode)
+		local modeFrame = FrameLookup.GetRatModeButton(frame, mode)
 		frame._modeFrames[mode] = modeFrame
 		BindModeView(modeFrame, frame)
 	end
 
 	for slotId = 1, RAT_BUTTONS do
-		local slot = CyborgMMO_GetRatSlotButton(frame, slotId)
+		local slot = FrameLookup.GetRatSlotButton(frame, slotId)
 		BindSlotView(slot, frame, nil, true)
 	end
 end
 
-function CyborgMMO_RatQuickPage_OnLoad(frame)
+function Core.UI.RatPageView.RatQuickPageOnLoad(frame)
 	EnsureRatSlots(frame, "CyborgMMO_TemplateSmallSlot", QUICK_SLOT_LAYOUT, false)
 
 	function frame.SlotClicked(slot)
@@ -169,7 +173,16 @@ function CyborgMMO_RatQuickPage_OnLoad(frame)
 	end
 	
 	for slotId = 1, RAT_BUTTONS do
-		local slot = CyborgMMO_GetRatSlotButton(frame, slotId)
+		local slot = FrameLookup.GetRatSlotButton(frame, slotId)
 		BindSlotView(slot, frame, 0.5, false)
 	end
+end
+
+-- XML OnLoad callback shims.
+function CyborgMMO_RatPage_OnLoad(frame)
+	Core.UI.RatPageView.RatPageOnLoad(frame)
+end
+
+function CyborgMMO_RatQuickPage_OnLoad(frame)
+	Core.UI.RatPageView.RatQuickPageOnLoad(frame)
 end

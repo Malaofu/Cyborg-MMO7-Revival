@@ -4,7 +4,9 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Script file="Debug.lua"/>
 	<Script file="Bindings.lua"/>
-	<Script file="RuntimeSettings.lua"/>
+	<Script file="RuntimeState.lua"/>
+	<Script file="SettingsState.lua"/>
+	<Script file="UIStateApply.lua"/>
 	<Script file="RatStorage.lua"/>
 	<Script file="SaveData.lua"/>
 	<Script file="EventRouter.lua"/>
