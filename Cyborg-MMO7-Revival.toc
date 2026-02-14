@@ -1,4 +1,4 @@
-## Interface: 11507, 40402, 50500, 120001
+## Interface: 11508, 20505, 40402, 50503, 120001
 ## Title: Cyborg MMO7 Revival
 ## IconTexture: Interface/Addons/Cyborg-MMO7-Revival/Graphics/Cyborg
 ## DefaultState: Enabled
