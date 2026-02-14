@@ -48,10 +48,13 @@ end
 CyborgMMO_OpenButtonPageOpenMainForm:SetScript("OnDragStart", OnDragStart)
 CyborgMMO_OpenButtonPageOpenMainForm:SetScript("OnDragStop", OnDragStop)
 CyborgMMO_OpenButtonPageOpenMainForm:SetScript("OnClick", CyborgMMO_Toggle)
-CyborgMMO_OpenButtonPageOpenMainForm:SetScript("OnEnter", function(self)
+
+local function OpenButtonOnEnter(self)
     CyborgMMO_ShowProfileTooltip(self:GetNormalTexture())
-end)
+end
+
 CyborgMMO_OpenButtonPageOpenMainForm:SetScript("OnLeave", CyborgMMO_HideProfileTooltip)
+CyborgMMO_OpenButtonPageOpenMainForm:SetScript("OnEnter", OpenButtonOnEnter)
 
 -- Shared Button Functionality
 local buttonOnMouseUp = function(_, button)
@@ -112,39 +115,69 @@ CyborgMMO_MiniMapButton:SetScript("OnMouseUp", buttonOnMouseUp)
 CyborgMMO_MiniMapButton:SetScript("OnEnter", buttonOnEnter)
 CyborgMMO_MiniMapButton:SetScript("OnLeave", buttonOnLeave)
 
-CyborgMMO_MiniMapButton:SetScript("OnUpdate", function(self)
+local function MiniMapButtonOnUpdate(self)
     if self:IsDragging() then
         CyborgMMO_MiniMapButtonOnUpdate()
     end
-end)
+end
+
+CyborgMMO_MiniMapButton:SetScript("OnUpdate", MiniMapButtonOnUpdate)
 
 -- Addon Compartment Button
-local CyborgMmoCompartmentData = {
+local CompartmentAdapter = {}
+CompartmentAdapter.Data = {
     text = "Cyborg MMO7",
     icon = "Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\Cyborg",
     notCheckable = true,
-    func = function(_, menuInputData, menu)
+    func = function(_, menuInputData)
         buttonOnMouseUp(_, menuInputData.buttonName)
     end,
     funcOnEnter = buttonOnEnter,
     funcOnLeave = buttonOnLeave,
 }
 
-RegisterCompartmentButton = function ()
-    if AddonCompartmentFrame then
-        AddonCompartmentFrame:RegisterAddon(CyborgMmoCompartmentData)
+local function GetCompartmentFrame()
+    return _G.AddonCompartmentFrame
+end
+
+function CompartmentAdapter:Register()
+    local frame = GetCompartmentFrame()
+    if frame and frame.RegisterAddon then
+        frame:RegisterAddon(self.Data)
     end
 end
 
-UnregisterCompartmentButton = function ()
-    if AddonCompartmentFrame then
-        for i = 1, #AddonCompartmentFrame.registeredAddons do
-            local entry = AddonCompartmentFrame.registeredAddons[i]
-            if entry == CyborgMmoCompartmentData then
-                table.remove(AddonCompartmentFrame.registeredAddons, i)
-                AddonCompartmentFrame:UpdateDisplay()
-                break
+function CompartmentAdapter:Unregister()
+    local frame = GetCompartmentFrame()
+    if not frame then
+        return
+    end
+
+    if frame.UnregisterAddon then
+        frame:UnregisterAddon(self.Data.text)
+        return
+    end
+
+    local registered = frame.registeredAddons
+    if type(registered) ~= "table" then
+        return
+    end
+
+    for i = 1, #registered do
+        if registered[i] == self.Data then
+            table.remove(registered, i)
+            if frame.UpdateDisplay then
+                frame:UpdateDisplay()
             end
+            return
         end
     end
+end
+
+function RegisterCompartmentButton()
+    CompartmentAdapter:Register()
+end
+
+function UnregisterCompartmentButton()
+    CompartmentAdapter:Unregister()
 end

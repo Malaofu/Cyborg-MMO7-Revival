@@ -483,6 +483,28 @@ CyborgMMO_CallbackIcons = {
     end
 }
 
+function CyborgMMO_CallbackButton_OnLoad(self)
+    CyborgMMO_CallbackIcons.new(self)
+end
+
+function CyborgMMO_CallbackButton_OnClick(self)
+    if self.OnClick then
+        self.OnClick()
+    end
+end
+
+function CyborgMMO_CallbackButton_OnDragStart(self)
+    if self.DragStart then
+        self.DragStart()
+    end
+end
+
+function CyborgMMO_CallbackButton_OnDragStop(self)
+    if self.DragStop then
+        self.DragStop()
+    end
+end
+
 ------------------------------------------------------------------------------
 ---
 ---@param type objectType

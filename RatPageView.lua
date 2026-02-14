@@ -133,11 +133,11 @@ CyborgMMO_ModeView = {
 		self.Clicked = function()
 			local nextMode
 			if self.Id == 1 then
-				nextMode = getglobal("Mode2")
+				nextMode = _G.Mode2
 			elseif self.Id == 2 then
-				nextMode = getglobal("Mode3")
+				nextMode = _G.Mode3
 			else
-				nextMode = getglobal("Mode1")
+				nextMode = _G.Mode1
 			end
 			self:GetParent().ModeClicked(nextMode)
 		end
@@ -153,3 +153,42 @@ CyborgMMO_ModeView = {
 		return self
 	end,
 }
+
+-- XML script handlers for Rat and Quick page templates.
+function CyborgMMO_RatPage_OnLoad(self)
+	CyborgMMO_RatPageView.new(self)
+end
+
+function CyborgMMO_RatQuickPage_OnLoad(self)
+	CyborgMMO_RatQuickPageView.new(self)
+end
+
+function CyborgMMO_SlotTemplate_OnLoad(self)
+	CyborgMMO_SlotView.new(self)
+end
+
+function CyborgMMO_SlotTemplate_OnMouseDown(self, button)
+	if button == "LeftButton" and self.Clicked then
+		self.Clicked()
+	end
+end
+
+function CyborgMMO_ModeTemplate_OnLoad(self)
+	CyborgMMO_ModeView.new(self)
+end
+
+function CyborgMMO_ModeTemplate_OnClick(self)
+	if self.Clicked then
+		self.Clicked()
+	end
+end
+
+function CyborgMMO_SlotMiniTemplate_OnLoad(self)
+	CyborgMMO_SlotMiniView.new(self)
+end
+
+function CyborgMMO_SlotMiniTemplate_OnClick(self)
+	if self.Clicked then
+		self.Clicked()
+	end
+end

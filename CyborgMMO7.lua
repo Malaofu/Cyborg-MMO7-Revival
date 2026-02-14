@@ -428,10 +428,7 @@ function CyborgMMO_Event(event, ...)
 	-- load data AFTER the settings, because PerSpecBindings may affect what's loaded
 	if not BindingsLoaded and VarsLoaded and AsyncDataLoaded and EnteredWorld then
 		CyborgMMO_RatPageModel:LoadData()
-
-		CyborgMMO_SetupModeCallbacks(1)
-		CyborgMMO_SetupModeCallbacks(2)
-		CyborgMMO_SetupModeCallbacks(3)
+		CyborgMMO_SetupAllModeCallbacks()
 
 		BindingsLoaded = true
 	end
@@ -472,7 +469,13 @@ function CyborgMMO_SetupModeCallbacks(modeNum)
 	SetOverrideBindingClick(parentFrame, true, CyborgMMO_ProfileModeKeyBindings[modeNum], name, "LeftButton")
 end
 
-local function dissableOldAddon()
+function CyborgMMO_SetupAllModeCallbacks()
+	for modeNum=1,RAT7.MODES do
+		CyborgMMO_SetupModeCallbacks(modeNum)
+	end
+end
+
+local function disableOldAddon()
 	if C_AddOns.DoesAddOnExist("CyborgMMO7") then
 		local enabledState = C_AddOns.GetAddOnEnableState(UnitName("player"), "CyborgMMO7")
 		local isEnabled = (enabledState == true) or (type(enabledState) == "number" and enabledState > 0)
@@ -484,13 +487,36 @@ local function dissableOldAddon()
 end
 
 function CyborgMMO_Loaded()
-	dissableOldAddon()
+	disableOldAddon()
 	CyborgMMO_MainPage:RegisterEvent("VARIABLES_LOADED")
 	CyborgMMO_MainPage:RegisterEvent("PLAYER_ENTERING_WORLD")
 	CyborgMMO_MainPage:RegisterEvent("PLAYER_REGEN_DISABLED")
 	CyborgMMO_MainPage:RegisterEvent("PLAYER_REGEN_ENABLED")
 	CyborgMMO_MainPage:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	CyborgMMO_MainPage:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
+end
+
+function CyborgMMO_MainPage_OnLoad(self)
+	CyborgMMO_Loaded()
+	self:RegisterForDrag("LeftButton", "RightButton")
+end
+
+function CyborgMMO_MainPage_OnDragStart(self)
+	self:StartMoving()
+	self.isMoving = true
+end
+
+function CyborgMMO_MainPage_OnDragStop(self)
+	self:StopMovingOrSizing()
+	self.isMoving = false
+end
+
+function CyborgMMO_MainPage_OnEvent(self, event, ...)
+	CyborgMMO_Event(event, ...)
+end
+
+function CyborgMMO_MainPageCloseButton_OnClick()
+	CyborgMMO_Close()
 end
 
 function CyborgMMO_Close()
@@ -518,7 +544,7 @@ function CyborgMMO_GetDebugFrame()
 	for i=1,NUM_CHAT_WINDOWS do
 		local windowName = GetChatWindowInfo(i);
 		if windowName == "Debug" then
-			return getglobal("ChatFrame" .. i)
+			return _G["ChatFrame" .. i]
 		end
 	end
 end

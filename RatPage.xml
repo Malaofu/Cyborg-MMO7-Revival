@@ -52,14 +52,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
   <Button name="CyborgMMO_TemplateSlot" inherits="CyborgMMO_TemplateIcon" virtual="true">
     <Scripts>
-      <OnLoad>
-        self = CyborgMMO_SlotView.new(self)
-      </OnLoad>
-      <OnMouseDown>
-        if button == "LeftButton" then
-        self.Clicked()
-        end
-      </OnMouseDown>
+      <OnLoad function="CyborgMMO_SlotTemplate_OnLoad"/>
+      <OnMouseDown function="CyborgMMO_SlotTemplate_OnMouseDown"/>
     </Scripts>
   </Button>
 
@@ -68,12 +62,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
       <AbsDimension x="127" y="63"/>
     </Size>
     <Scripts>
-      <OnLoad>
-        self = CyborgMMO_ModeView.new(self)
-      </OnLoad>
-      <OnClick>
-        self.Clicked()
-      </OnClick>
+      <OnLoad function="CyborgMMO_ModeTemplate_OnLoad"/>
+      <OnClick function="CyborgMMO_ModeTemplate_OnClick"/>
     </Scripts>
     <ButtonText name="$parentText">
       <FontHeight>
@@ -462,9 +452,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
       </Button>
     </Frames>
     <Scripts>
-      <OnLoad>
-        self = CyborgMMO_RatPageView.new(self)
-      </OnLoad>
+      <OnLoad function="CyborgMMO_RatPage_OnLoad"/>
     </Scripts>
   </Frame>
 </Ui>

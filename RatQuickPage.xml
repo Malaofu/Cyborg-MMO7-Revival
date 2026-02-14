@@ -44,12 +44,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Button name="CyborgMMO_TemplateSmallSlot" inherits="CyborgMMO_TemplateSmallIcon" virtual="true">
 		<Scripts>
-			<OnLoad>
-				self = CyborgMMO_SlotMiniView.new(self)
-			</OnLoad>
-			<OnClick>
-				self.Clicked()
-			</OnClick>
+			<OnLoad function="CyborgMMO_SlotMiniTemplate_OnLoad"/>
+			<OnClick function="CyborgMMO_SlotMiniTemplate_OnClick"/>
 		</Scripts>
 	</Button>
 
@@ -148,9 +144,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</CheckButton>
 		</Frames>
 		<Scripts>
-			<OnLoad>
-				CyborgMMO_RatQuickPageView.new(self)
-			</OnLoad>
+			<OnLoad function="CyborgMMO_RatQuickPage_OnLoad"/>
 		</Scripts>
 	</Frame>
 </Ui>

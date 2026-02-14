@@ -15,7 +15,10 @@
 
 MountMap.lua
 Localisation.lua
-OptionPage.lua
+ui/SettingsPage.lua
+ui/RebindPage.lua
+ui/BindingDialog.lua
+ui/Tooltip.lua
 CallbackFactory.lua
 WowObjects.lua
 RatPageModel.lua
