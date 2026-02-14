@@ -553,3 +553,7 @@ if locale ~= default_locale then
 	setmetatable(CyborgMMO_StringTable, {__index=StringTables[default_locale]})
 end
 
+function CyborgMMO_LoadStrings(self)
+	self:SetText(CyborgMMO_StringTable[self:GetName()])
+end
+

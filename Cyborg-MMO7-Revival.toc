@@ -32,7 +32,10 @@ objects/ObjectEquipmentSet.lua
 objects/ObjectBattlePet.lua
 objects/ObjectMount.lua
 objects/CallbackIcons.lua
+core/Debug.lua
+core/Bindings.lua
 core/RuntimeSettings.lua
+core/RatStorage.lua
 core/SaveData.lua
 core/EventRouter.lua
 RatPageModel.lua
