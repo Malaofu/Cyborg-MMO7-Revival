@@ -374,7 +374,7 @@ function CyborgMMO_Event(event, ...)
 			AutoClosed = false
 			CyborgMMO_Open()
 		end
-	elseif event == "ACTIVE_TALENT_GROUP_CHANGED" then
+	elseif event == "ACTIVE_TALENT_GROUP_CHANGED" or event == "PLAYER_SPECIALIZATION_CHANGED" then
 		-- force a re-loading of bindings
 		BindingsLoaded = false
 	else
@@ -473,10 +473,14 @@ function CyborgMMO_SetupModeCallbacks(modeNum)
 end
 
 local function dissableOldAddon()
-	if C_AddOns.DoesAddOnExist("CyborgMMO7") and C_AddOns.GetAddOnEnableState("CyborgMMO7") then
-		C_AddOns.DisableAddOn("CyborgMMO7")
-		CyborgMMO_DPrint("Old CyborgMMO7 addon was disabled")
-	end	
+	if C_AddOns.DoesAddOnExist("CyborgMMO7") then
+		local enabledState = C_AddOns.GetAddOnEnableState(UnitName("player"), "CyborgMMO7")
+		local isEnabled = (enabledState == true) or (type(enabledState) == "number" and enabledState > 0)
+		if isEnabled then
+			C_AddOns.DisableAddOn("CyborgMMO7")
+			CyborgMMO_DPrint("Old CyborgMMO7 addon was disabled")
+		end
+	end
 end
 
 function CyborgMMO_Loaded()
@@ -486,6 +490,7 @@ function CyborgMMO_Loaded()
 	CyborgMMO_MainPage:RegisterEvent("PLAYER_REGEN_DISABLED")
 	CyborgMMO_MainPage:RegisterEvent("PLAYER_REGEN_ENABLED")
 	CyborgMMO_MainPage:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+	CyborgMMO_MainPage:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
 end
 
 function CyborgMMO_Close()
