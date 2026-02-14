@@ -126,15 +126,17 @@ function Core.UI.SetPerSpecBindings(perSpec)
 end
 
 function Core.UI.SetDefaultSettings()
+	local defaults = Core.Globals.GetDefaultSettings()
+
 	CyborgMMO_OpenButtonPageOpenMainForm:ClearAllPoints()
 	CyborgMMO_MainPage:ClearAllPoints()
 	CyborgMMO_OpenButtonPageOpenMainForm:SetPoint("LEFT", UIParent, "LEFT", 0, 0)
 	CyborgMMO_MainPage:SetPoint("LEFT", UIParent, "LEFT", 0, 0)
 
-	Core.UI.SetOpenButtonSize(0.75)
-	Core.UI.SetMainPageSize(0.75)
-	Core.UI.SetMiniMapButton(true)
-	Core.UI.SetCyborgHeadButton(true)
+	Core.UI.SetOpenButtonSize(defaults.Cyborg)
+	Core.UI.SetMainPageSize(defaults.Plugin)
+	Core.UI.SetMiniMapButton(defaults.MiniMapButton)
+	Core.UI.SetCyborgHeadButton(defaults.CyborgButton)
 end
 
 function Core.UI.SetupAllModeCallbacks()

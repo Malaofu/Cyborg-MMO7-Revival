@@ -10,17 +10,22 @@ local RAT7 = {
 }
 local Core = CyborgMMO.Core
 Core.Bindings = Core.Bindings or {}
+local Globals = Core.Globals
 
 Core.Bindings.ModeDetected = false
 
 function Core.Bindings.SetDefaultKeyBindings()
+	local profileKeyBindings = Globals.GetProfileKeyBindings()
+	local defaultKeyBindings = Globals.GetDefaultKeyBindings()
+	local profileModeKeyBindings = Globals.GetProfileModeKeyBindings()
+	local defaultModeKeyBindings = Globals.GetDefaultModeKeyBindings()
 	for mode = 1, RAT7.MODES do
 		for button = 1, RAT7.BUTTONS do
 			local k = (mode - 1) * RAT7.BUTTONS + button
-			CyborgMMO_ProfileKeyBindings[k] = CyborgMMO_DefaultKeyBindings[k]
+			profileKeyBindings[k] = defaultKeyBindings[k]
 			Core.UI.Rebind.SetBindingButtonText(string.format("CyborgMMO_OptionPageRebindMouseRow%XMode%d", button, mode))
 		end
-		CyborgMMO_ProfileModeKeyBindings[mode] = CyborgMMO_DefaultModeKeyBindings[mode]
+		profileModeKeyBindings[mode] = defaultModeKeyBindings[mode]
 		Core.UI.Rebind.SetBindingModeButtonText(string.format("CyborgMMO_OptionPageRebindMouseMode%d", mode), mode)
 	end
 end
@@ -33,5 +38,5 @@ function Core.Bindings.SetupModeCallbacks(modeNum)
 	end
 
 	local _, parentFrame, name = CyborgMMO_CallbackFactory:AddCallback(fn)
-	SetOverrideBindingClick(parentFrame, true, CyborgMMO_ProfileModeKeyBindings[modeNum], name, "LeftButton")
+	SetOverrideBindingClick(parentFrame, true, Globals.GetProfileModeKeyBindings()[modeNum], name, "LeftButton")
 end

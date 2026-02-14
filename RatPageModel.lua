@@ -27,6 +27,7 @@ local RAT7 = {
 	SHIFT = Constants.RAT_SHIFT,
 }
 local Core = CyborgMMO.Core
+local Globals = Core.Globals
 
 local function GetBindingIndex(mode, button)
 	return ((mode - 1) * RAT7.BUTTONS) + button
@@ -89,7 +90,7 @@ end
 
 function RatPageModel_methods:SetObjectOnButtonNoUpdate(button, mode, object)
 	self.objects[mode][button] = object
-	local binding = CyborgMMO_ProfileKeyBindings[GetBindingIndex(mode, button)]
+	local binding = Globals.GetProfileKeyBindings()[GetBindingIndex(mode, button)]
 	if object then
 		object:SetBinding(binding)
 	else

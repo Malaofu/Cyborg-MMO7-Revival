@@ -20,6 +20,9 @@
 --~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 --Translator into Russian ZamestoTV
 
+CyborgMMO = CyborgMMO or {}
+CyborgMMO.Core = CyborgMMO.Core or {}
+
 local Modes = {
 	["enUS"] = {
 		"ALT-CTRL-E",
@@ -534,18 +537,21 @@ local locale = GetLocale()
 -- fall back to english for missing translations
 local default_locale = 'enUS'
 
-CyborgMMO_DefaultModeKeyBindings = Modes[locale] or Modes[default_locale]
+local Core = CyborgMMO.Core
+Core.Localization = Core.Localization or {}
+
+Core.Localization.DefaultModeKeyBindings = Modes[locale] or Modes[default_locale]
 CyborgMMO_ProfileModeKeyBindings = {}
-for k,v in pairs(CyborgMMO_DefaultModeKeyBindings) do
+for k,v in pairs(Core.Localization.DefaultModeKeyBindings) do
 	CyborgMMO_ProfileModeKeyBindings[k] = v
 end
 
 CyborgMMO_StringTable = StringTables[locale] or StringTables[default_locale]
 
 -- key bindings are saved and will be replaced by SavedVariables
-CyborgMMO_DefaultKeyBindings = DefaultKeyBindings[locale] or DefaultKeyBindings[default_locale]
+Core.Localization.DefaultKeyBindings = DefaultKeyBindings[locale] or DefaultKeyBindings[default_locale]
 CyborgMMO_ProfileKeyBindings = {}
-for k,v in pairs(CyborgMMO_DefaultKeyBindings) do
+for k,v in pairs(Core.Localization.DefaultKeyBindings) do
 	CyborgMMO_ProfileKeyBindings[k] = v
 end
 

@@ -14,13 +14,10 @@ local REGISTERED_EVENTS = {
 local eventHandlers = {}
 local Core = CyborgMMO.Core
 Core.Events = Core.Events or {}
+local Globals = Core.Globals
 
 local function EnsureSaveDataInitialized()
-	if not CyborgMMO7SaveData then
-		CyborgMMO7SaveData = {
-			Settings = DefaultSettings,
-		}
-	end
+	Globals.EnsureSaveData()
 end
 
 local function RemoveStaleMountMapEntries()
@@ -31,13 +28,15 @@ local function RemoveStaleMountMapEntries()
 end
 
 local function MigrateLegacySaveFormatIfNeeded()
-	if CyborgMMO7SaveData[Core.Runtime.saveName] and not CyborgMMO7SaveData.Settings then
-		local oldData = CyborgMMO7SaveData[Core.Runtime.saveName]
-		CyborgMMO7SaveData = {}
-		CyborgMMO7SaveData.Settings = oldData.Settings
-		CyborgMMO7SaveData.Rat = {}
-		CyborgMMO7SaveData.Rat[1] = Core.SaveData.ConvertOldRatData(oldData.Rat)
-		CyborgMMO7SaveData[Core.Runtime.saveName] = oldData
+	local saveData = Globals.GetSaveData()
+	if saveData[Core.Runtime.saveName] and not saveData.Settings then
+		local oldData = saveData[Core.Runtime.saveName]
+		saveData = {}
+		saveData.Settings = oldData.Settings
+		saveData.Rat = {}
+		saveData.Rat[1] = Core.SaveData.ConvertOldRatData(oldData.Rat)
+		saveData[Core.Runtime.saveName] = oldData
+		Globals.SetSaveData(saveData)
 	end
 end
 
@@ -80,7 +79,7 @@ function eventHandlers.VARIABLES_LOADED()
 	Core.Runtime.varsLoaded = true
 	EnsureSaveDataInitialized()
 	RemoveStaleMountMapEntries()
-	Core.SaveData.PreLoadSaveData(CyborgMMO7SaveData, Core.Runtime.saveName)
+	Core.SaveData.PreLoadSaveData(Globals.GetSaveData(), Core.Runtime.saveName)
 end
 
 function eventHandlers.CYBORGMMO_ASYNC_DATA_LOADED()

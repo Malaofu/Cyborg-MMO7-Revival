@@ -7,6 +7,7 @@
 ---@field MouseRows table
 local Constants = CyborgMMO.Constants
 local Core = CyborgMMO.Core
+local Globals = Core.Globals
 Core.UI = Core.UI or {}
 Core.UI.Rebind = Core.UI.Rebind or {}
 
@@ -56,12 +57,12 @@ function BindSession:GetMode()
 end
 
 local function SetBindingButtonText(name)
-	local binding = CyborgMMO_ProfileKeyBindings[GetButtonIndexFromName(name)]
+	local binding = Globals.GetProfileKeyBindings()[GetButtonIndexFromName(name)]
 	_G[name]:SetText(binding)
 end
 
 local function SetBindingModeButtonText(name, mode)
-	local binding = CyborgMMO_ProfileModeKeyBindings[mode]
+	local binding = Globals.GetProfileModeKeyBindings()[mode]
 	_G[name]:SetText(binding)
 end
 
@@ -196,7 +197,7 @@ function Core.UI.Rebind.BindButton(name)
 
 	ShowBindingDialog(
 		buttonStr .. " Mode " .. mode,
-		CyborgMMO_ProfileKeyBindings[Core.UI.Rebind.GetButtonIndex(BindSession:GetTarget())]
+		Globals.GetProfileKeyBindings()[Core.UI.Rebind.GetButtonIndex(BindSession:GetTarget())]
 	)
 end
 
@@ -204,7 +205,7 @@ function Core.UI.Rebind.BindModeButton(mode)
 	BindSession:SetTarget("CyborgMMO_OptionSubPageRebindMouseMode" .. mode)
 	local buttonStr = CyborgMMO_StringTable.CyborgMMO_OptionPageRebindMouseModeName
 
-	ShowBindingDialog(buttonStr .. " Mode " .. mode, CyborgMMO_ProfileModeKeyBindings[mode])
+	ShowBindingDialog(buttonStr .. " Mode " .. mode, Globals.GetProfileModeKeyBindings()[mode])
 end
 
 function Core.UI.Rebind.SetBindingButtonText(name)
@@ -227,10 +228,10 @@ function Core.UI.Rebind.SetNewKeybind(keyOrButton)
 
 	if BindSession:IsModeBinding() then
 		local mode = BindSession:GetMode() or 1
-		CyborgMMO_ProfileModeKeyBindings[mode] = keyOrButton
+		Globals.GetProfileModeKeyBindings()[mode] = keyOrButton
 		Core.UI.Rebind.SetBindingModeButtonText(target, mode)
 	else
-		CyborgMMO_ProfileKeyBindings[Core.UI.Rebind.GetButtonIndex(target)] = keyOrButton
+		Globals.GetProfileKeyBindings()[Core.UI.Rebind.GetButtonIndex(target)] = keyOrButton
 		Core.UI.Rebind.SetBindingButtonText(target)
 	end
 

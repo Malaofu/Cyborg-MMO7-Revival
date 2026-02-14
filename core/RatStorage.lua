@@ -10,15 +10,11 @@ local RAT7 = {
 }
 local Core = CyborgMMO.Core
 Core.Storage = Core.Storage or {}
+local Globals = Core.Globals
 
 function Core.Storage.GetSaveData()
 	assert(Core.Runtime.varsLoaded)
-	if not CyborgMMO7SaveData then
-		CyborgMMO7SaveData = {
-			Settings = DefaultSettings,
-		}
-	end
-	return CyborgMMO7SaveData
+	return Globals.EnsureSaveData()
 end
 
 function Core.Storage.SetRatSaveData(objects)
