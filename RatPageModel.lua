@@ -65,17 +65,17 @@ function RatPageModel_methods:LoadData()
 			end
 		end
 	end
-	self:UpdateObservers()
+	self:RefreshObservers()
 end
 
-function RatPageModel_methods:SaveData()
+function RatPageModel_methods:PersistBindings()
 	CyborgMMO_DPrint("Saving...")
 	CyborgMMO_SetRatSaveData(self.objects)
 end
 
 function RatPageModel_methods:SetMode(mode)
 	self.mode = mode
-	self:UpdateObservers()
+	self:RefreshObservers()
 end
 
 function RatPageModel_methods:GetMode()
@@ -101,7 +101,8 @@ function RatPageModel_methods:SetObjectOnButton(button, mode, object)
 		CyborgMMO_DPrint("clearing "..button)
 	end
 	self:SetObjectOnButtonNoUpdate(button, mode, object)
-	self:UpdateObservers()
+	self:RefreshObservers()
+	self:PersistBindings()
 end
 
 function RatPageModel_methods:AddObserver(view)
@@ -112,11 +113,10 @@ function RatPageModel_methods:GetAllObservers()
 	return self.observers
 end
 
-function RatPageModel_methods:UpdateObservers()
+function RatPageModel_methods:RefreshObservers()
 	for i = 1, #self.observers do
 		self.observers[i].Update(self.objects, self.mode)
 	end
-	self:SaveData()
 end
 
 ------------------------------------------------------------------------------

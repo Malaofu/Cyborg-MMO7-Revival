@@ -13,22 +13,22 @@ local REGISTERED_EVENTS = {
 
 local eventHandlers = {}
 
-function eventHandlers.VARIABLES_LOADED()
-	CyborgMMO_Runtime.varsLoaded = true
+local function EnsureSaveDataInitialized()
 	if not CyborgMMO7SaveData then
 		CyborgMMO7SaveData = {
 			Settings = DefaultSettings,
 		}
 	end
+end
+
+local function RemoveStaleMountMapEntries()
 	local mountMap, localMountMap = CyborgMMO.GetMountMaps()
 	for mount in pairs(mountMap) do
 		localMountMap[mount] = nil
 	end
-	CyborgMMO_PreLoadSaveData(CyborgMMO7SaveData, CyborgMMO_Runtime.saveName)
 end
 
-function eventHandlers.CYBORGMMO_ASYNC_DATA_LOADED()
-	CyborgMMO_Runtime.asyncDataLoaded = true
+local function MigrateLegacySaveFormatIfNeeded()
 	if CyborgMMO7SaveData[CyborgMMO_Runtime.saveName] and not CyborgMMO7SaveData.Settings then
 		local oldData = CyborgMMO7SaveData[CyborgMMO_Runtime.saveName]
 		CyborgMMO7SaveData = {}
@@ -37,6 +37,53 @@ function eventHandlers.CYBORGMMO_ASYNC_DATA_LOADED()
 		CyborgMMO7SaveData.Rat[1] = CyborgMMO_ConvertOldRatData(oldData.Rat)
 		CyborgMMO7SaveData[CyborgMMO_Runtime.saveName] = oldData
 	end
+end
+
+local function ApplyRuntimeSettings()
+	local data = CyborgMMO_GetSaveData()
+	CyborgMMO_EnsureSettingsDefaults(data)
+
+	CyborgMMO_SetOpenButtonSize(CyborgMMO_Runtime.settings.Cyborg)
+	CyborgMMO_SetMainPageSize(CyborgMMO_Runtime.settings.Plugin)
+	CyborgMMO_SetMiniMapButton(CyborgMMO_Runtime.settings.MiniMapButton)
+	CyborgMMO_SetCompartmentButton(CyborgMMO_Runtime.settings.CompartmentButton)
+	CyborgMMO_MiniMapButtonReposition(CyborgMMO_Runtime.settings.MiniMapButtonAngle)
+	CyborgMMO_SetCyborgHeadButton(CyborgMMO_Runtime.settings.CyborgButton)
+	CyborgMMO_SetPerSpecBindings(CyborgMMO_Runtime.settings.PerSpecBindings)
+	CyborgMMO_MouseModeChange(1)
+end
+
+local function LoadBindings()
+	CyborgMMO_RatPageModel:LoadData()
+	CyborgMMO_SetupAllModeCallbacks()
+end
+
+local function TryAdvanceLoadState()
+	if not CyborgMMO_IsLoadReady() then
+		return
+	end
+
+	if not CyborgMMO_Runtime.settingsLoaded then
+		ApplyRuntimeSettings()
+		CyborgMMO_Runtime.settingsLoaded = true
+	end
+
+	if not CyborgMMO_Runtime.bindingsLoaded then
+		LoadBindings()
+		CyborgMMO_Runtime.bindingsLoaded = true
+	end
+end
+
+function eventHandlers.VARIABLES_LOADED()
+	CyborgMMO_Runtime.varsLoaded = true
+	EnsureSaveDataInitialized()
+	RemoveStaleMountMapEntries()
+	CyborgMMO_PreLoadSaveData(CyborgMMO7SaveData, CyborgMMO_Runtime.saveName)
+end
+
+function eventHandlers.CYBORGMMO_ASYNC_DATA_LOADED()
+	CyborgMMO_Runtime.asyncDataLoaded = true
+	MigrateLegacySaveFormatIfNeeded()
 end
 
 function eventHandlers.PLAYER_ENTERING_WORLD()
@@ -71,27 +118,7 @@ function CyborgMMO_Event(event, ...)
 		CyborgMMO_DPrint("Event is " .. tostring(event))
 	end
 
-	if not CyborgMMO_Runtime.settingsLoaded and CyborgMMO_IsLoadReady() then
-		local data = CyborgMMO_GetSaveData()
-		CyborgMMO_EnsureSettingsDefaults(data)
-
-		CyborgMMO_SetOpenButtonSize(CyborgMMO_Runtime.settings.Cyborg)
-		CyborgMMO_SetMainPageSize(CyborgMMO_Runtime.settings.Plugin)
-		CyborgMMO_SetMiniMapButton(CyborgMMO_Runtime.settings.MiniMapButton)
-		CyborgMMO_SetCompartmentButton(CyborgMMO_Runtime.settings.CompartmentButton)
-		CyborgMMO_MiniMapButtonReposition(CyborgMMO_Runtime.settings.MiniMapButtonAngle)
-		CyborgMMO_SetCyborgHeadButton(CyborgMMO_Runtime.settings.CyborgButton)
-		CyborgMMO_SetPerSpecBindings(CyborgMMO_Runtime.settings.PerSpecBindings)
-		CyborgMMO_MouseModeChange(1)
-
-		CyborgMMO_Runtime.settingsLoaded = true
-	end
-
-	if not CyborgMMO_Runtime.bindingsLoaded and CyborgMMO_IsLoadReady() then
-		CyborgMMO_RatPageModel:LoadData()
-		CyborgMMO_SetupAllModeCallbacks()
-		CyborgMMO_Runtime.bindingsLoaded = true
-	end
+	TryAdvanceLoadState()
 end
 
 local function disableOldAddon()

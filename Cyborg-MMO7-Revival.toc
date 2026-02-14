@@ -26,4 +26,3 @@ RatPageView.lua
 RatPage.xml
 RatQuickPage.xml
 MainPage.xml
-OpenButtonPage.lua

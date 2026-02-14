@@ -27,6 +27,12 @@ local function toBoolean(value)
 	return value and true or false
 end
 
+local function setDefaultIfNil(tbl, key, defaultValue)
+	if tbl[key] == nil then
+		tbl[key] = defaultValue
+	end
+end
+
 CyborgMMO_Runtime = CyborgMMO_Runtime or {
 	varsLoaded = false,
 	asyncDataLoaded = false,
@@ -58,27 +64,14 @@ function CyborgMMO_EnsureSettingsDefaults(data)
 		CyborgMMO_Runtime.settings = DefaultSettings
 		data.Settings = CyborgMMO_Runtime.settings
 	end
-	if CyborgMMO_Runtime.settings.MiniMapButton == nil then
-		CyborgMMO_Runtime.settings.MiniMapButton = DefaultSettings.MiniMapButton
-	end
-	if CyborgMMO_Runtime.settings.CompartmentButton == nil then
-		CyborgMMO_Runtime.settings.CompartmentButton = DefaultSettings.CompartmentButton
-	end
-	if CyborgMMO_Runtime.settings.CyborgButton == nil then
-		CyborgMMO_Runtime.settings.CyborgButton = DefaultSettings.CyborgButton
-	end
-	if CyborgMMO_Runtime.settings.PerSpecBindings == nil then
-		CyborgMMO_Runtime.settings.PerSpecBindings = DefaultSettings.PerSpecBindings
-	end
-	if not CyborgMMO_Runtime.settings.Cyborg then
-		CyborgMMO_Runtime.settings.Cyborg = DefaultSettings.Cyborg
-	end
-	if not CyborgMMO_Runtime.settings.Plugin then
-		CyborgMMO_Runtime.settings.Plugin = DefaultSettings.Plugin
-	end
-	if not CyborgMMO_Runtime.settings.MiniMapButtonAngle then
-		CyborgMMO_Runtime.settings.MiniMapButtonAngle = DefaultSettings.MiniMapButtonAngle
-	end
+
+	setDefaultIfNil(CyborgMMO_Runtime.settings, "MiniMapButton", DefaultSettings.MiniMapButton)
+	setDefaultIfNil(CyborgMMO_Runtime.settings, "CompartmentButton", DefaultSettings.CompartmentButton)
+	setDefaultIfNil(CyborgMMO_Runtime.settings, "CyborgButton", DefaultSettings.CyborgButton)
+	setDefaultIfNil(CyborgMMO_Runtime.settings, "PerSpecBindings", DefaultSettings.PerSpecBindings)
+	setDefaultIfNil(CyborgMMO_Runtime.settings, "Cyborg", DefaultSettings.Cyborg)
+	setDefaultIfNil(CyborgMMO_Runtime.settings, "Plugin", DefaultSettings.Plugin)
+	setDefaultIfNil(CyborgMMO_Runtime.settings, "MiniMapButtonAngle", DefaultSettings.MiniMapButtonAngle)
 end
 
 function CyborgMMO_MiniMapButtonReposition(angle)

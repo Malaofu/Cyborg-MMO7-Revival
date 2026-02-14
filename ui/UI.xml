@@ -8,4 +8,8 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Script file="BindingDialog.lua"/>
 	<Script file="Tooltip.lua"/>
 	<Script file="MainPage.lua"/>
+	<Script file="OpenButtonShared.lua"/>
+	<Script file="OpenHeadButton.lua"/>
+	<Script file="MinimapButton.lua"/>
+	<Script file="CompartmentButton.lua"/>
 </Ui>
