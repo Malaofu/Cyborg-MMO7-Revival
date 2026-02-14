@@ -7,6 +7,9 @@
 ---@field MouseRows table
 CyborgMMO_OptionSubPageRebind = {
 	Initialize = function(self)
+		local RAT_BUTTONS = CyborgMMO_Constants.RAT_BUTTONS
+		local RAT_MODES = CyborgMMO_Constants.RAT_MODES
+
 		local panel = CreateFrame("FRAME", "CyborgMMO_OptionSubPageRebind", UIParent, "BackdropTemplate")
 		self.Panel = panel
 		panel:SetPoint("TOPLEFT", 15, -15)
@@ -42,7 +45,7 @@ CyborgMMO_OptionSubPageRebind = {
 
 		self.MouseRows = {}
 		local previousRow
-		for i = 1, 13 do
+		for i = 1, RAT_BUTTONS do
 			local row = CreateFrame("FRAME", "CyborgMMO_OptionSubPageRebindMouseRow" .. string.format("%X", i), panel)
 			row:SetSize(160, 28)
 			if previousRow then
@@ -55,7 +58,7 @@ CyborgMMO_OptionSubPageRebind = {
 			rowName:SetPoint("TOPLEFT", 0, -10)
 			rowName:SetText(CyborgMMO_StringTable["CyborgMMO_OptionPageRebindMouseRow" .. string.format("%X", i) .. "Name"])
 
-			for mode = 1, 3 do
+			for mode = 1, RAT_MODES do
 				local buttonName = row:GetName() .. "Mode" .. mode
 				local button = CreateFrame("Button", buttonName, row, "UIPanelButtonTemplate")
 				button:SetSize(145, 28)
@@ -77,7 +80,7 @@ CyborgMMO_OptionSubPageRebind = {
 		modeOverwriteName:SetPoint("TOPLEFT", 0, -10)
 		modeOverwriteName:SetText(CyborgMMO_StringTable.CyborgMMO_OptionPageRebindMouseModeName)
 
-		for mode = 1, 3 do
+		for mode = 1, RAT_MODES do
 			local buttonName = modeOverwriteRow:GetName() .. mode
 			local button = CreateFrame("Button", buttonName, modeOverwriteRow, "UIPanelButtonTemplate")
 			button:SetSize(145, 28)
@@ -101,9 +104,9 @@ function CyborgMMO_BindButton(name)
 	lastButton = name
 	local index = CyborgMMO_GetButtonIndex(name)
 	local mode = 1
-	while index > 13 do
+	while index > CyborgMMO_Constants.RAT_BUTTONS do
 		mode = mode + 1
-		index = index - 13
+		index = index - CyborgMMO_Constants.RAT_BUTTONS
 	end
 	local buttonStr = CyborgMMO_StringTable["CyborgMMO_OptionPageRebindMouseRow" .. index .. "Name"]
 
@@ -137,10 +140,10 @@ function CyborgMMO_SetBindingModeButtonText(name, mode)
 end
 
 function CyborgMMO_GetButtonIndex(name)
-	local row, mode = name:match("Row(.)Mode(.)")
-	row = tonumber(row, 16)
-	mode = tonumber(mode)
-	return (mode - 1) * 13 + row
+	local s_row, s_mode = name:match("Row(.)Mode(.)")
+	local row = tonumber(s_row, 16)
+	local mode = tonumber(s_mode)
+	return (mode - 1) * CyborgMMO_Constants.RAT_BUTTONS + row
 end
 
 function CyborgMMO_SetNewKeybind(keyOrButton)

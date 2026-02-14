@@ -20,9 +20,18 @@
 --~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 local RAT7 = {
-	BUTTONS = 13,
-	MODES = 3,
-	SHIFT = 0,
+	BUTTONS = CyborgMMO_Constants.RAT_BUTTONS,
+	MODES = CyborgMMO_Constants.RAT_MODES,
+	SHIFT = CyborgMMO_Constants.RAT_SHIFT,
+}
+
+local REGISTERED_EVENTS = {
+	"VARIABLES_LOADED",
+	"PLAYER_ENTERING_WORLD",
+	"PLAYER_REGEN_DISABLED",
+	"PLAYER_REGEN_ENABLED",
+	"ACTIVE_TALENT_GROUP_CHANGED",
+	"PLAYER_SPECIALIZATION_CHANGED",
 }
 
 local function toboolean(value)
@@ -48,6 +57,49 @@ local SaveName = GetRealmName().."_"..UnitName("player")
 local Settings = nil
 local AutoClosed = false
 CyborgMMO_ModeDetected = false
+
+local function GetCurrentSpecIndex()
+	if not Settings or not Settings.PerSpecBindings then
+		return 1
+	end
+	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE or WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC then
+		return C_SpecializationInfo.GetSpecialization()
+	end
+	return GetActiveTalentGroup()
+end
+
+local function IsLoadReady()
+	return VarsLoaded and AsyncDataLoaded and EnteredWorld
+end
+
+local function EnsureSettingsDefaults(data)
+	Settings = data.Settings
+	if not Settings then
+		Settings = DefaultSettings
+		data.Settings = Settings
+	end
+	if Settings.MiniMapButton == nil then
+		Settings.MiniMapButton = DefaultSettings.MiniMapButton
+	end
+	if Settings.CompartmentButton == nil then
+		Settings.CompartmentButton = DefaultSettings.CompartmentButton
+	end
+	if Settings.CyborgButton == nil then
+		Settings.CyborgButton = DefaultSettings.CyborgButton
+	end
+	if Settings.PerSpecBindings == nil then
+		Settings.PerSpecBindings = DefaultSettings.PerSpecBindings
+	end
+	if not Settings.Cyborg then
+		Settings.Cyborg = DefaultSettings.Cyborg
+	end
+	if not Settings.Plugin then
+		Settings.Plugin = DefaultSettings.Plugin
+	end
+	if not Settings.MiniMapButtonAngle then
+		Settings.MiniMapButtonAngle = DefaultSettings.MiniMapButtonAngle
+	end
+end
 
 
 function CyborgMMO_MiniMapButtonReposition(angle)
@@ -108,16 +160,7 @@ end
 
 function CyborgMMO_SetRatSaveData(objects)
 	assert(VarsLoaded)
-	local specIndex
-	if Settings.PerSpecBindings then
-		if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE or WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC then
-			specIndex = C_SpecializationInfo.GetSpecialization()
-		else
-			specIndex = GetActiveTalentGroup()
-		end
-	else
-		specIndex = 1
-	end
+	local specIndex = GetCurrentSpecIndex()
 	local ratData = {}
 	for mode=1,RAT7.MODES do
 		ratData[mode] = {}
@@ -133,16 +176,7 @@ function CyborgMMO_SetRatSaveData(objects)
 end
 
 function CyborgMMO_GetRatSaveData()
-	local specIndex
-	if Settings.PerSpecBindings then
-		if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE or WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC then
-			specIndex = C_SpecializationInfo.GetSpecialization()
-		else
-			specIndex = GetActiveTalentGroup()
-		end
-	else
-		specIndex = 1
-	end
+	local specIndex = GetCurrentSpecIndex()
 	CyborgMMO_DPrint("returning rat data for spec:", specIndex)
 	local saveData = CyborgMMO_GetSaveData()
 	return saveData.Rat and saveData.Rat[specIndex]
@@ -310,11 +344,11 @@ local function PreLoad(data)
 	if data[SaveName] and data[SaveName].Rat then
 		for mode=1,RAT7.MODES do
 			for button=1,RAT7.BUTTONS do
-				local data = data[SaveName].Rat[mode][button]
-				if data then
+				local buttonData = data[SaveName].Rat[mode][button]
+				if buttonData then
 					-- items actually had their class overwrite the Type field
-					if not KnownOldObjectTypes[data.Type] and type(data.Detail)=='number' then
-						local itemID = data.Detail
+					if not KnownOldObjectTypes[buttonData.Type] and type(buttonData.Detail)=='number' then
+						local itemID = buttonData.Detail
 						if not C_Item.GetItemInfo(itemID) then
 							itemIDs[itemID] = true
 						end
@@ -336,78 +370,69 @@ end
 
 ------------------------------------------------------------------------------
 
+local EventHandlers = {}
+
+function EventHandlers.VARIABLES_LOADED()
+	VarsLoaded = true
+	if not CyborgMMO7SaveData then
+		CyborgMMO7SaveData = {
+			Settings = DefaultSettings,
+		}
+	end
+	for mount in pairs(CyborgMMO_MountMap) do
+		CyborgMMO_LocalMountMap[mount] = nil
+	end
+	PreLoad(CyborgMMO7SaveData)
+end
+
+function EventHandlers.CYBORGMMO_ASYNC_DATA_LOADED()
+	AsyncDataLoaded = true
+	if CyborgMMO7SaveData[SaveName] and not CyborgMMO7SaveData.Settings then
+		local oldData = CyborgMMO7SaveData[SaveName]
+		CyborgMMO7SaveData = {}
+		CyborgMMO7SaveData.Settings = oldData.Settings
+		CyborgMMO7SaveData.Rat = {}
+		CyborgMMO7SaveData.Rat[1] = ConvertOldRatData(oldData.Rat)
+		CyborgMMO7SaveData[SaveName] = oldData
+	end
+end
+
+function EventHandlers.PLAYER_ENTERING_WORLD()
+	EnteredWorld = true
+end
+
+function EventHandlers.PLAYER_REGEN_DISABLED()
+	if CyborgMMO_IsOpen() then
+		AutoClosed = true
+		CyborgMMO_Close()
+	end
+end
+
+function EventHandlers.PLAYER_REGEN_ENABLED()
+	if AutoClosed then
+		AutoClosed = false
+		CyborgMMO_Open()
+	end
+end
+
+function EventHandlers.ACTIVE_TALENT_GROUP_CHANGED()
+	BindingsLoaded = false
+end
+
+EventHandlers.PLAYER_SPECIALIZATION_CHANGED = EventHandlers.ACTIVE_TALENT_GROUP_CHANGED
+
 function CyborgMMO_Event(event, ...)
-	if event == "VARIABLES_LOADED" then
-		VarsLoaded = true
-		-- create root table if necessary
-		if not CyborgMMO7SaveData then
-			CyborgMMO7SaveData = {
-				Settings = DefaultSettings,
-			}
-		end
-		-- cleanup the local mount cache
-		for mount in pairs(CyborgMMO_MountMap) do
-			CyborgMMO_LocalMountMap[mount] = nil
-		end
-		PreLoad(CyborgMMO7SaveData)
-	elseif event == "CYBORGMMO_ASYNC_DATA_LOADED" then
-		AsyncDataLoaded = true
-		-- convert old profile
-		if CyborgMMO7SaveData[SaveName] and not CyborgMMO7SaveData.Settings then
-			local oldData = CyborgMMO7SaveData[SaveName]
-			CyborgMMO7SaveData = {}
-			CyborgMMO7SaveData.Settings = oldData.Settings
-			-- Rat is an array, with one child per talent spec/group
-			CyborgMMO7SaveData.Rat = {}
-			CyborgMMO7SaveData.Rat[1] = ConvertOldRatData(oldData.Rat)
-			CyborgMMO7SaveData[SaveName] = oldData -- for now keep the data, we may have missed something in the conversion
-		end
-	elseif event == "PLAYER_ENTERING_WORLD" then
-		EnteredWorld = true
-	elseif event == "PLAYER_REGEN_DISABLED" then
-		if CyborgMMO_IsOpen() then
-			AutoClosed = true
-			CyborgMMO_Close()
-		end
-	elseif event == "PLAYER_REGEN_ENABLED" then
-		if AutoClosed then
-			AutoClosed = false
-			CyborgMMO_Open()
-		end
-	elseif event == "ACTIVE_TALENT_GROUP_CHANGED" or event == "PLAYER_SPECIALIZATION_CHANGED" then
-		-- force a re-loading of bindings
-		BindingsLoaded = false
+	local handler = EventHandlers[event]
+	if handler then
+		handler(...)
 	else
 		CyborgMMO_DPrint("Event is "..tostring(event))
 	end
 
 	-- Fire Loading if and only if the player is in the world and vars are loaded
-	if not SettingsLoaded and VarsLoaded and AsyncDataLoaded and EnteredWorld then
+	if not SettingsLoaded and IsLoadReady() then
 		local data = CyborgMMO_GetSaveData()
-
-		Settings = data.Settings
-		if not Settings then
-			Settings = DefaultSettings
-			data.Settings = Settings
-		end
-		if Settings.MiniMapButton == nil then
-			Settings.MiniMapButton = DefaultSettings.MiniMapButton
-		end
-		if Settings.CyborgButton == nil then
-			Settings.CyborgButton = DefaultSettings.CyborgButton
-		end
-		if Settings.PerSpecBindings == nil then
-			Settings.PerSpecBindings = DefaultSettings.PerSpecBindings
-		end
-		if not Settings.Cyborg then
-			Settings.Cyborg = DefaultSettings.Cyborg
-		end
-		if not Settings.Plugin then
-			Settings.Plugin = DefaultSettings.Plugin
-		end
-		if not Settings.MiniMapButtonAngle then
-			Settings.MiniMapButtonAngle = DefaultSettings.MiniMapButtonAngle
-		end
+		EnsureSettingsDefaults(data)
 
 		-- Reload Slider values:
 		CyborgMMO_SetOpenButtonSize(Settings.Cyborg)
@@ -426,7 +451,7 @@ function CyborgMMO_Event(event, ...)
 	end
 
 	-- load data AFTER the settings, because PerSpecBindings may affect what's loaded
-	if not BindingsLoaded and VarsLoaded and AsyncDataLoaded and EnteredWorld then
+	if not BindingsLoaded and IsLoadReady() then
 		CyborgMMO_RatPageModel:LoadData()
 		CyborgMMO_SetupAllModeCallbacks()
 
@@ -488,12 +513,9 @@ end
 
 function CyborgMMO_Loaded()
 	disableOldAddon()
-	CyborgMMO_MainPage:RegisterEvent("VARIABLES_LOADED")
-	CyborgMMO_MainPage:RegisterEvent("PLAYER_ENTERING_WORLD")
-	CyborgMMO_MainPage:RegisterEvent("PLAYER_REGEN_DISABLED")
-	CyborgMMO_MainPage:RegisterEvent("PLAYER_REGEN_ENABLED")
-	CyborgMMO_MainPage:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-	CyborgMMO_MainPage:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
+	for _, eventName in ipairs(REGISTERED_EVENTS) do
+		CyborgMMO_MainPage:RegisterEvent(eventName)
+	end
 end
 
 function CyborgMMO_MainPage_OnLoad(self)

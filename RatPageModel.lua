@@ -20,12 +20,14 @@
 -- Constants --
 
 local RAT7 = {
-	BUTTONS = 13,
-	MODES = 3,
-	SHIFT = 0,
+	BUTTONS = CyborgMMO_Constants.RAT_BUTTONS,
+	MODES = CyborgMMO_Constants.RAT_MODES,
+	SHIFT = CyborgMMO_Constants.RAT_SHIFT,
 }
 
-local MIDDLEMOUSE = 1
+local function GetBindingIndex(mode, button)
+	return ((mode - 1) * RAT7.BUTTONS) + button
+end
 
 ------------------------------------------------------------------------------
 
@@ -79,19 +81,16 @@ function RatPageModel_methods:GetMode()
 end
 
 function RatPageModel_methods:GetObjectOnButton(button)
-	if not self.objects[self.mode][button] then
-		return nil
-	else
-		return self.objects[self.mode][button]
-	end
+	return self.objects[self.mode][button]
 end
 
 function RatPageModel_methods:SetObjectOnButtonNoUpdate(button, mode, object)
 	self.objects[mode][button] = object
+	local binding = CyborgMMO_ProfileKeyBindings[GetBindingIndex(mode, button)]
 	if object then
-		object:SetBinding(CyborgMMO_ProfileKeyBindings[((mode-1)*RAT7.BUTTONS)+button])
+		object:SetBinding(binding)
 	else
-		CyborgMMO_ClearBinding(CyborgMMO_ProfileKeyBindings[((mode-1)*RAT7.BUTTONS)+button])
+		CyborgMMO_ClearBinding(binding)
 	end
 end
 
@@ -112,7 +111,7 @@ function RatPageModel_methods:GetAllObservers()
 end
 
 function RatPageModel_methods:UpdateObservers()
-	for i=1,#self.observers do
+	for i = 1, #self.observers do
 		self.observers[i].Update(self.objects, self.mode)
 	end
 	self:SaveData()

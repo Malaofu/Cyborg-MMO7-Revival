@@ -15,12 +15,22 @@
 
 MountMap.lua
 Localisation.lua
+Constants.lua
+ui/FrameLookup.lua
 ui/SettingsPage.lua
 ui/RebindPage.lua
 ui/BindingDialog.lua
 ui/Tooltip.lua
 CallbackFactory.lua
-WowObjects.lua
+objects/Core.lua
+objects/ObjectCallback.lua
+objects/ObjectItem.lua
+objects/ObjectSpell.lua
+objects/ObjectMacro.lua
+objects/ObjectEquipmentSet.lua
+objects/ObjectBattlePet.lua
+objects/ObjectMount.lua
+objects/CallbackIcons.lua
 RatPageModel.lua
 RatPageController.lua
 RatPageView.lua

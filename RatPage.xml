@@ -414,7 +414,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
           </Layer>
         </Layers>
       </CheckButton>
-      <Button name="Mode1" inherits="CyborgMMO_TemplateMode" id="1">
+      <Button name="$parentMode1" inherits="CyborgMMO_TemplateMode" id="1">
         <Anchors>
           <Anchor point="TOPLEFT">
             <Offset>
@@ -426,7 +426,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         <PushedTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Mode1Selected"/>
         <HighlightTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Mode1Over"/>
       </Button>
-      <Button name="Mode2" inherits="CyborgMMO_TemplateMode" id="2">
+      <Button name="$parentMode2" inherits="CyborgMMO_TemplateMode" id="2">
         <Anchors>
           <Anchor point="TOPLEFT">
             <Offset>
@@ -438,7 +438,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         <PushedTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Mode2Selected"/>
         <HighlightTexture file="Interface\AddOns\Cyborg-MMO7-Revival\Graphics\Mode2Over"/>
       </Button>
-      <Button name="Mode3" inherits="CyborgMMO_TemplateMode" id="3">
+      <Button name="$parentMode3" inherits="CyborgMMO_TemplateMode" id="3">
         <Anchors>
           <Anchor point="TOPLEFT">
             <Offset>

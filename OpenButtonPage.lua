@@ -18,6 +18,8 @@
 --~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 -- Main Page Frame
+local MEDIA_PATH = CyborgMMO_Constants.MEDIA_PATH
+
 CyborgMMO_OpenButtonPage = CreateFrame("Frame", "CyborgMMO_OpenButtonPage", UIParent, "BackdropTemplate")
 CyborgMMO_OpenButtonPage:SetSize(50, 50)
 CyborgMMO_OpenButtonPage:SetPoint("LEFT", UIParent, "LEFT", 0, 0)
@@ -32,8 +34,8 @@ CyborgMMO_OpenButtonPageOpenMainForm:SetPoint("TOPLEFT", 16, -14)
 CyborgMMO_OpenButtonPageOpenMainForm:RegisterForDrag("LeftButton", "RightButton")
 CyborgMMO_OpenButtonPageOpenMainForm:SetMovable(true)
 
-CyborgMMO_OpenButtonPageOpenMainForm:SetNormalTexture("Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\Cyborg")
-CyborgMMO_OpenButtonPageOpenMainForm:SetHighlightTexture("Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\CyborgGlow")
+CyborgMMO_OpenButtonPageOpenMainForm:SetNormalTexture(MEDIA_PATH .. "Cyborg")
+CyborgMMO_OpenButtonPageOpenMainForm:SetHighlightTexture(MEDIA_PATH .. "CyborgGlow")
 
 local function OnDragStart(self)
     self:StartMoving()
@@ -99,13 +101,13 @@ MiniMapBorder:SetPoint("TOPLEFT", CyborgMMO_MiniMapButton, "TOPLEFT")
 
 CyborgMMO_MiniMapButtonIcon = CyborgMMO_MiniMapButton:CreateTexture("CyborgMMO_MiniMapButtonIcon", "BACKGROUND")
 CyborgMMO_MiniMapButtonIcon:SetSize(20, 20)
-CyborgMMO_MiniMapButtonIcon:SetTexture("Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\Cyborg")
+CyborgMMO_MiniMapButtonIcon:SetTexture(MEDIA_PATH .. "Cyborg")
 CyborgMMO_MiniMapButtonIcon:SetPoint("TOPLEFT", 6, -5)
 CyborgMMO_MiniMapButtonIcon:SetVertexColor(0.0, 0.0, 0.0, 1)
 
 CyborgMMO_MiniMapButtonIconGlow = CyborgMMO_MiniMapButton:CreateTexture("CyborgMMO_MiniMapButtonIconGlow", "ARTWORK")
 CyborgMMO_MiniMapButtonIconGlow:SetSize(20, 20)
-CyborgMMO_MiniMapButtonIconGlow:SetTexture("Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\CyborgGlow")
+CyborgMMO_MiniMapButtonIconGlow:SetTexture(MEDIA_PATH .. "CyborgGlow")
 CyborgMMO_MiniMapButtonIconGlow:SetPoint("TOPLEFT", 6, -5)
 CyborgMMO_MiniMapButtonIconGlow:SetVertexColor(0.38, 0.85, 1.0, 0.90)
 
@@ -127,7 +129,7 @@ CyborgMMO_MiniMapButton:SetScript("OnUpdate", MiniMapButtonOnUpdate)
 local CompartmentAdapter = {}
 CompartmentAdapter.Data = {
     text = "Cyborg MMO7",
-    icon = "Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\Cyborg",
+    icon = MEDIA_PATH .. "Cyborg",
     notCheckable = true,
     func = function(_, menuInputData)
         buttonOnMouseUp(_, menuInputData.buttonName)

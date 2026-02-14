@@ -18,12 +18,31 @@
 --~ along with this program; if not, write to the Free Software
 --~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+local function RegisterChildren(frame)
+	for _, child in ipairs(frame:GetChildren()) do
+		child.Register()
+	end
+end
+
+local function UpdateSlotIcon(frame, data, activeMode, alpha)
+	local icon = _G[frame:GetName() .. "Icon"]
+	local object = data[activeMode][frame.Id]
+	if object then
+		frame:SetChecked(true)
+		icon:SetTexture(object.texture)
+		if alpha then
+			icon:SetAlpha(alpha)
+		end
+	else
+		icon:SetTexture(nil)
+		frame:SetChecked(false)
+	end
+end
+
 CyborgMMO_RatPageView = {
 	new = function(self)
 		CyborgMMO_DPrint("new Rat Page View")
-		for _,child in ipairs(self:GetChildren()) do
-			child.Register()
-		end
+		RegisterChildren(self)
 
 		self.SlotClicked = function(slot)
 			CyborgMMO_DPrint("View Received Click")
@@ -49,9 +68,7 @@ CyborgMMO_RatPageView = {
 
 CyborgMMO_RatQuickPageView = {
 	new = function(self)
-		for _,child in ipairs(self:GetChildren()) do
-			child.Register()
-		end
+		RegisterChildren(self)
 
 		self.SlotClicked = function(slot)
 			CyborgMMO_RatPageController:SlotClicked(slot)
@@ -63,7 +80,7 @@ CyborgMMO_RatQuickPageView = {
 
 -- Slot Class --
 CyborgMMO_SlotView = {
-	new = function(self, parent)
+	new = function(self)
 		self._assignedWowObject = nil
 		self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 		self.Id = self:GetID()
@@ -79,16 +96,7 @@ CyborgMMO_SlotView = {
 		end
 
 		self.Update = function(data, activeMode)
-			local icon = _G[self:GetName().."Icon"]
-			if data[activeMode][self.Id] then
-				self:SetChecked(true)
-				icon:SetTexture(data[activeMode][self.Id].texture)
-			else
-				icon:SetTexture(nil)
-				self:SetChecked(false)
-			end
-
-
+			UpdateSlotIcon(self, data, activeMode)
 		end
 
 		return self
@@ -96,23 +104,14 @@ CyborgMMO_SlotView = {
 }
 
 CyborgMMO_SlotMiniView = {
-	new = function(self, parent)
+	new = function(self)
 		self._assignedWowObject = nil
 		self.Id = self:GetID()
 		CyborgMMO_RatPageModel:AddObserver(self)
 		self.UnCheckedTexture = self:GetNormalTexture()
 
 		self.Update = function(data, activeMode)
-			local icon = _G[self:GetName().."Icon"]
-			if data[activeMode][self.Id] then
-				self:SetChecked(true)
-
-				icon:SetTexture(data[activeMode][self.Id].texture)
-				icon:SetAlpha(.5)
-			else
-				icon:SetTexture(nil)
-				self:SetChecked(false)
-			end
+			UpdateSlotIcon(self, data, activeMode, 0.5)
 		end
 
 		return self
@@ -124,22 +123,24 @@ CyborgMMO_SlotMiniView = {
 CyborgMMO_ModeView = {
 	new = function(self)
 		self.Id = self:GetID()
-		self.Name = self:GetName()
 		CyborgMMO_RatPageModel:AddObserver(self)
 		if self.Id ~= 1 then
 			self:Hide()
 		end
 
 		self.Clicked = function()
+			local parent = self:GetParent()
 			local nextMode
 			if self.Id == 1 then
-				nextMode = _G.Mode2
+				nextMode = CyborgMMO_GetRatModeButton(parent, 2)
 			elseif self.Id == 2 then
-				nextMode = _G.Mode3
+				nextMode = CyborgMMO_GetRatModeButton(parent, 3)
 			else
-				nextMode = _G.Mode1
+				nextMode = CyborgMMO_GetRatModeButton(parent, 1)
 			end
-			self:GetParent().ModeClicked(nextMode)
+			if nextMode then
+				parent.ModeClicked(nextMode)
+			end
 		end
 
 		self.Update = function(data, activeMode)
