@@ -8,6 +8,7 @@ local Constants = CyborgMMO.Constants
 local Core = CyborgMMO.Core
 Core.UI = Core.UI or {}
 Core.UI.RatPageView = Core.UI.RatPageView or {}
+Core.Rat = Core.Rat or {}
 local FrameLookup = Core.UI.FrameLookup
 local RAT_BUTTONS = Constants.RAT_BUTTONS
 local RAT_MODES = Constants.RAT_MODES
@@ -93,7 +94,7 @@ local function BindSlotView(slot, parentFrame, alpha, clickable)
 	end
 
 	slot.Id = slot:GetID()
-	CyborgMMO_RatPageModel:AddObserver(slot)
+	Core.Rat.Model:AddObserver(slot)
 
 	if clickable then
 		slot:RegisterForClicks("LeftButtonUp", "RightButtonUp")
@@ -114,7 +115,7 @@ local function BindModeView(modeFrame, parentFrame)
 	end
 
 	modeFrame.Id = modeFrame:GetID()
-	CyborgMMO_RatPageModel:AddObserver(modeFrame)
+	Core.Rat.Model:AddObserver(modeFrame)
 	modeFrame:SetScript("OnClick", ModeOnClick)
 
 	function modeFrame:Clicked()
@@ -144,12 +145,12 @@ function Core.UI.RatPageView.RatPageOnLoad(frame)
 
 	function frame.SlotClicked(slot)
 		CyborgMMO_DPrint("View Received Click")
-		CyborgMMO_RatPageController:SlotClicked(slot)
+		Core.Rat.Controller:SlotClicked(slot)
 	end
 
 	function frame.ModeClicked(modeFrame)
 		CyborgMMO_DPrint("View Received Click")
-		CyborgMMO_RatPageController:ModeClicked(modeFrame)
+		Core.Rat.Controller:ModeClicked(modeFrame)
 	end
 
 	frame._modeFrames = {}
@@ -169,7 +170,7 @@ function Core.UI.RatPageView.RatQuickPageOnLoad(frame)
 	EnsureRatSlots(frame, "CyborgMMO_TemplateSmallSlot", QUICK_SLOT_LAYOUT, false)
 
 	function frame.SlotClicked(slot)
-		CyborgMMO_RatPageController:SlotClicked(slot)
+		Core.Rat.Controller:SlotClicked(slot)
 	end
 	
 	for slotId = 1, RAT_BUTTONS do

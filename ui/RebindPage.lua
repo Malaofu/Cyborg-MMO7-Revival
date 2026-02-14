@@ -236,6 +236,6 @@ function Core.UI.Rebind.SetNewKeybind(keyOrButton)
 	end
 
 	CyborgMMO_BindingFrame:Hide()
-	CyborgMMO_RatPageModel:LoadData()
+	Core.Rat.Model:LoadData()
 	Core.UI.SetupAllModeCallbacks()
 end

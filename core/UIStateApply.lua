@@ -121,7 +121,7 @@ function Core.UI.SetPerSpecBindings(perSpec)
 		Core.Runtime.settings.PerSpecBindings = toBoolean(perSpec)
 	end
 	if Core.Runtime.bindingsLoaded then
-		CyborgMMO_RatPageModel:LoadData()
+		Core.Rat.Model:LoadData()
 	end
 end
 

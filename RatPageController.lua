@@ -25,7 +25,6 @@ local RatPageController_mt = {__index=RatPageController_methods}
 
 local function RatPageController()
 	local self = {}
---	CyborgMMO_RatPageModel:SetMode(1)
 	setmetatable(self, RatPageController_mt)
 	return self
 end
@@ -38,6 +37,7 @@ local UnsupportedCursorTypes = {
 
 local Constants = CyborgMMO.Constants
 local Core = CyborgMMO.Core
+Core.Rat = Core.Rat or {}
 
 local function ResolveUnknownMountCursor(mountID)
 	local mountMap, localMountMap = CyborgMMO.GetMountMaps()
@@ -87,8 +87,9 @@ local CursorObjectFactories = {
 }
 
 function RatPageController_methods:SlotClicked(slot)
-	local slotObject = CyborgMMO_RatPageModel:GetObjectOnButton(slot.Id)
-	CyborgMMO_RatPageModel:SetObjectOnButton(slot.Id, CyborgMMO_RatPageModel:GetMode(), self:GetCursorObject())
+	local model = Core.Rat.Model
+	local slotObject = model:GetObjectOnButton(slot.Id)
+	model:SetObjectOnButton(slot.Id, model:GetMode(), self:GetCursorObject())
 
 	if slotObject then
 		slotObject:Pickup()
@@ -97,11 +98,11 @@ end
 
 function RatPageController_methods:ModeClicked(mode)
 	CyborgMMO_DPrint("Setting mode "..tostring(mode.Id))
-	CyborgMMO_RatPageModel:SetMode(mode.Id)
+	Core.Rat.Model:SetMode(mode.Id)
 end
 
 function RatPageController_methods:FindHoveredSlot()
-	local observers = CyborgMMO_RatPageModel:GetAllObservers()
+	local observers = Core.Rat.Model:GetAllObservers()
 	for i = 1, #observers do
 		if MouseIsOver(observers[i]) then
 			return observers[i]
@@ -134,11 +135,12 @@ end
 function RatPageController_methods:CallbackDropped(callbackObject)
 	local slot = self:FindHoveredSlot()
 	if slot then
-		CyborgMMO_RatPageModel:SetObjectOnButton(slot.Id, CyborgMMO_RatPageModel:GetMode(), callbackObject.wowObject)
+		local model = Core.Rat.Model
+		model:SetObjectOnButton(slot.Id, model:GetMode(), callbackObject.wowObject)
 	end
 end
 
 ------------------------------------------------------------------------------
 
-CyborgMMO_RatPageController = RatPageController()
+Core.Rat.Controller = RatPageController()
 

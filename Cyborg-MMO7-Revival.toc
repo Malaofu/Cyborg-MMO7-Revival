@@ -13,13 +13,12 @@
 ## X-Curse-Project-Name: Cyborg MMO7 Revival
 ## X-Curse-Project-ID: cyborg-mmo7-revival
 
-Localisation.lua
 Constants.lua
 data/Data.xml
-ui/UI.xml
 CallbackFactory.lua
 objects/Objects.xml
 core/Core.xml
+ui/UI.xml
 RatPageModel.lua
 RatPageController.lua
 RatPageView.lua

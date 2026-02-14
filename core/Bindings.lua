@@ -34,7 +34,7 @@ function Core.Bindings.SetupModeCallbacks(modeNum)
 	local fn = function()
 		Core.Bindings.ModeDetected = true
 		Core.UI.MouseModeChange(modeNum)
-		CyborgMMO_RatPageModel:SetMode(modeNum)
+		Core.Rat.Model:SetMode(modeNum)
 	end
 
 	local _, parentFrame, name = CyborgMMO_CallbackFactory:AddCallback(fn)

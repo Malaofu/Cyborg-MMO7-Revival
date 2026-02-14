@@ -27,6 +27,7 @@ local RAT7 = {
 	SHIFT = Constants.RAT_SHIFT,
 }
 local Core = CyborgMMO.Core
+Core.Rat = Core.Rat or {}
 local Globals = Core.Globals
 
 local function GetBindingIndex(mode, button)
@@ -123,5 +124,5 @@ end
 
 ------------------------------------------------------------------------------
 
-CyborgMMO_RatPageModel = RatPageModel()
+Core.Rat.Model = RatPageModel()
 

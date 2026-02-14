@@ -55,7 +55,7 @@ local function ApplyRuntimeSettings()
 end
 
 local function LoadBindings()
-	CyborgMMO_RatPageModel:LoadData()
+	Core.Rat.Model:LoadData()
 	Core.UI.SetupAllModeCallbacks()
 end
 

@@ -27,7 +27,7 @@ function WowCallback_methods:DoAction()
 end
 
 function WowCallback_methods:PickupCallback()
-	local slot = CyborgMMO_RatPageController:FindHoveredSlot()
+	local slot = CyborgMMO.Core.Rat.Controller:FindHoveredSlot()
 	CyborgMMO_DPrint("Slot type: " .. type(slot))
 end
 

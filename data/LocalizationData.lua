@@ -1,4 +1,4 @@
-﻿--~ Warcraft Plugin for Cyborg MMO7
+--~ Warcraft Plugin for Cyborg MMO7
 --~ Filename: Localisation.lua
 --~ Description: Localisation for Warcraft
 --~ Copyright (C) 2012 Mad Catz Inc.
@@ -479,50 +479,50 @@ local StringTables = {
 		CyborgMMO_OptionPageCyborgSizeSliderTitle="Tamaño de la cabeza de Cyborg",
 		CyborgMMO_OptionPagePluginSizeSliderTitle="Tamaño de la ventana de la interfaz",
 	},
-        ["ruRU"] = {
-	CyborgMMO_BindingFrameExitButton="Закрыть",
-	CyborgMMO_BindingFrameHeaderText="Пожалуйста, нажмите соответствующую кнопку",
-	CyborgMMO_CurrentBinding="Текущая привязка",
-	CyborgMMO_OptionPageCyborgButtonTitle="Кнопка Cyborg",
-	CyborgMMO_OptionPageCyborgButtonTooltip="Показать голову Cyborg на экране",
-	CyborgMMO_OptionPageCyborgSizeSliderTitle="Размер головы Cyborg",
-	CyborgMMO_OptionPageCyborgSizeSliderTooltip="Настроить размер головы Cyborg",
-	CyborgMMO_OptionPageMiniMapButtonTitle="Кнопка на миникарте",
-	CyborgMMO_OptionPageMiniMapButtonTooltip="Показать кнопку Cyborg на миникарте",
-	CyborgMMO_OptionPageCompartmentButtonTitle="Кнопка в отсеке аддонов",
-	CyborgMMO_OptionPageCompartmentButtonTooltip="Показать кнопку Cyborg в отсеке аддонов",
-	CyborgMMO_OptionPagePerSpecBindingsTitle="Привязки по специализации",
-	CyborgMMO_OptionPagePerSpecBindingsTooltip="Включить привязки клавиш по специализации",
-	CyborgMMO_OptionPageRebindMouseRow10Name="Кнопка назад",
-	CyborgMMO_OptionPageRebindMouseRow11Name="Кнопка 3",
-	CyborgMMO_OptionPageRebindMouseRow12Name="Большой палец против часовой",
-	CyborgMMO_OptionPageRebindMouseRow13Name="Большой палец по часовой",
-	CyborgMMO_OptionPageRebindMouseRow1Name="Кнопка прокрутки",
-	CyborgMMO_OptionPageRebindMouseRow2Name="Кнопка вперёд",
-	CyborgMMO_OptionPageRebindMouseRow3Name="Кнопка 2",
-	CyborgMMO_OptionPageRebindMouseRow4Name="Верхняя часть шляпы",
-	CyborgMMO_OptionPageRebindMouseRow5Name="Точное прицеливание",
-	CyborgMMO_OptionPageRebindMouseRow6Name="Нижняя часть шляпы",
-	CyborgMMO_OptionPageRebindMouseRow7Name="Левая часть шляпы",
-	CyborgMMO_OptionPageRebindMouseRow8Name="Правая часть шляпы",
-	CyborgMMO_OptionPageRebindMouseRow9Name="Кнопка 1",
-	CyborgMMO_OptionPageRebindMouseRowAName="Кнопка назад",
-	CyborgMMO_OptionPageRebindMouseRowBName="Кнопка 3",
-	CyborgMMO_OptionPageRebindMouseRowCName="Большой палец против часовой",
-	CyborgMMO_OptionPageRebindMouseRowDName="Большой палец по часовой",
-	CyborgMMO_OptionPageTitle="Cyborg MMO7",
-	CyborgMMO_OptionPagePluginSizeSliderTitle="Размер окна интерфейса",
-	CyborgMMO_OptionPagePluginSizeSliderTooltip="Настроить размер окна интерфейса",
-	CyborgMMO_OptionPageRebindMode1="Режим 1",
-	CyborgMMO_OptionPageRebindMode2="Режим 2",
-	CyborgMMO_OptionPageRebindMode3="Режим 3",
-	CyborgMMO_OptionPageRebindTitle="Привязки клавиш",
-	CyborgMMO_ToolTipLine1="Внимание! Если назначение заклинаний не работает, возможно, у вас не выбран правильный профиль.",
-	CyborgMMO_ToolTipLine2="Чтобы назначить правильный профиль:",
-	CyborgMMO_ToolTipLine3="1) Щёлкните по значку M.M.O.7 в системном трее Windows.",
-	CyborgMMO_ToolTipLine4="2) Найдите профиль MMO7_WoWAddon и щёлкните по немему ЛКМ.",
-	CyborgMMO_ToolTipLine5="3) Когда значок M.M.O.7 в трее станет зелёным, профиль активирован.",
-	CyborgMMO_ToolTipLine6="После активации профиля перезагрузите WoW и нажмите кнопку Mode на M.M.O.7 для синхронизации устройства.",
+    ["ruRU"] = {
+		CyborgMMO_BindingFrameExitButton="Закрыть",
+		CyborgMMO_BindingFrameHeaderText="Пожалуйста, нажмите соответствующую кнопку",
+		CyborgMMO_CurrentBinding="Текущая привязка",
+		CyborgMMO_OptionPageCyborgButtonTitle="Кнопка Cyborg",
+		CyborgMMO_OptionPageCyborgButtonTooltip="Показать голову Cyborg на экране",
+		CyborgMMO_OptionPageCyborgSizeSliderTitle="Размер головы Cyborg",
+		CyborgMMO_OptionPageCyborgSizeSliderTooltip="Настроить размер головы Cyborg",
+		CyborgMMO_OptionPageMiniMapButtonTitle="Кнопка на миникарте",
+		CyborgMMO_OptionPageMiniMapButtonTooltip="Показать кнопку Cyborg на миникарте",
+		CyborgMMO_OptionPageCompartmentButtonTitle="Кнопка в отсеке аддонов",
+		CyborgMMO_OptionPageCompartmentButtonTooltip="Показать кнопку Cyborg в отсеке аддонов",
+		CyborgMMO_OptionPagePerSpecBindingsTitle="Привязки по специализации",
+		CyborgMMO_OptionPagePerSpecBindingsTooltip="Включить привязки клавиш по специализации",
+		CyborgMMO_OptionPageRebindMouseRow10Name="Кнопка назад",
+		CyborgMMO_OptionPageRebindMouseRow11Name="Кнопка 3",
+		CyborgMMO_OptionPageRebindMouseRow12Name="Большой палец против часовой",
+		CyborgMMO_OptionPageRebindMouseRow13Name="Большой палец по часовой",
+		CyborgMMO_OptionPageRebindMouseRow1Name="Кнопка прокрутки",
+		CyborgMMO_OptionPageRebindMouseRow2Name="Кнопка вперёд",
+		CyborgMMO_OptionPageRebindMouseRow3Name="Кнопка 2",
+		CyborgMMO_OptionPageRebindMouseRow4Name="Верхняя часть шляпы",
+		CyborgMMO_OptionPageRebindMouseRow5Name="Точное прицеливание",
+		CyborgMMO_OptionPageRebindMouseRow6Name="Нижняя часть шляпы",
+		CyborgMMO_OptionPageRebindMouseRow7Name="Левая часть шляпы",
+		CyborgMMO_OptionPageRebindMouseRow8Name="Правая часть шляпы",
+		CyborgMMO_OptionPageRebindMouseRow9Name="Кнопка 1",
+		CyborgMMO_OptionPageRebindMouseRowAName="Кнопка назад",
+		CyborgMMO_OptionPageRebindMouseRowBName="Кнопка 3",
+		CyborgMMO_OptionPageRebindMouseRowCName="Большой палец против часовой",
+		CyborgMMO_OptionPageRebindMouseRowDName="Большой палец по часовой",
+		CyborgMMO_OptionPageTitle="Cyborg MMO7",
+		CyborgMMO_OptionPagePluginSizeSliderTitle="Размер окна интерфейса",
+		CyborgMMO_OptionPagePluginSizeSliderTooltip="Настроить размер окна интерфейса",
+		CyborgMMO_OptionPageRebindMode1="Режим 1",
+		CyborgMMO_OptionPageRebindMode2="Режим 2",
+		CyborgMMO_OptionPageRebindMode3="Режим 3",
+		CyborgMMO_OptionPageRebindTitle="Привязки клавиш",
+		CyborgMMO_ToolTipLine1="Внимание! Если назначение заклинаний не работает, возможно, у вас не выбран правильный профиль.",
+		CyborgMMO_ToolTipLine2="Чтобы назначить правильный профиль:",
+		CyborgMMO_ToolTipLine3="1) Щёлкните по значку M.M.O.7 в системном трее Windows.",
+		CyborgMMO_ToolTipLine4="2) Найдите профиль MMO7_WoWAddon и щёлкните по немему ЛКМ.",
+		CyborgMMO_ToolTipLine5="3) Когда значок M.M.O.7 в трее станет зелёным, профиль активирован.",
+		CyborgMMO_ToolTipLine6="После активации профиля перезагрузите WoW и нажмите кнопку Mode на M.M.O.7 для синхронизации устройства.",
 	},
 	["esMX"] = {
 		CyborgMMO_OptionPageCyborgButtonTitle="Botón de Cyborg",
@@ -533,33 +533,11 @@ local StringTables = {
 	},
 }
 
-local locale = GetLocale()
--- fall back to english for missing translations
-local default_locale = 'enUS'
 
 local Core = CyborgMMO.Core
 Core.Localization = Core.Localization or {}
-
-Core.Localization.DefaultModeKeyBindings = Modes[locale] or Modes[default_locale]
-CyborgMMO_ProfileModeKeyBindings = {}
-for k,v in pairs(Core.Localization.DefaultModeKeyBindings) do
-	CyborgMMO_ProfileModeKeyBindings[k] = v
-end
-
-CyborgMMO_StringTable = StringTables[locale] or StringTables[default_locale]
-
--- key bindings are saved and will be replaced by SavedVariables
-Core.Localization.DefaultKeyBindings = DefaultKeyBindings[locale] or DefaultKeyBindings[default_locale]
-CyborgMMO_ProfileKeyBindings = {}
-for k,v in pairs(Core.Localization.DefaultKeyBindings) do
-	CyborgMMO_ProfileKeyBindings[k] = v
-end
-
-if locale ~= default_locale then
-	setmetatable(CyborgMMO_StringTable, {__index=StringTables[default_locale]})
-end
-
-function CyborgMMO_LoadStrings(self)
-	self:SetText(CyborgMMO_StringTable[self:GetName()])
-end
+Core.Localization.Data = Core.Localization.Data or {}
+Core.Localization.Data.Modes = Modes
+Core.Localization.Data.DefaultKeyBindingsByLocale = DefaultKeyBindings
+Core.Localization.Data.StringTablesByLocale = StringTables
 

@@ -37,7 +37,7 @@ function Core.CallbackIcons.new(self)
 		self:StopMovingOrSizing()
 		self:ClearAllPoints()
 		self:SetPoint(self.point, self.relativeTo, self.relativePoint, self.xOfs, self.yOfs)
-		CyborgMMO_RatPageController:CallbackDropped(self)
+		CyborgMMO.Core.Rat.Controller:CallbackDropped(self)
 	end
 
 	return self
