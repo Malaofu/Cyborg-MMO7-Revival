@@ -3,16 +3,10 @@
 --~ Description: Mount-backed object model (including legacy companion conversion)
 
 local O = CyborgMMO_ObjectInternals
-
-local function getMountMaps()
-	local data = CyborgMMO.Data or {}
-	local mountMap = data.MountMap or CyborgMMO_MountMap or {}
-	local localMountMap = data.LocalMountMap or CyborgMMO_LocalMountMap or {}
-	return mountMap, localMountMap
-end
+local Constants = CyborgMMO.Constants
 
 local function GetMountInfoEx(mountID)
-	if mountID == CyborgMMO_Constants.RANDOM_MOUNT_ID then
+	if mountID == Constants.RANDOM_MOUNT_ID then
 		return 0, "Interface/ICONS/ACHIEVEMENT_GUILDPERK_MOUNTUP"
 	end
 	local _, _, texture = C_MountJournal.GetMountInfoByID(mountID)
@@ -20,7 +14,7 @@ local function GetMountInfoEx(mountID)
 end
 
 local function FindMountFromSpellID(spellID)
-	local mountMap, localMountMap = getMountMaps()
+	local mountMap, localMountMap = CyborgMMO.GetMountMaps()
 	for mount, spell in pairs(localMountMap) do
 		if spell == spellID then
 			return mount

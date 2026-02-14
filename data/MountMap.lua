@@ -503,6 +503,5 @@ local generatedMountMap = {
 CyborgMMO.Data.MountMap = generatedMountMap
 CyborgMMO.Data.LocalMountMap = CyborgMMO.Data.LocalMountMap or CyborgMMO_LocalMountMap or {}
 
--- Legacy global aliases kept for backward compatibility.
-CyborgMMO_MountMap = CyborgMMO.Data.MountMap
+-- SavedVariables backing table.
 CyborgMMO_LocalMountMap = CyborgMMO.Data.LocalMountMap

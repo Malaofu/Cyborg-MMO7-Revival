@@ -2,8 +2,10 @@
 --~ Filename: core/RuntimeSettings.lua
 --~ Description: Runtime state, settings defaults, and UI setting mutators
 
+local Constants = CyborgMMO.Constants
+
 local RAT7 = {
-	MODES = CyborgMMO_Constants.RAT_MODES,
+	MODES = Constants.RAT_MODES,
 }
 
 local MODE_COLOR_MAP = {

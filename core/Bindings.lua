@@ -2,9 +2,11 @@
 --~ Filename: core/Bindings.lua
 --~ Description: Keybind defaults and hardware mode callback setup
 
+local Constants = CyborgMMO.Constants
+
 local RAT7 = {
-	BUTTONS = CyborgMMO_Constants.RAT_BUTTONS,
-	MODES = CyborgMMO_Constants.RAT_MODES,
+	BUTTONS = Constants.RAT_BUTTONS,
+	MODES = Constants.RAT_MODES,
 }
 
 CyborgMMO_ModeDetected = false

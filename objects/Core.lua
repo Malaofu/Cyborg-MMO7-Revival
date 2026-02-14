@@ -4,8 +4,9 @@
 
 CyborgMMO_ObjectInternals = CyborgMMO_ObjectInternals or {}
 local O = CyborgMMO_ObjectInternals
+local Constants = CyborgMMO.Constants
 
-O.MEDIA_PATH = CyborgMMO_Constants.MEDIA_PATH
+O.MEDIA_PATH = Constants.MEDIA_PATH
 O.FactoryByType = O.FactoryByType or {}
 
 --- @alias objectType string

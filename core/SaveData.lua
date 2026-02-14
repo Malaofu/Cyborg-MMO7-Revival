@@ -2,9 +2,11 @@
 --~ Filename: core/SaveData.lua
 --~ Description: Legacy data conversion and async preload of uncached IDs
 
+local Constants = CyborgMMO.Constants
+
 local RAT7 = {
-	BUTTONS = CyborgMMO_Constants.RAT_BUTTONS,
-	MODES = CyborgMMO_Constants.RAT_MODES,
+	BUTTONS = Constants.RAT_BUTTONS,
+	MODES = Constants.RAT_MODES,
 }
 
 local KNOWN_OLD_OBJECT_TYPES = {

@@ -18,7 +18,8 @@
 --~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 -- Main Page Frame
-local MEDIA_PATH = CyborgMMO_Constants.MEDIA_PATH
+local Constants = CyborgMMO.Constants
+local MEDIA_PATH = Constants.MEDIA_PATH
 
 CyborgMMO_OpenButtonPage = CreateFrame("Frame", "CyborgMMO_OpenButtonPage", UIParent, "BackdropTemplate")
 CyborgMMO_OpenButtonPage:SetSize(50, 50)

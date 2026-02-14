@@ -4,9 +4,10 @@
 --~ Copyright (C) 2012 Mad Catz Inc.
 --~ Author: Christopher Hooks
 
-local RAT_BUTTONS = CyborgMMO_Constants.RAT_BUTTONS
-local RAT_MODES = CyborgMMO_Constants.RAT_MODES
-local MEDIA_PATH = CyborgMMO_Constants.MEDIA_PATH
+local Constants = CyborgMMO.Constants
+local RAT_BUTTONS = Constants.RAT_BUTTONS
+local RAT_MODES = Constants.RAT_MODES
+local MEDIA_PATH = Constants.MEDIA_PATH
 
 local RAT_LAYOUTS = CyborgMMO.Data and CyborgMMO.Data.RatLayouts or {}
 local MAIN_SLOT_LAYOUT = RAT_LAYOUTS.mainSlots or {}

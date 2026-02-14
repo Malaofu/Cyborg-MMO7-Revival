@@ -19,10 +19,12 @@
 --~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -- Constants --
 
+local Constants = CyborgMMO.Constants
+
 local RAT7 = {
-	BUTTONS = CyborgMMO_Constants.RAT_BUTTONS,
-	MODES = CyborgMMO_Constants.RAT_MODES,
-	SHIFT = CyborgMMO_Constants.RAT_SHIFT,
+	BUTTONS = Constants.RAT_BUTTONS,
+	MODES = Constants.RAT_MODES,
+	SHIFT = Constants.RAT_SHIFT,
 }
 
 local function GetBindingIndex(mode, button)

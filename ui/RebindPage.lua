@@ -5,10 +5,12 @@
 ---@class CyborgMMO_OptionSubPageRebind
 ---@field Panel Frame
 ---@field MouseRows table
+local Constants = CyborgMMO.Constants
+
 CyborgMMO_OptionSubPageRebind = {
 	Initialize = function(self)
-		local RAT_BUTTONS = CyborgMMO_Constants.RAT_BUTTONS
-		local RAT_MODES = CyborgMMO_Constants.RAT_MODES
+		local RAT_BUTTONS = Constants.RAT_BUTTONS
+		local RAT_MODES = Constants.RAT_MODES
 
 		local panel = CreateFrame("FRAME", "CyborgMMO_OptionSubPageRebind", UIParent, "BackdropTemplate")
 		self.Panel = panel
@@ -104,9 +106,9 @@ function CyborgMMO_BindButton(name)
 	lastButton = name
 	local index = CyborgMMO_GetButtonIndex(name)
 	local mode = 1
-	while index > CyborgMMO_Constants.RAT_BUTTONS do
+	while index > Constants.RAT_BUTTONS do
 		mode = mode + 1
-		index = index - CyborgMMO_Constants.RAT_BUTTONS
+		index = index - Constants.RAT_BUTTONS
 	end
 	local buttonStr = CyborgMMO_StringTable["CyborgMMO_OptionPageRebindMouseRow" .. index .. "Name"]
 
@@ -143,7 +145,7 @@ function CyborgMMO_GetButtonIndex(name)
 	local s_row, s_mode = name:match("Row(.)Mode(.)")
 	local row = tonumber(s_row, 16)
 	local mode = tonumber(s_mode)
-	return (mode - 1) * CyborgMMO_Constants.RAT_BUTTONS + row
+	return (mode - 1) * Constants.RAT_BUTTONS + row
 end
 
 function CyborgMMO_SetNewKeybind(keyOrButton)

@@ -2,7 +2,9 @@
 --~ Filename: Constants.lua
 --~ Description: Shared constants for addon modules
 
-CyborgMMO_Constants = {
+CyborgMMO = CyborgMMO or {}
+
+CyborgMMO.Constants = {
 	RAT_BUTTONS = 13,
 	RAT_MODES = 3,
 	RAT_SHIFT = 0,
@@ -10,9 +12,13 @@ CyborgMMO_Constants = {
 	MEDIA_PATH = "Interface\\AddOns\\Cyborg-MMO7-Revival\\Graphics\\",
 }
 
-CyborgMMO = CyborgMMO or {}
-CyborgMMO.Constants = CyborgMMO_Constants
 CyborgMMO.Data = CyborgMMO.Data or {}
 
 -- Canonical API: CyborgMMO.Constants / CyborgMMO.Data
--- Legacy globals are still maintained while modules migrate.
+
+function CyborgMMO.GetMountMaps()
+	local data = CyborgMMO.Data or {}
+	local mountMap = data.MountMap or {}
+	local localMountMap = data.LocalMountMap or {}
+	return mountMap, localMountMap
+end

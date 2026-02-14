@@ -36,16 +36,11 @@ local UnsupportedCursorTypes = {
 	merchant = true,
 }
 
-local function getMountMaps()
-	local data = CyborgMMO.Data or {}
-	local mountMap = data.MountMap or CyborgMMO_MountMap or {}
-	local localMountMap = data.LocalMountMap or CyborgMMO_LocalMountMap or {}
-	return mountMap, localMountMap
-end
+local Constants = CyborgMMO.Constants
 
 local function ResolveUnknownMountCursor(mountID)
-	local mountMap, localMountMap = getMountMaps()
-	if mountID == CyborgMMO_Constants.RANDOM_MOUNT_ID or mountMap[mountID] or localMountMap[mountID] then
+	local mountMap, localMountMap = CyborgMMO.GetMountMaps()
+	if mountID == Constants.RANDOM_MOUNT_ID or mountMap[mountID] or localMountMap[mountID] then
 		return
 	end
 

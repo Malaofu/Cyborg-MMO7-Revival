@@ -2,9 +2,11 @@
 --~ Filename: core/RatStorage.lua
 --~ Description: SavedVariables access and per-spec rat data persistence
 
+local Constants = CyborgMMO.Constants
+
 local RAT7 = {
-	BUTTONS = CyborgMMO_Constants.RAT_BUTTONS,
-	MODES = CyborgMMO_Constants.RAT_MODES,
+	BUTTONS = Constants.RAT_BUTTONS,
+	MODES = Constants.RAT_MODES,
 }
 
 function CyborgMMO_GetSaveData()
