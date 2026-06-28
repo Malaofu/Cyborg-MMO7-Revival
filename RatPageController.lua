@@ -46,6 +46,13 @@ if C_MountJournal and C_MountJournal.Pickup and C_MountJournal.GetDisplayedMount
 	end)
 end
 
+local function IsFrameHovered(frame)
+	if frame and frame.IsMouseOver then
+		return frame:IsMouseOver()
+	end
+	return MouseIsOver and MouseIsOver(frame)
+end
+
 local CursorObjectFactories = {
 	item = function(a)
 		return Core.Objects.Create("item", a)
@@ -92,7 +99,7 @@ end
 function RatPageController_methods:FindHoveredSlot()
 	local observers = Core.Rat.Model:GetAllObservers()
 	for i = 1, #observers do
-		if MouseIsOver(observers[i]) then
+		if IsFrameHovered(observers[i]) then
 			return observers[i]
 		end
 	end
