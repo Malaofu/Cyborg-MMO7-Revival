@@ -20,13 +20,6 @@ local function EnsureSaveDataInitialized()
 	Globals.EnsureSaveData()
 end
 
-local function RemoveStaleMountMapEntries()
-	local mountMap, localMountMap = CyborgMMO.GetMountMaps()
-	for mount in pairs(mountMap) do
-		localMountMap[mount] = nil
-	end
-end
-
 local function MigrateLegacySaveFormatIfNeeded()
 	local saveData = Globals.GetSaveData()
 	if saveData[Core.Runtime.saveName] and not saveData.Settings then
@@ -78,7 +71,6 @@ end
 function eventHandlers.VARIABLES_LOADED()
 	Core.Runtime.varsLoaded = true
 	EnsureSaveDataInitialized()
-	RemoveStaleMountMapEntries()
 	Core.SaveData.PreLoadSaveData(Globals.GetSaveData(), Core.Runtime.saveName)
 end
 

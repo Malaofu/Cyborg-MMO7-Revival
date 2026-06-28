@@ -14,12 +14,3 @@ CyborgMMO.Constants = {
 
 CyborgMMO.Data = CyborgMMO.Data or {}
 CyborgMMO.Core = CyborgMMO.Core or {}
-
--- Canonical API: CyborgMMO.Constants / CyborgMMO.Data
-
-function CyborgMMO.GetMountMaps()
-	local data = CyborgMMO.Data or {}
-	local mountMap = data.MountMap or {}
-	local localMountMap = data.LocalMountMap or {}
-	return mountMap, localMountMap
-end
