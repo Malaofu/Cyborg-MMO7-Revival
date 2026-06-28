@@ -35,33 +35,15 @@ local UnsupportedCursorTypes = {
 	merchant = true,
 }
 
-local Constants = CyborgMMO.Constants
 local Core = CyborgMMO.Core
 Core.Rat = Core.Rat or {}
 
-local function ResolveUnknownMountCursor(mountID)
-	local mountMap, localMountMap = CyborgMMO.GetMountMaps()
-	if mountID == Constants.RANDOM_MOUNT_ID or mountMap[mountID] or localMountMap[mountID] then
-		return
-	end
+local pendingMountID
 
-	local reverse = {}
-	for mount, spell in pairs(mountMap) do
-		reverse[spell] = mount
-	end
-	for mount, spell in pairs(localMountMap) do
-		reverse[spell] = mount
-	end
-
-	local _, spell = C_MountJournal.GetMountInfoByID(mountID)
-	if not reverse[spell] then
-		C_MountJournal.Pickup(mountID)
-		local _, resolvedMountID = GetCursorInfo()
-		ClearCursor()
-		if resolvedMountID then
-			localMountMap[resolvedMountID] = spell
-		end
-	end
+if C_MountJournal and C_MountJournal.Pickup and C_MountJournal.GetDisplayedMountInfo then
+	hooksecurefunc(C_MountJournal, "Pickup", function(index)
+		pendingMountID = select(12, C_MountJournal.GetDisplayedMountInfo(index))
+	end)
 end
 
 local CursorObjectFactories = {
@@ -80,6 +62,12 @@ local CursorObjectFactories = {
 	end,
 	mount = function(a)
 		return Core.Objects.Create("mount", a)
+	end,
+	companion = function(a, b)
+		if b == "MOUNT" then
+			return pendingMountID and Core.Objects.Create("mount", pendingMountID)
+		end
+		return nil
 	end,
 	equipmentset = function(a)
 		return Core.Objects.Create("equipmentset", a)
@@ -115,19 +103,19 @@ function RatPageController_methods:GetCursorObject()
 	local cursorType, a, b, c = GetCursorInfo()
 	ClearCursor()
 
-	if cursorType == "mount" then
-		ResolveUnknownMountCursor(a)
-	end
-
 	if cursorType == nil or UnsupportedCursorTypes[cursorType] then
+		pendingMountID = nil
 		return nil
 	end
 
 	local factory = CursorObjectFactories[cursorType]
 	if factory then
-		return factory(a, b, c)
+		local object = factory(a, b, c)
+		pendingMountID = nil
+		return object
 	end
 
+	pendingMountID = nil
 	Core.Debug.Log("unexpected cursor info:", cursorType, a, b, c)
 	return nil
 end

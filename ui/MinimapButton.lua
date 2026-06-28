@@ -44,9 +44,16 @@ miniMapButton:SetScript("OnEnter", Actions.OnEnter)
 miniMapButton:SetScript("OnLeave", Actions.OnLeave)
 
 local function MiniMapButtonOnUpdate(self)
-	if self:IsDragging() then
-		Core.UI.MiniMapButtonOnUpdate()
+	if not self:IsDragging() then
+		self:SetScript("OnUpdate", nil)
+		return
 	end
+
+	Core.UI.MiniMapButtonOnUpdate()
 end
 
-miniMapButton:SetScript("OnUpdate", MiniMapButtonOnUpdate)
+local function MiniMapButtonOnDragStart(self)
+	self:SetScript("OnUpdate", MiniMapButtonOnUpdate)
+end
+
+miniMapButton:SetScript("OnDragStart", MiniMapButtonOnDragStart)

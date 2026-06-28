@@ -17,7 +17,6 @@ O.CallbackByBindingKey = O.CallbackByBindingKey or {}
 --- | "item"
 --- | "macro"
 --- | "spell"
---- | "companion"
 --- | "equipmentset"
 --- | "battlepet"
 --- | "mount"
