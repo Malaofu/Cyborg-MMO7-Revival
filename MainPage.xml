@@ -23,7 +23,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	-->
 
 	 <!--UIButtonsTemplate-->
-	<Button name="CyborgMMO_TemplateCallbackButton" virtual="true" inherits="CyborgMMO_TemplateIcon">
+	<Button name="CyborgMMO_TemplateCallbackButton" virtual="true" inherits="CyborgMMO_TemplateIconArtwork">
 	</Button>
 
 	 <!--The Main Form--> 
@@ -69,7 +69,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button name="$parentCharacterPage" inherits="CyborgMMO_TemplateCallbackButton">
+			<Button name="$parentCharacterPage" inherits="CyborgMMO_TemplateCallbackButton,InsecureActionButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT"><Offset><AbsDimension x="379" y="-411"/></Offset></Anchor>
 				</Anchors>
@@ -89,7 +89,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="TOPLEFT"><Offset><AbsDimension x="449" y="-446"/></Offset></Anchor>
 				</Anchors>
 			</Button>
-			<Button name="$parentAchievement" inherits="CyborgMMO_TemplateCallbackButton">
+			<Button name="$parentAchievement" inherits="CyborgMMO_TemplateCallbackButton,InsecureActionButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT"><Offset><AbsDimension x="449" y="-411"/></Offset></Anchor>
 				</Anchors>

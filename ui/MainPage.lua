@@ -22,7 +22,9 @@ local function BindMainPageButtons(mainPage)
 		local button = FrameLookup.GetNamedChild(mainPage, suffix)
 		if button then
 			Core.CallbackIcons.new(button)
-			button:SetScript("OnClick", Core.CallbackIcons.OnClick)
+			if not CyborgMMO_CallbackFactory:ConfigurePanelButton(button, suffix) then
+				button:SetScript("OnClick", Core.CallbackIcons.OnClick)
+			end
 			button:SetScript("OnDragStart", Core.CallbackIcons.OnDragStart)
 			button:SetScript("OnDragStop", Core.CallbackIcons.OnDragStop)
 		end
@@ -48,6 +50,19 @@ local function MainPageOnEvent(self, event, ...)
 	Core.Events.Dispatch(event, ...)
 end
 
+local function MainPageOnShow(self)
+	if InCombatLockdown() then
+		return
+	end
+	-- Blizzard's micro-menu handlers may not exist during our XML OnLoad.
+	for _, suffix in ipairs(MAIN_PAGE_CALLBACK_SUFFIXES) do
+		local button = FrameLookup.GetNamedChild(self, suffix)
+		if button then
+			CyborgMMO_CallbackFactory:ConfigurePanelButton(button, suffix)
+		end
+	end
+end
+
 function Core.UI.Main.OnLoad(self)
 	Frames.SetMainPage(self)
 	BindMainPageButtons(self)
@@ -56,6 +71,7 @@ function Core.UI.Main.OnLoad(self)
 	self:SetScript("OnDragStart", MainPageOnDragStart)
 	self:SetScript("OnDragStop", MainPageOnDragStop)
 	self:SetScript("OnEvent", MainPageOnEvent)
+	self:SetScript("OnShow", MainPageOnShow)
 end
 
 function Core.UI.Main.Close()

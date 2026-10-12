@@ -24,7 +24,9 @@ end
 
 function WowCallback_methods:DoAction()
 	local action = CyborgMMO_CallbackFactory:GetCallback(self.callbackName)
-	action()
+	if action then
+		action()
+	end
 end
 
 function WowCallback_methods:PickupCallback()
@@ -39,6 +41,13 @@ function WowCallback_methods:Pickup()
 end
 
 function WowCallback_methods:SetBinding(key)
+	local binding = CyborgMMO_CallbackFactory:GetPanelBinding(self.callbackName)
+	if binding then
+		-- Use the native binding dispatcher, not an addon OnClick callback.
+		Core.Objects.ReleaseClickBindingCallback(key)
+		SetOverrideBinding(CyborgMMO_CallbackFactory.Frame, true, key, binding)
+		return
+	end
 	O.SetClickBindingWithCallback(key, function(...)
 		return self:DoAction(...)
 	end)

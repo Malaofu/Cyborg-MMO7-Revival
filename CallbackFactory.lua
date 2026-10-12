@@ -1,5 +1,5 @@
 --~ Warcraft Plugin for Cyborg MMO7
---~ Filename: CalbackFactory.lua
+--~ Filename: CallbackFactory.lua
 --~ Description: Creates lua callbacks that can be executed from a user keycombination
 --~ Copyright (C) 2012 Mad Catz Inc.
 --~ Author: Christopher Hooks
@@ -69,6 +69,80 @@ end
 
 local callbacks = {}
 
+local legacyClickTarget
+
+local function GetLegacyClickTarget()
+	-- The Legacy micro button can be disabled by its renown gate even though the
+	-- native binding opens the window. Use Blizzard's unmodified click handler
+	-- on a separate target, reached through the template's out-of-combat action.
+	if not legacyClickTarget and LegacyMicroButtonMixin and LegacyMicroButtonMixin.OnClick then
+		legacyClickTarget = CreateFrame("Button", nil, UIParent)
+		legacyClickTarget:SetScript("OnClick", LegacyMicroButtonMixin.OnClick)
+		legacyClickTarget:RegisterForClicks("LeftButtonUp")
+	end
+	return legacyClickTarget
+end
+
+local function GetClientFamily()
+	if WOW_PROJECT_CAMELOT ~= nil and WOW_PROJECT_ID == WOW_PROJECT_CAMELOT then
+		return "forever"
+	elseif WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+		return "retail"
+	end
+	return "classic"
+end
+
+local panelActions = {
+	CharacterPage = { binding = "TOGGLECHARACTER0", button = "CharacterMicroButton" },
+	Achievement = { binding = "TOGGLEACHIEVEMENT", button = "AchievementMicroButton" },
+}
+
+-- Bindings always use native commands. Only the visible icon route varies.
+local panelOverrides = {
+	classic = {
+		-- Classic's Character micro button has mouse-down/up scripts, no OnClick.
+		CharacterPage = { binding = "TOGGLECHARACTER0", directClick = true },
+	},
+	forever = {
+		-- The regular Achievement micro button opens the wrong UI on Forever.
+		Achievement = { binding = "TOGGLELEGACYSYSTEM", getClickTarget = GetLegacyClickTarget },
+	},
+}
+
+local function GetPanelAction(name)
+	local overrides = panelOverrides[GetClientFamily()]
+	return (overrides and overrides[name]) or panelActions[name]
+end
+
+function CallbackFactory_methods:GetPanelBinding(name)
+	local action = GetPanelAction(name)
+	return action and action.binding
+end
+
+function CallbackFactory_methods:ConfigurePanelButton(button, name)
+	-- True means the XML-installed Blizzard OnClick handler must be preserved.
+	local action = GetPanelAction(name)
+	if not action then
+		return false
+	end
+	button:RegisterForClicks("LeftButtonUp")
+	if action.directClick then
+		return false
+	end
+	-- These buttons inherit InsecureActionButtonTemplate. Preserve its Blizzard
+	-- OnClick script: calling Click or ToggleCharacter from addon Lua retains taint.
+	button:SetAttribute("useOnKeyDown", false)
+	button:SetAttribute("type1", "click")
+	local target
+	if action.getClickTarget then
+		target = action.getClickTarget()
+	else
+		target = _G[action.button]
+	end
+	button:SetAttribute("clickbutton1", target)
+	return true
+end
+
 function CallbackFactory_methods:GetCallback(name)
 	return callbacks[name] or (self.Callbacks[name] and self.Callbacks[name]:GetScript("OnClick"))
 end
@@ -80,16 +154,17 @@ function callbacks.Map()
 end
 
 function callbacks.CharacterPage()
-	ToggleCharacter("PaperDollFrame")
+	if GetPanelAction("CharacterPage").directClick and not InCombatLockdown() then
+		ToggleCharacter("PaperDollFrame")
+	end
 end
 
 function callbacks.Spellbook()
-	if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+	if GetClientFamily() ~= "classic" then
 		PlayerSpellsUtil.ToggleSpellBookFrame()
 	else
 		ToggleFrame(SpellBookFrame)
 	end
-	
 end
 
 function callbacks.Macros()
@@ -102,10 +177,6 @@ end
 
 function callbacks.QuestLog()
 	ToggleQuestLog()
-end
-
-function callbacks.Achievement()
-	ToggleAchievementFrame()
 end
 
 function callbacks.Inventory()

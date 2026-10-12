@@ -23,7 +23,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	-->
 
   <!-- IconTemplate -->
-  <Button name="CyborgMMO_TemplateIcon" virtual="true" inherits="SecureActionButtonTemplate">
+  <Button name="CyborgMMO_TemplateIconArtwork" virtual="true">
     <Size>
       <AbsDimension x="32" y="32"/>
     </Size>
@@ -48,6 +48,9 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
     </Layers>
     <PushedTexture file="Interface\Buttons\UI-Quickslot-Depress"/>
     <HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+  </Button>
+
+  <Button name="CyborgMMO_TemplateIcon" inherits="CyborgMMO_TemplateIconArtwork,SecureActionButtonTemplate" virtual="true">
   </Button>
 
   <Button name="CyborgMMO_TemplateSlot" inherits="CyborgMMO_TemplateIcon" virtual="true">
